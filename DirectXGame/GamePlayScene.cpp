@@ -39,7 +39,6 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     
 #pragma region オブジェクト関連
     //モデル読み込み
-    model_ = Model::LoadFromOBJ("triangle_mat");
     modelCube_ = Model::LoadFromOBJ("cube");
     modelPlane_ = Model::LoadFromOBJ("plane");
     modelSphere = Model::LoadFromOBJ("sphere");
