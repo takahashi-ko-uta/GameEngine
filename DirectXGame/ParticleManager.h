@@ -26,9 +26,9 @@ public: // サブクラス
 	//// 頂点データ構造体
 	//struct VertexPosNormalUv
 	//{
-	//	XMFLOAT3 pos; // xyz座標
-	//	XMFLOAT3 normal; // 法線ベクトル
-	//	XMFLOAT2 uv;  // uv座標
+	//	XMFLOAT3 pos;		// xyz座標
+	//	XMFLOAT3 normal;	// 法線ベクトル
+	//	XMFLOAT2 uv;		// uv座標
 	//};
 
 	// 頂点データ構造体
@@ -86,7 +86,7 @@ public: // 静的メンバ関数
 	/// <param name="device">デバイス</param>
 	/// <param name="window_width">画面幅</param>
 	/// <param name="window_height">画面高さ</param>
-	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
+	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height, const std::string& fileName);
 
 	/// <summary>
 	/// 描画前処理
@@ -137,6 +137,8 @@ public: // 静的メンバ関数
 	static void CameraMoveEyeVector(XMFLOAT3 move);
 
 private: // 静的メンバ変数
+	//ファイルパス
+	static std::string kDefaultTextureDirectoryPath;
 	// デバイス
 	static ID3D12Device* device;
 	// デスクリプタサイズ
@@ -208,7 +210,7 @@ private:// 静的メンバ関数
 	/// <summary>
 	/// テクスチャ読み込み
 	/// </summary>
-	static void LoadTexture();
+	static void LoadTexture(const std::string& fileName);
 
 	/// <summary>
 	/// モデル作成

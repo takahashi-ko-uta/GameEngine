@@ -17,7 +17,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     //オブジェクトの静的初期化
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height, camera_);
     //パーティクルの静的初期化
-    ParticleManager::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
+    ParticleManager::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height,"effect2.png");
 #pragma region スプライト関連
     //スプライト共通部の初期化
     spriteCommon_ = new SpriteCommon();
@@ -62,30 +62,9 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     objCube_->SetScale({ 5.0f,5.0f,5.0f });
 #pragma endregion
 
-    // 3Dオブジェクト生成
+    // パーティクル生成
     particle = ParticleManager::Create();
-    //for (int i = 0; i < 100; i++) {
-    //    //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
-    //    const float md_pos = 10.0f;
-    //    XMFLOAT3 pos{};
-    //    pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-    //    pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-    //    pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-    //    //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
-    //    const float md_vel = 0.1f;
-    //    XMFLOAT3 vel{};
-    //    vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-    //    vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-    //    vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-    //    //重力に見立ててYのみ[0.001ff,0]でランダムに分布
-    //    XMFLOAT3 acc{};
-    //    const float md_acc = 0.001f;
-    //    acc.y = -(float)rand() / RAND_MAX * md_acc;
-
-    //    //追加
-    //    particle->Add(60, pos, vel, acc, 1.0f, 0.0f);
-    //}
-
+    
     //当たり判定
     sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     sphere.radius = 5.0f;
@@ -110,7 +89,6 @@ void GamePlayScene::Finalize()
     delete camera_;
     //スプライト共通部解放
     delete spriteCommon_;
-
     //スプライト解放
     delete sprite1_;
     delete sprite2_;
@@ -182,19 +160,22 @@ void GamePlayScene::Update()
             particle->Add(60, pos, vel, acc, 1.0f, 0.0f);
         }
     }
-#pragma endregion
-    
-    //球と平面は当たった時にテキスト表示
+#pragma endregion 
+
+#pragma region ImGuiテキスト
+    //球と平面は当たったかどうか
     bool hit = Collision::CheckSphere2Plane(sphere, plane);
     if (hit) { ImGui::Text("hit:ture"); }
     else { ImGui::Text("hit:false"); }
 
-    //ImGuiテキスト
+    ImGui::Text("パーティクル生成[P]");
+
+    //各々の位置
     ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
     ImGui::Text("planePos[W][S]:%f,%f,%f", planePos.x, planePos.y, planePos.z);
     ImGui::Text("cameraPos[O][L]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
-    ImGui::Text("パーティクル生成[P]");
-
+#pragma endregion
+    
     //各々の更新処理
     camera_->Update();
     input_->Update();

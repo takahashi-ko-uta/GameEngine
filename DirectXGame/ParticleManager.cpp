@@ -7,6 +7,8 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
+std::string ParticleManager::kDefaultTextureDirectoryPath = "Resources/";
+
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
@@ -30,8 +32,6 @@ XMFLOAT3 ParticleManager::up = { 0, 1, 0 };
 D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
 ParticleManager::VertexPos ParticleManager::vertices[vertexCount];
 
-//unsigned short Object3d::indices[indexCount];
-
 const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs,const DirectX::XMFLOAT3& rhs)
 {
 	XMFLOAT3 result;
@@ -42,7 +42,7 @@ const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs,const DirectX::XM
 	return result;
 }
 
-void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
+void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height, const std::string& fileName)
 {
 	// nullptrチェック
 	assert(device);
@@ -59,7 +59,7 @@ void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, i
 	InitializeGraphicsPipeline();
 
 	// テクスチャ読み込み
-	LoadTexture();
+	LoadTexture(fileName);
 
 	// モデル生成
 	CreateModel();
@@ -372,15 +372,24 @@ void ParticleManager::InitializeGraphicsPipeline()
 
 }
 
-void ParticleManager::LoadTexture()
+void ParticleManager::LoadTexture(const std::string& fileName)
 {
 	HRESULT result = S_FALSE;
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
+	std::string fullPath = kDefaultTextureDirectoryPath + fileName;
+
+	//ワイド文字列に変換した際の文字列バッファサイズ
+	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, nullptr, 0);
+
+	//ワイド文字に変換
+	std::vector<wchar_t>wfilePath(filePathBufferSize);
+	MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, wfilePath.data(), filePathBufferSize);
+
 	// WICテクスチャのロード
-	result = LoadFromWICFile(L"Resources/particle.png", WIC_FLAGS_NONE, &metadata, scratchImg);
+	result = LoadFromWICFile(wfilePath.data(), WIC_FLAGS_NONE, &metadata, scratchImg);
 	assert(SUCCEEDED(result));
 
 	ScratchImage mipChain{};
