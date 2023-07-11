@@ -186,12 +186,8 @@ void GamePlayScene::Update()
     
     //球と平面は当たった時にテキスト表示
     bool hit = Collision::CheckSphere2Plane(sphere, plane);
-    if (hit) {
-        ImGui::Text("hit:ture");
-    }
-    else {
-        ImGui::Text("hit:false");
-    }
+    if (hit) { ImGui::Text("hit:ture"); }
+    else { ImGui::Text("hit:false"); }
 
     //ImGuiテキスト
     ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
