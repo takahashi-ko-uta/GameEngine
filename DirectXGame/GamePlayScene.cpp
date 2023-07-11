@@ -14,9 +14,10 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     camera_ = new Camera();
     camera_->Initialize();
     camera_->SetEye({ 0, 0, -100 });
-    //オブジェクト全体の初期化
+    //オブジェクトの静的初期化
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height, camera_);
-
+    //パーティクルの静的初期化
+    ParticleManager::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 #pragma region スプライト関連
     //スプライト共通部の初期化
     spriteCommon_ = new SpriteCommon();
@@ -61,6 +62,30 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     objCube_->SetScale({ 5.0f,5.0f,5.0f });
 #pragma endregion
 
+    // 3Dオブジェクト生成
+    particle = ParticleManager::Create();
+    //for (int i = 0; i < 100; i++) {
+    //    //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+    //    const float md_pos = 10.0f;
+    //    XMFLOAT3 pos{};
+    //    pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+    //    pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+    //    pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+    //    //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+    //    const float md_vel = 0.1f;
+    //    XMFLOAT3 vel{};
+    //    vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+    //    vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+    //    vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+    //    //重力に見立ててYのみ[0.001ff,0]でランダムに分布
+    //    XMFLOAT3 acc{};
+    //    const float md_acc = 0.001f;
+    //    acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+    //    //追加
+    //    particle->Add(60, pos, vel, acc, 1.0f, 0.0f);
+    //}
+
     //当たり判定
     sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     sphere.radius = 5.0f;
@@ -93,6 +118,8 @@ void GamePlayScene::Finalize()
     delete objSphere_;
     delete objPlane_;
     delete objCube_;
+    //パーティクル解放
+    delete particle;
     //モデル解放
     delete model_;
     //オーディオ解放
@@ -105,6 +132,7 @@ void GamePlayScene::Update()
     //移動量
     float moveY = 0.3f;
     
+#pragma region 各移動
     //球の移動
     XMFLOAT3 spherePos = objSphere_->GetPosition();
     if (input_->PushKey(DIK_Q)) { spherePos.y += moveY; }
@@ -122,7 +150,34 @@ void GamePlayScene::Update()
     if (input_->PushKey(DIK_O)) { cameraEye.y += moveY; }
     else if (input_->PushKey(DIK_L)) { cameraEye.y -= moveY; }
     camera_->SetEye(cameraEye);
+#pragma endregion
+    
+#pragma region パーティクル生成 
+    if (input_->PushKey(DIK_P)) {
+        for (int i = 0; i < 100; i++) {
+            //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+            const float md_pos = 10.0f;
+            XMFLOAT3 pos{};
+            pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+            pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+            pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+            //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+            const float md_vel = 0.1f;
+            XMFLOAT3 vel{};
+            vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+            vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+            vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+            //重力に見立ててYのみ[0.001ff,0]でランダムに分布
+            XMFLOAT3 acc{};
+            const float md_acc = 0.001f;
+            acc.y = -(float)rand() / RAND_MAX * md_acc;
 
+            //追加
+            particle->Add(60, pos, vel, acc, 1.0f, 0.0f);
+        }
+    }
+#pragma endregion
+    
     //球と平面は当たった時にテキスト表示
     bool hit = Collision::CheckSphere2Plane(sphere, plane);
     if (hit) {
@@ -136,6 +191,7 @@ void GamePlayScene::Update()
     ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
     ImGui::Text("planePos[W][S]:%f,%f,%f", planePos.x, planePos.y, planePos.z);
     ImGui::Text("cameraPos[O][L]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
+    ImGui::Text("パーティクル生成[P]");
 
     //各々の更新処理
     camera_->Update();
@@ -145,6 +201,7 @@ void GamePlayScene::Update()
     objSphere_->Update();
     objPlane_->Update();
     objCube_->Update();
+    particle->Update();
     //当たり判定の更新
     sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     plane.distance = objPlane_->GetPosition().y;
@@ -164,4 +221,9 @@ void GamePlayScene::Draw()
     objPlane_->Draw();
     objCube_->Draw();
     Object3d::PostDraw();
+
+    // パーティクルの描画
+    ParticleManager::PreDraw(dxCommon_->GetCommandList());
+    particle->Draw();
+    ParticleManager::PostDraw();
 }

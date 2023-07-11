@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "Camera.h"
 #include "CollisionPrimitive.h"
+#include "ParticleManager.h"
 
 class GamePlayScene
 {
@@ -30,6 +31,8 @@ private:
 	//スプライト生成
 	Sprite* sprite1_ = nullptr;
 	Sprite* sprite2_ = nullptr;
+	//パーティクル生成
+	ParticleManager* particle = nullptr;
 	//モデル生成
 	Model* model_ = nullptr;
 	Model* modelCube_ = nullptr;
