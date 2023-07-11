@@ -117,8 +117,8 @@ void GamePlayScene::Update()
     XMFLOAT3 cameraEye = camera_->GetEye();
     if (input_->PushKey(DIK_UP)) { cameraEye.y += move; }
     else if (input_->PushKey(DIK_DOWN)) { cameraEye.y -= move; }
-    if (input_->PushKey(DIK_LEFT)) { cameraEye.x += move; }
-    else if (input_->PushKey(DIK_RIGHT)) { cameraEye.x -= move; }
+    if (input_->PushKey(DIK_LEFT)) { cameraEye.x -= move; }
+    else if (input_->PushKey(DIK_RIGHT)) { cameraEye.x += move; }
     camera_->SetEye(cameraEye);
 #pragma endregion
     
@@ -193,7 +193,7 @@ void GamePlayScene::Update()
     //ŠeX‚ÌˆÊ’u
     ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
     ImGui::Text("planePos[W][S]:%f,%f,%f", planePos.x, planePos.y, planePos.z);
-    ImGui::Text("cameraPos[O][L]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
+    ImGui::Text("cameraEye[ª][«][©][¨]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
 
     //‹…‚Æ•½–Ê‚Í“–‚½‚Á‚½‚©‚Ç‚¤‚©
     bool hit = Collision::CheckSphere2Plane(sphere, plane);
