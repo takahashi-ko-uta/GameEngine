@@ -28,7 +28,8 @@ private:
 	//スプライト共通部の生成
 	SpriteCommon* spriteCommon_ = nullptr;
 	//スプライト生成
-	Sprite* sprite_ = nullptr;
+	Sprite* sprite1_ = nullptr;
+	Sprite* sprite2_ = nullptr;
 	//モデル生成
 	Model* model_ = nullptr;
 	Model* modelCube_ = nullptr;
