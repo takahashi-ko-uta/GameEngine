@@ -188,17 +188,17 @@ void GamePlayScene::Update()
 #pragma endregion 
 
 #pragma region ImGuiテキスト
-    //球と平面は当たったかどうか
-    bool hit = Collision::CheckSphere2Plane(sphere, plane);
-    if (hit) { ImGui::Text("hit:ture"); }
-    else { ImGui::Text("hit:false"); }
-
-    ImGui::Text("パーティクル生成[P]");
+    ImGui::Text("パーティクル生成[1][2]");
 
     //各々の位置
     ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
     ImGui::Text("planePos[W][S]:%f,%f,%f", planePos.x, planePos.y, planePos.z);
     ImGui::Text("cameraPos[O][L]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
+
+    //球と平面は当たったかどうか
+    bool hit = Collision::CheckSphere2Plane(sphere, plane);
+    if (hit) { ImGui::Text("hit:ture"); }
+    else { ImGui::Text("hit:false"); }
 #pragma endregion
     
     //各々の更新処理
