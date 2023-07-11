@@ -130,26 +130,30 @@ void GamePlayScene::Finalize()
 void GamePlayScene::Update()
 {
     //移動量
-    float moveY = 0.3f;
+    float move = 0.3f;
     
+    //カメラの移動
+    XMFLOAT3 cameraEye = camera_->GetEye();
+    if (input_->PushKey(DIK_UP)) { cameraEye.y += move; }
+    else if (input_->PushKey(DIK_DOWN)) { cameraEye.y -= move; }
+    if (input_->PushKey(DIK_LEFT)) { cameraEye.x += move; }
+    else if (input_->PushKey(DIK_RIGHT)) { cameraEye.x -= move; }
+    camera_->SetEye(cameraEye);
+
 #pragma region 各移動
     //球の移動
     XMFLOAT3 spherePos = objSphere_->GetPosition();
-    if (input_->PushKey(DIK_Q)) { spherePos.y += moveY; }
-    else if (input_->PushKey(DIK_A)) { spherePos.y -= moveY; }
+    if (input_->PushKey(DIK_Q)) { spherePos.y += move; }
+    else if (input_->PushKey(DIK_A)) { spherePos.y -= move; }
     objSphere_->SetPosition(spherePos);
 
     //平面の移動
     XMFLOAT3 planePos = objPlane_->GetPosition();
-    if (input_->PushKey(DIK_W)) { planePos.y += moveY; }
-    else if (input_->PushKey(DIK_S)) { planePos.y -= moveY; }
+    if (input_->PushKey(DIK_W)) { planePos.y += move; }
+    else if (input_->PushKey(DIK_S)) { planePos.y -= move; }
     objPlane_->SetPosition(planePos);
 
-    //カメラの移動
-    XMFLOAT3 cameraEye = camera_->GetEye();
-    if (input_->PushKey(DIK_O)) { cameraEye.y += moveY; }
-    else if (input_->PushKey(DIK_L)) { cameraEye.y -= moveY; }
-    camera_->SetEye(cameraEye);
+
 #pragma endregion
     
 #pragma region パーティクル生成 
