@@ -132,6 +132,7 @@ void GamePlayScene::Update()
     //移動量
     float move = 0.3f;
     
+#pragma region カメラの移動
     //カメラの移動
     XMFLOAT3 cameraEye = camera_->GetEye();
     if (input_->PushKey(DIK_UP)) { cameraEye.y += move; }
@@ -139,8 +140,9 @@ void GamePlayScene::Update()
     if (input_->PushKey(DIK_LEFT)) { cameraEye.x += move; }
     else if (input_->PushKey(DIK_RIGHT)) { cameraEye.x -= move; }
     camera_->SetEye(cameraEye);
-
-#pragma region 各移動
+#pragma endregion
+    
+#pragma region 各オブジェクトの移動
     //球の移動
     XMFLOAT3 spherePos = objSphere_->GetPosition();
     if (input_->PushKey(DIK_Q)) { spherePos.y += move; }
