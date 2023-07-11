@@ -32,7 +32,8 @@ private:
 	Sprite* sprite1_ = nullptr;
 	Sprite* sprite2_ = nullptr;
 	//パーティクル生成
-	ParticleManager* particle = nullptr;
+	ParticleManager* particle1_ = nullptr;
+	ParticleManager* particle2_ = nullptr;
 	//モデル生成
 	Model* model_ = nullptr;
 	Model* modelCube_ = nullptr;

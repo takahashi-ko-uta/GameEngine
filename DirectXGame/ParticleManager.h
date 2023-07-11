@@ -86,7 +86,7 @@ public: // 静的メンバ関数
 	/// <param name="device">デバイス</param>
 	/// <param name="window_width">画面幅</param>
 	/// <param name="window_height">画面高さ</param>
-	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height, const std::string& fileName);
+	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
 
 	/// <summary>
 	/// 描画前処理
@@ -137,6 +137,8 @@ public: // 静的メンバ関数
 	static void CameraMoveEyeVector(XMFLOAT3 move);
 
 private: // 静的メンバ変数
+	//テクスチャ
+	static std::string texture;
 	//ファイルパス
 	static std::string kDefaultTextureDirectoryPath;
 	// デバイス
@@ -210,7 +212,7 @@ private:// 静的メンバ関数
 	/// <summary>
 	/// テクスチャ読み込み
 	/// </summary>
-	static void LoadTexture(const std::string& fileName);
+	void LoadTexture(const std::string& fileName);
 
 	/// <summary>
 	/// モデル作成
@@ -255,6 +257,8 @@ public: // メンバ関数
 	/// <param name = "accel">加速度</param>
 	void Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel,
 		float start_scale,float end_scale);
+
+	void SetTexture(const std::string& fileName);
 
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ

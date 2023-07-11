@@ -8,6 +8,7 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 std::string ParticleManager::kDefaultTextureDirectoryPath = "Resources/";
+std::string ParticleManager::texture = "effect1.png";
 
 /// <summary>
 /// 静的メンバ変数の実体
@@ -42,7 +43,7 @@ const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs,const DirectX::XM
 	return result;
 }
 
-void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height, const std::string& fileName)
+void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
 {
 	// nullptrチェック
 	assert(device);
@@ -58,8 +59,8 @@ void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, i
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
 
-	// テクスチャ読み込み
-	LoadTexture(fileName);
+	//// テクスチャ読み込み
+	//LoadTexture(texture);
 
 	// モデル生成
 	CreateModel();
@@ -761,6 +762,9 @@ bool ParticleManager::Initialize()
 	// nullptrチェック
 	assert(device);
 
+	// テクスチャ読み込み
+	LoadTexture(texture);
+
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	// リソース設定
@@ -897,6 +901,11 @@ void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOA
 	p.num_frame = life;
 	p.s_scale = start_scale;
 	p.e_scale = end_scale;
+}
+
+void ParticleManager::SetTexture(const std::string& fileName)
+{
+	LoadTexture(fileName);
 }
 
 XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();

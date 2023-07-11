@@ -17,7 +17,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     //オブジェクトの静的初期化
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height, camera_);
     //パーティクルの静的初期化
-    ParticleManager::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height,"effect2.png");
+    ParticleManager::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 #pragma region スプライト関連
     //スプライト共通部の初期化
     spriteCommon_ = new SpriteCommon();
@@ -63,8 +63,9 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
 #pragma endregion
 
     // パーティクル生成
-    particle = ParticleManager::Create();
-    
+    particle1_ = ParticleManager::Create();
+    particle2_ = ParticleManager::Create();
+ 
     //当たり判定
     sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     sphere.radius = 5.0f;
@@ -97,7 +98,8 @@ void GamePlayScene::Finalize()
     delete objPlane_;
     delete objCube_;
     //パーティクル解放
-    delete particle;
+    delete particle1_;
+    delete particle2_;
     //モデル解放
     delete model_;
     //オーディオ解放
@@ -137,7 +139,8 @@ void GamePlayScene::Update()
 #pragma endregion
     
 #pragma region パーティクル生成 
-    if (input_->PushKey(DIK_P)) {
+    if (input_->PushKey(DIK_1)) {
+        particle1_->SetTexture("effect1.png");
         for (int i = 0; i < 100; i++) {
             //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
             const float md_pos = 10.0f;
@@ -155,9 +158,31 @@ void GamePlayScene::Update()
             XMFLOAT3 acc{};
             const float md_acc = 0.001f;
             acc.y = -(float)rand() / RAND_MAX * md_acc;
-
             //追加
-            particle->Add(60, pos, vel, acc, 1.0f, 0.0f);
+            particle1_->Add(30, pos, vel, acc, 1.0f, 0.0f);
+        }
+    }
+    if (input_->PushKey(DIK_2)) {
+        particle1_->SetTexture("effect2.png");
+        for (int i = 0; i < 100; i++) {
+            //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+            const float md_pos = 10.0f;
+            XMFLOAT3 pos{};
+            pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+            pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+            pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+            //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+            const float md_vel = 0.1f;
+            XMFLOAT3 vel{};
+            vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+            vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+            vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+            //重力に見立ててYのみ[0.001ff,0]でランダムに分布
+            XMFLOAT3 acc{};
+            const float md_acc = 0.001f;
+            acc.y = -(float)rand() / RAND_MAX * md_acc;
+            //追加
+            particle2_->Add(30, pos, vel, acc, 1.0f, 0.0f);
         }
     }
 #pragma endregion 
@@ -184,7 +209,8 @@ void GamePlayScene::Update()
     objSphere_->Update();
     objPlane_->Update();
     objCube_->Update();
-    particle->Update();
+    particle1_->Update();
+    particle2_->Update();
     //当たり判定の更新
     sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     plane.distance = objPlane_->GetPosition().y;
@@ -207,6 +233,7 @@ void GamePlayScene::Draw()
 
     // パーティクルの描画
     ParticleManager::PreDraw(dxCommon_->GetCommandList());
-    particle->Draw();
+    particle1_->Draw();
+    particle2_->Draw();
     ParticleManager::PostDraw();
 }
