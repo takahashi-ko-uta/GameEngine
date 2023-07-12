@@ -40,17 +40,37 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     
 #pragma region オブジェクト関連
     //モデル読み込み
-    modelGround1_ = Model::LoadFromOBJ("ground2");
+    modelGround1_ = Model::LoadFromOBJ("ground");
     modelGround2_ = Model::LoadFromOBJ("ground2");
-    //オブジェクト生成
-    objGround_ = Object3d::Create();
-    //3Dオブジェクトと3Dモデルをひも付け
-    objGround_->SetModel(modelGround1_);
-    //3Dオブジェクトの位置を指定
-    objGround_->SetPosition({ 0,0,0 });
-    //3Dオブジェクトのスケールを指定
-    objGround_->SetScale({ 5.0f,5.0f,5.0f });
- 
+    modelSphere_ = Model::LoadFromOBJ("sphere");
+
+    //地面のオブジェクト初期化
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            //オブジェクト生成
+            objGround_[i][j] = Object3d::Create();
+            //3Dオブジェクトと3Dモデルをひも付け
+            if((i + j) % 2 == 0){
+                objGround_[i][j]->SetModel(modelGround1_);
+            }
+            else {
+                objGround_[i][j]->SetModel(modelGround2_);
+            }
+            //3Dオブジェクトのスケールを指定
+            float size = 5.0f;
+            objGround_[i][j]->SetScale({ size,size,size });
+  
+            //3Dオブジェクトの位置を指定
+            objGround_[i][j]->SetPosition({ ((float)i - 2) * size * 2, -2.5f, ((float)j - 2) * size * 2 });
+        }
+    }
+
+    //球のモデル初期化
+    objSphere_ = Object3d::Create();
+    objSphere_->SetModel(modelSphere_);
+    objSphere_->SetScale({ 5.0f,5.0f,5.0f });
+    objSphere_->SetPosition({ 0.0f,0.0f,0.0f });
+
 #pragma endregion
 
     // パーティクル生成
@@ -85,7 +105,12 @@ void GamePlayScene::Finalize()
     delete sprite1_;
     delete sprite2_;
     //オブジェクト解放
-    delete objGround_;
+    delete objSphere_;
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            delete objGround_[i][j];
+        }
+    }
     //パーティクル解放
     delete particle1_;
     delete particle2_;
@@ -195,7 +220,12 @@ void GamePlayScene::Update()
     input_->Update();
     sprite1_->Update();
     sprite2_->Update();
-    objGround_->Update();
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            objGround_[i][j]->Update();
+        }
+    }
+    objSphere_->Update();
     particle1_->Update();
     particle2_->Update();
     //当たり判定の更新
@@ -213,7 +243,12 @@ void GamePlayScene::Draw()
 
     //オブジェクトの描画
     Object3d::PreDraw(dxCommon_->GetCommandList());
-    objGround_->Draw();
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            objGround_[i][j]->Draw();
+        }
+    }
+    objSphere_->Draw();
     Object3d::PostDraw();
 
     // パーティクルの描画

@@ -37,8 +37,10 @@ private:
 	//モデル生成
 	Model* modelGround1_ = nullptr;
 	Model* modelGround2_ = nullptr;
+	Model* modelSphere_ = nullptr;
 	//3Dオブジェクト生成
-	Object3d* objGround_ = nullptr;
+	Object3d* objGround_[5][5] = {};
+	Object3d* objSphere_ = nullptr;
 	//当たり判定
 	Sphere sphere;
 	Plane plane;
