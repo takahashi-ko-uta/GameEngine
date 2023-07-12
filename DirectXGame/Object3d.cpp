@@ -251,12 +251,6 @@ void Object3d::CreateModel()
 
 }
 
-//void Object3d::UpdateViewMatrix()
-//{
-//	// ビュー行列の更新
-//	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-//}
-
 bool Object3d::Initialize()
 {
 	// nullptrチェック

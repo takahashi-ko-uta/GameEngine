@@ -35,14 +35,10 @@ private:
 	ParticleManager* particle1_ = nullptr;
 	ParticleManager* particle2_ = nullptr;
 	//モデル生成
-	Model* model_ = nullptr;
-	Model* modelCube_ = nullptr;
-	Model* modelSphere = nullptr;
-	Model* modelPlane_ = nullptr;
+	Model* modelGround1_ = nullptr;
+	Model* modelGround2_ = nullptr;
 	//3Dオブジェクト生成
-	Object3d* objCube_ = nullptr;
-	Object3d* objSphere_ = nullptr;
-	Object3d* objPlane_ = nullptr;
+	Object3d* objGround_ = nullptr;
 	//当たり判定
 	Sphere sphere;
 	Plane plane;

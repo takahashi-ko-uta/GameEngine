@@ -40,26 +40,17 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     
 #pragma region オブジェクト関連
     //モデル読み込み
-    modelCube_ = Model::LoadFromOBJ("cube");
-    modelPlane_ = Model::LoadFromOBJ("plane");
-    modelSphere = Model::LoadFromOBJ("sphere");
-
+    modelGround1_ = Model::LoadFromOBJ("ground2");
+    modelGround2_ = Model::LoadFromOBJ("ground2");
     //オブジェクト生成
-    objSphere_ = Object3d::Create();
-    objPlane_ = Object3d::Create();
-    objCube_ = Object3d::Create();
+    objGround_ = Object3d::Create();
     //3Dオブジェクトと3Dモデルをひも付け
-    objSphere_->SetModel(modelSphere);
-    objPlane_->SetModel(modelPlane_);
-    objCube_->SetModel(modelCube_);
+    objGround_->SetModel(modelGround1_);
     //3Dオブジェクトの位置を指定
-    objSphere_->SetPosition({ 0,10,0 });
-    objPlane_->SetPosition({ 0,0,0 });
-    objCube_->SetPosition({ 0,-10,0 });
+    objGround_->SetPosition({ 0,0,0 });
     //3Dオブジェクトのスケールを指定
-    objSphere_->SetScale({ 5.0f,5.0f ,5.0f });
-    objPlane_->SetScale({ 10.0f,10.0f,10.0f });
-    objCube_->SetScale({ 5.0f,5.0f,5.0f });
+    objGround_->SetScale({ 5.0f,5.0f,5.0f });
+ 
 #pragma endregion
 
     // パーティクル生成
@@ -67,11 +58,11 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     particle2_ = ParticleManager::Create();
  
     //当たり判定
-    sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
+    /*sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     sphere.radius = 5.0f;
     
     plane.normal = XMVectorSet(0, 1, 0, 0);
-    plane.distance = objPlane_->GetPosition().y;
+    plane.distance = objPlane_->GetPosition().y;*/
     
 #pragma region オーディオ関連
     //オーディオ初期化
@@ -94,14 +85,13 @@ void GamePlayScene::Finalize()
     delete sprite1_;
     delete sprite2_;
     //オブジェクト解放
-    delete objSphere_;
-    delete objPlane_;
-    delete objCube_;
+    delete objGround_;
     //パーティクル解放
     delete particle1_;
     delete particle2_;
     //モデル解放
-    delete model_;
+    delete modelGround1_;
+    delete modelGround2_;
     //オーディオ解放
     audio_->Finalize();
     delete audio_;
@@ -123,18 +113,17 @@ void GamePlayScene::Update()
 #pragma endregion
     
 #pragma region 各オブジェクトの移動
-    //球の移動
-    XMFLOAT3 spherePos = objSphere_->GetPosition();
-    if (input_->PushKey(DIK_Q)) { spherePos.y += move; }
-    else if (input_->PushKey(DIK_A)) { spherePos.y -= move; }
-    objSphere_->SetPosition(spherePos);
+    ////球の移動
+    //XMFLOAT3 spherePos = objSphere_->GetPosition();
+    //if (input_->PushKey(DIK_Q)) { spherePos.y += move; }
+    //else if (input_->PushKey(DIK_A)) { spherePos.y -= move; }
+    //objSphere_->SetPosition(spherePos);
 
-    //平面の移動
-    XMFLOAT3 planePos = objPlane_->GetPosition();
-    if (input_->PushKey(DIK_W)) { planePos.y += move; }
-    else if (input_->PushKey(DIK_S)) { planePos.y -= move; }
-    objPlane_->SetPosition(planePos);
-
+    ////平面の移動
+    //XMFLOAT3 planePos = objPlane_->GetPosition();
+    //if (input_->PushKey(DIK_W)) { planePos.y += move; }
+    //else if (input_->PushKey(DIK_S)) { planePos.y -= move; }
+    //objPlane_->SetPosition(planePos);
 
 #pragma endregion
     
@@ -188,12 +177,12 @@ void GamePlayScene::Update()
 #pragma endregion 
 
 #pragma region ImGuiテキスト
-    ImGui::Text("パーティクル生成[1][2]");
+    ImGui::Text("particle[1][2]");
 
     //各々の位置
-    ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
-    ImGui::Text("planePos[W][S]:%f,%f,%f", planePos.x, planePos.y, planePos.z);
-    ImGui::Text("cameraEye[↑][↓][←][→]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
+    /*ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
+    ImGui::Text("planePos[W][S]:%f,%f,%f", planePos.x, planePos.y, planePos.z);*/
+    ImGui::Text("cameraEye[arrow]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
 
     //球と平面は当たったかどうか
     bool hit = Collision::CheckSphere2Plane(sphere, plane);
@@ -206,14 +195,12 @@ void GamePlayScene::Update()
     input_->Update();
     sprite1_->Update();
     sprite2_->Update();
-    objSphere_->Update();
-    objPlane_->Update();
-    objCube_->Update();
+    objGround_->Update();
     particle1_->Update();
     particle2_->Update();
     //当たり判定の更新
-    sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
-    plane.distance = objPlane_->GetPosition().y;
+   /* sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
+    plane.distance = objPlane_->GetPosition().y;*/
 }
 
 void GamePlayScene::Draw()
@@ -226,9 +213,7 @@ void GamePlayScene::Draw()
 
     //オブジェクトの描画
     Object3d::PreDraw(dxCommon_->GetCommandList());
-    objSphere_->Draw();
-    objPlane_->Draw();
-    objCube_->Draw();
+    objGround_->Draw();
     Object3d::PostDraw();
 
     // パーティクルの描画
