@@ -48,5 +48,8 @@ private:
 	//audioê∂ê¨
 	Audio* audio_ = nullptr;
 	XMFLOAT3 cameraEye = { 0,0,0 };
+
+	//É}ÉEÉXÇÃèÛë‘
+	DIMOUSESTATE2 mouse = {};
 };
 

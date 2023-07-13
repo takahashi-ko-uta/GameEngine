@@ -23,11 +23,20 @@ void Input::Initialize(WinApp* winApp)
     // キーボードデバイスの生成
     result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
     assert(SUCCEEDED(result));
-    // 入力データ形式のセット
+    // マウスデバイスの生成	
+    result = directInput->CreateDevice(GUID_SysMouse, &mouse, NULL);
+    assert(SUCCEEDED(result));
+    // キーボードの入力データ形式のセット
     result = keyboard->SetDataFormat(&c_dfDIKeyboard); // 標準形式
     assert(SUCCEEDED(result));
-    // 排他制御レベルのセット
+    // キーボードの排他制御レベルのセット
     result = keyboard->SetCooperativeLevel(winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+    assert(SUCCEEDED(result));
+    // マウスの入力データ形式のセット
+    result = mouse->SetDataFormat(&c_dfDIMouse2); // 標準形式
+    assert(SUCCEEDED(result));
+    // マウスの排他制御レベルのセット
+    result = mouse->SetCooperativeLevel(winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
     assert(SUCCEEDED(result));
 }
 
@@ -35,11 +44,19 @@ void Input::Update()
 {
     //前回のキー入力を保存
     memcpy(keyPre, key, sizeof(key));
-
     // キーボード情報の取得開始
     keyboard->Acquire();
     // 全キーの入力状態を取得する
     keyboard->GetDeviceState(sizeof(key), key);
+
+    
+    //前回のマウス入力を保存
+    mouseStatePre = mouseState;
+    //マウスの情報の取得開始
+    mouse->Acquire();
+    //全マウスの入力状態を取得する
+    mouse->GetDeviceState(sizeof(mouseState), &mouseState);
+
 }
 
 bool Input::PushKey(BYTE keyNumber)
@@ -57,5 +74,72 @@ bool Input::TriggerKey(BYTE keyNumber)
     if (key[keyNumber] == true && keyPre[keyNumber] == false) {
         return true;
     }
+    return false;
+}
+
+bool Input::PushMouseLeft()
+{
+    // 0以外なら押している
+    if (mouseState.rgbButtons[0]) {
+        return true;
+    }
+
+    // 押していない
+    return false;
+}
+
+bool Input::PushMouseRight()
+{
+    // 0以外なら押している
+    if (mouseState.rgbButtons[1]) {
+        return true;
+    }
+
+    // 押していない
+    return false;
+}
+
+bool Input::PushMouseMiddle()
+{
+    //// 0以外なら押している
+    //if (mouse.rgbButtons[2]) {
+    //    return true;
+    //}
+
+    //// 押していない
+    //return false;
+    return mouseState.rgbButtons[2];
+}
+
+bool Input::TriggerMouseLeft()
+{
+    //前回が0で、今回が0以外なら押している
+    if (!mouseStatePre.rgbButtons[0] && mouseState.rgbButtons[0]) {
+        return true;
+    }
+
+    //押してない
+    return false;
+}
+
+bool Input::TriggerMouseRight()
+{
+    //前回が0で、今回が0以外なら押している
+    if (!mouseStatePre.rgbButtons[1] && mouseState.rgbButtons[1]) {
+        return true;
+    }
+
+    //押してない
+    return false;
+}
+
+bool Input::TriggerMouseMiddle()
+{
+    //前回が0で、今回が0以外なら押している
+    if (!mouseStatePre.rgbButtons[2] && mouseState.rgbButtons[2]) {
+        return true;
+    }
+
+    //押してない
     return false;
 }
