@@ -143,11 +143,14 @@ void GamePlayScene::Update()
 #pragma endregion
 
 #pragma region カメラの移動
-    //回転
-    if (input_->PushKey(DIK_A)) { rotObj.m_Angle -= 5.0f; }
-    if (input_->PushKey(DIK_D)) { rotObj.m_Angle += 5.0f; }
-
-    //拡大縮小
+    //マウスホイールを押していると
+    if (input_->PushMouseMiddle()) {
+        //マウスを動かすとカメラを回転
+        if (input_->MouesMoveLeft()) { rotObj.m_Angle += 1.0f; }
+        if (input_->MouesMoveRight()) { rotObj.m_Angle -= 1.0f; }
+    }
+   
+    //マウスホイールで拡大縮小
     if (input_->WheelUp()) {
         if (rotObj.m_Length >= 25.0f) {
             rotObj.m_Length -= 3.0f;
@@ -223,20 +226,6 @@ void GamePlayScene::Update()
         }
     }
 #pragma endregion 
-
-    if (input_->MouesMoveUp()) {
-        ImGui::Text("1111");
-    }
-    if (input_->MouesMoveDown()) {
-        ImGui::Text("1111\n1111");
-    }
-    if (input_->MouesMoveLeft()) {
-        ImGui::Text("1111\n1111\n1111");
-    }
-    if (input_->MouesMoveRight()) {
-        ImGui::Text("1111\n1111\n1111\n1111");
-    }
-
 
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
