@@ -77,6 +77,11 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     particle1_ = ParticleManager::Create();
     particle2_ = ParticleManager::Create();
  
+    // 三角関数を使用し、円の位置を割り出す。
+    add_x = cos(radius) * enemy.m_Length;
+    add_y = sin(radius) * enemy.m_Length;
+
+
     //当たり判定
     /*sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     sphere.radius = 5.0f;
@@ -126,7 +131,7 @@ void GamePlayScene::Update()
 {
     //移動量
     float move = 0.3f;
-    
+
 #pragma region カメラの移動
     //カメラの移動
     XMFLOAT3 cameraEye = camera_->GetEye();
@@ -136,7 +141,7 @@ void GamePlayScene::Update()
     else if (input_->PushKey(DIK_RIGHT)) { cameraEye.x += move; }
     camera_->SetEye(cameraEye);
 #pragma endregion
-    
+
 #pragma region 各オブジェクトの移動
     ////球の移動
     //XMFLOAT3 spherePos = objSphere_->GetPosition();
@@ -151,7 +156,7 @@ void GamePlayScene::Update()
     //objPlane_->SetPosition(planePos);
 
 #pragma endregion
-    
+
 #pragma region パーティクル生成 
     if (input_->PushKey(DIK_1)) {
         particle1_->SetTexture("effect1.png");
@@ -201,12 +206,33 @@ void GamePlayScene::Update()
     }
 #pragma endregion 
 
+    radius = enemy.m_Angle * 3.14f / 180.0f;
+
+    // 三角関数を使用し、円の位置を割り出す。
+    add_x = cos(radius) * enemy.m_Length;
+    add_y = sin(radius) * enemy.m_Length;
+
+    // 結果ででた位置を中心位置に加算し、それを描画位置とする
+    enemy.m_PosX = enemy.m_CenterX + add_x;
+    enemy.m_PosY = enemy.m_CenterY + add_y;
+
+    // 角度更新
+    enemy.m_Angle += 10.0f;
+
+    objSphere_->SetPosition({ (float)enemy.m_PosX, 0, (float)enemy.m_PosY });
+
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
 
     //各々の位置
-    /*ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
-    ImGui::Text("planePos[W][S]:%f,%f,%f", planePos.x, planePos.y, planePos.z);*/
+    ImGui::Text("enemyPos:%f,%f", enemy.m_PosX, enemy.m_PosX);
+    ImGui::Text("enemyCenter:%f,%f", enemy.m_CenterX, enemy.m_CenterX);
+    ImGui::Text("enemyAngle:%f", enemy.m_Angle);
+    ImGui::Text("enemyLength:%f", enemy.m_Length);
+    ImGui::Text("enemyRadius:%f", enemy.m_Radius);
+    ImGui::Text("radius:%f", radius);
+    ImGui::Text("Add:%f,%f", add_x, add_y);
+
     ImGui::Text("cameraEye[arrow]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
 
     //球と平面は当たったかどうか
