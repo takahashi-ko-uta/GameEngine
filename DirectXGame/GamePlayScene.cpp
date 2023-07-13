@@ -78,8 +78,8 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     particle2_ = ParticleManager::Create();
  
     // 三角関数を使用し、円の位置を割り出す。
-    add_x = cos(radius) * enemy.m_Length;
-    add_y = sin(radius) * enemy.m_Length;
+    add_x = cos(radius) * rotObj.m_Length;
+    add_y = sin(radius) * rotObj.m_Length;
 
 
     //当たり判定
@@ -143,17 +143,31 @@ void GamePlayScene::Update()
 #pragma endregion
 
 #pragma region 各オブジェクトの移動
-    ////球の移動
-    //XMFLOAT3 spherePos = objSphere_->GetPosition();
-    //if (input_->PushKey(DIK_Q)) { spherePos.y += move; }
-    //else if (input_->PushKey(DIK_A)) { spherePos.y -= move; }
-    //objSphere_->SetPosition(spherePos);
+    //回転
+    if (input_->PushKey(DIK_A)) { rotObj.m_Angle -= 5.0f; }
+    if (input_->PushKey(DIK_D)) { rotObj.m_Angle += 5.0f; }
 
-    ////平面の移動
-    //XMFLOAT3 planePos = objPlane_->GetPosition();
-    //if (input_->PushKey(DIK_W)) { planePos.y += move; }
-    //else if (input_->PushKey(DIK_S)) { planePos.y -= move; }
-    //objPlane_->SetPosition(planePos);
+    //拡大縮小
+    if (input_->PushKey(DIK_W)) {
+        if (rotObj.m_Length >= 25.0f) {
+            rotObj.m_Length -= 3.0f;
+        }
+    }
+    if (input_->PushKey(DIK_S)) {
+        if (rotObj.m_Length <= 75.0f) {
+            rotObj.m_Length += 3.0f;
+        }
+    }
+    //回転運動
+    //角度をセット
+    radius = rotObj.m_Angle * 3.14f / 180.0f;
+    //三角関数を使用し、円の位置を割り出す。
+    add_x = cos(radius) * rotObj.m_Length;
+    add_y = sin(radius) * rotObj.m_Length;
+    //結果ででた位置を中心位置に加算し、それを描画位置とする
+    rotObj.m_PosX = rotObj.m_CenterX + add_x;
+    rotObj.m_PosY = rotObj.m_CenterY + add_y;
+    objSphere_->SetPosition({ (float)rotObj.m_PosX, 0, (float)rotObj.m_PosY });
 
 #pragma endregion
 
@@ -206,33 +220,19 @@ void GamePlayScene::Update()
     }
 #pragma endregion 
 
-    radius = enemy.m_Angle * 3.14f / 180.0f;
-
-    // 三角関数を使用し、円の位置を割り出す。
-    add_x = cos(radius) * enemy.m_Length;
-    add_y = sin(radius) * enemy.m_Length;
-
-    // 結果ででた位置を中心位置に加算し、それを描画位置とする
-    enemy.m_PosX = enemy.m_CenterX + add_x;
-    enemy.m_PosY = enemy.m_CenterY + add_y;
-
-    // 角度更新
-    enemy.m_Angle += 10.0f;
-
-    objSphere_->SetPosition({ (float)enemy.m_PosX, 0, (float)enemy.m_PosY });
+    
 
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
 
     //各々の位置
-    ImGui::Text("enemyPos:%f,%f", enemy.m_PosX, enemy.m_PosX);
-    ImGui::Text("enemyCenter:%f,%f", enemy.m_CenterX, enemy.m_CenterX);
-    ImGui::Text("enemyAngle:%f", enemy.m_Angle);
-    ImGui::Text("enemyLength:%f", enemy.m_Length);
-    ImGui::Text("enemyRadius:%f", enemy.m_Radius);
+    ImGui::Text("enemyPos:%f,%f", rotObj.m_PosX, rotObj.m_PosX);
+    ImGui::Text("enemyCenter:%f,%f", rotObj.m_CenterX, rotObj.m_CenterX);
+    ImGui::Text("enemyAngle:%f", rotObj.m_Angle);
+    ImGui::Text("enemyLength:%f", rotObj.m_Length);
+    ImGui::Text("enemyRadius:%f", rotObj.m_Radius);
     ImGui::Text("radius:%f", radius);
     ImGui::Text("Add:%f,%f", add_x, add_y);
-
     ImGui::Text("cameraEye[arrow]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
 
     //球と平面は当たったかどうか
