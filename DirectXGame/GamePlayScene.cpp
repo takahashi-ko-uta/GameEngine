@@ -142,7 +142,7 @@ void GamePlayScene::Update()
     camera_->SetEye(cameraEye);
 #pragma endregion
 
-#pragma region 各オブジェクトの移動
+#pragma region カメラの移動
     //回転
     if (input_->PushKey(DIK_A)) { rotObj.m_Angle -= 5.0f; }
     if (input_->PushKey(DIK_D)) { rotObj.m_Angle += 5.0f; }
@@ -220,7 +220,13 @@ void GamePlayScene::Update()
     }
 #pragma endregion 
 
-    
+    if (input_->WheelUp()) {
+        ImGui::Text("1111");
+    }
+    if (input_->WheelDown()) {
+        ImGui::Text("1111\n1111\n1111\n");
+    }
+
 
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");

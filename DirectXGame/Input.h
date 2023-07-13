@@ -8,6 +8,13 @@
 class Input
 {
 public:
+	struct MouseMove {
+		LONG    lX;
+		LONG    lY;
+		LONG    lZ;
+	};
+
+public:
 	//namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -66,6 +73,22 @@ public: //メンバ関数
 	/// </summary>
 	/// <returns>トリガーか</returns>
 	bool TriggerMouseMiddle();
+
+	/// <summary>
+	/// マウスのホイールが上にいったか
+	/// </summary>
+	bool WheelUp();
+
+	/// <summary>
+	/// マウスのホイールが下にいったか
+	/// </summary>
+	bool WheelDown();
+
+	/// <summary>
+	/// マウス移動量を取得
+	/// </summary>
+	/// <returns>マウス移動量</returns>
+	MouseMove GetMouseMove();
 
 private://メンバ変数
 	//キーボードデバイス

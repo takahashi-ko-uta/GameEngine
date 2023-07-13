@@ -101,14 +101,13 @@ bool Input::PushMouseRight()
 
 bool Input::PushMouseMiddle()
 {
-    //// 0ˆÈŠO‚È‚ç‰Ÿ‚µ‚Ä‚¢‚é
-    //if (mouse.rgbButtons[2]) {
-    //    return true;
-    //}
+    // 0ˆÈŠO‚È‚ç‰Ÿ‚µ‚Ä‚¢‚é
+    if (mouseState.rgbButtons[2]) {
+        return true;
+    }
 
-    //// ‰Ÿ‚µ‚Ä‚¢‚È‚¢
-    //return false;
-    return mouseState.rgbButtons[2];
+    // ‰Ÿ‚µ‚Ä‚¢‚È‚¢
+    return false;
 }
 
 bool Input::TriggerMouseLeft()
@@ -142,4 +141,33 @@ bool Input::TriggerMouseMiddle()
 
     //‰Ÿ‚µ‚Ä‚È‚¢
     return false;
+}
+
+bool Input::WheelUp()
+{
+    MouseMove mouseMove = GetMouseMove();
+    if (mouseMove.lZ > 0) {
+        return true;
+    }
+
+    return false;
+}
+
+bool Input::WheelDown()
+{
+    MouseMove mouseMove = GetMouseMove();
+    if (mouseMove.lZ < 0) {
+        return true;
+    }
+
+    return false;
+}
+
+Input::MouseMove Input::GetMouseMove()
+{
+    MouseMove mMove;
+    mMove.lX = mouseState.lX;
+    mMove.lY = mouseState.lY;
+    mMove.lZ = mouseState.lZ;
+    return mMove;
 }
