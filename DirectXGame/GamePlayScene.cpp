@@ -40,9 +40,16 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     
 #pragma region オブジェクト関連
     //モデル読み込み
+    modelKnight = Model::LoadFromOBJ("knight");
     modelGround1_ = Model::LoadFromOBJ("ground");
     modelGround2_ = Model::LoadFromOBJ("ground2");
     modelSphere_ = Model::LoadFromOBJ("sphere");
+
+    //ナイトのオブジェクト初期化
+    objKnight = Object3d::Create();
+    objKnight->SetModel(modelKnight);
+    objKnight->SetScale({ 1.5f,1.5f,1.5f });
+    objKnight->SetPosition({ 0.0f,6.0f,0.0f });
 
     //地面のオブジェクト初期化
     for (int i = 0; i < 5; i++) {
@@ -230,20 +237,6 @@ void GamePlayScene::Update()
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
 
-    //各々の位置
-    ImGui::Text("enemyPos:%f,%f", rotObj.m_PosX, rotObj.m_PosX);
-    ImGui::Text("enemyCenter:%f,%f", rotObj.m_CenterX, rotObj.m_CenterX);
-    ImGui::Text("enemyAngle:%f", rotObj.m_Angle);
-    ImGui::Text("enemyLength:%f", rotObj.m_Length);
-    ImGui::Text("enemyRadius:%f", rotObj.m_Radius);
-    ImGui::Text("radius:%f", radius);
-    ImGui::Text("Add:%f,%f", add_x, add_y);
-    ImGui::Text("cameraEye[arrow]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
-
-    //球と平面は当たったかどうか
-    bool hit = Collision::CheckSphere2Plane(sphere, plane);
-    if (hit) { ImGui::Text("hit:ture"); }
-    else { ImGui::Text("hit:false"); }
 #pragma endregion
     
     //各々の更新処理
@@ -251,6 +244,7 @@ void GamePlayScene::Update()
     input_->Update();
     sprite1_->Update();
     sprite2_->Update();
+    objKnight->Update();
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
             objGround_[i][j]->Update();
@@ -274,6 +268,7 @@ void GamePlayScene::Draw()
 
     //オブジェクトの描画
     Object3d::PreDraw(dxCommon_->GetCommandList());
+    objKnight->Draw();
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
             objGround_[i][j]->Draw();

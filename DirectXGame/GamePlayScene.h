@@ -46,10 +46,12 @@ private:
 	ParticleManager* particle1_ = nullptr;
 	ParticleManager* particle2_ = nullptr;
 	//モデル生成
+	Model* modelKnight = nullptr;
 	Model* modelGround1_ = nullptr;
 	Model* modelGround2_ = nullptr;
 	Model* modelSphere_ = nullptr;
 	//3Dオブジェクト生成
+	Object3d* objKnight = nullptr;
 	Object3d* objGround_[5][5] = {};
 	Object3d* objSphere_ = nullptr;
 	//当たり判定
