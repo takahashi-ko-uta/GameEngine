@@ -75,14 +75,36 @@ public: //メンバ関数
 	bool TriggerMouseMiddle();
 
 	/// <summary>
-	/// マウスのホイールが上にいったか
+	/// マウスのホイールが上にいったかチェック
 	/// </summary>
 	bool WheelUp();
 
 	/// <summary>
-	/// マウスのホイールが下にいったか
+	/// マウスのホイールが下にいったかチェック
 	/// </summary>
 	bool WheelDown();
+
+	/// <summary>
+	/// マウスがに動いたかチェック
+	/// </summary>
+	bool MouesMoveUp();
+
+	/// <summary>
+	/// マウスがに動いたかチェック
+	/// </summary>
+	bool MouesMoveDown();
+
+	/// <summary>
+	/// マウスがに動いたかチェック
+	/// </summary>
+	bool MouesMoveLeft();
+
+	/// <summary>
+	/// マウスがに動いたかチェック
+	/// </summary>
+	bool MouesMoveRight();
+
+
 
 	/// <summary>
 	/// マウス移動量を取得

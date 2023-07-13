@@ -163,6 +163,46 @@ bool Input::WheelDown()
     return false;
 }
 
+bool Input::MouesMoveUp()
+{
+    MouseMove mouseMove = GetMouseMove();
+    if (mouseMove.lY < 0) {
+        return true;
+    }
+
+    return false;
+}
+
+bool Input::MouesMoveDown() 
+{
+    MouseMove mouseMove = GetMouseMove();
+    if (mouseMove.lY > 0) {
+        return true;
+    }
+
+    return false;
+}
+
+bool Input::MouesMoveLeft()
+{
+    MouseMove mouseMove = GetMouseMove();
+    if (mouseMove.lX < 0) {
+        return true;
+    }
+
+    return false;
+}
+
+bool Input::MouesMoveRight()
+{
+    MouseMove mouseMove = GetMouseMove();
+    if (mouseMove.lX > 0) {
+        return true;
+    }
+
+    return false;
+}
+
 Input::MouseMove Input::GetMouseMove()
 {
     MouseMove mMove;

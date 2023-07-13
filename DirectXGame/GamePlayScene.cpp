@@ -148,16 +148,17 @@ void GamePlayScene::Update()
     if (input_->PushKey(DIK_D)) { rotObj.m_Angle += 5.0f; }
 
     //Šg‘åk¬
-    if (input_->PushKey(DIK_W)) {
+    if (input_->WheelUp()) {
         if (rotObj.m_Length >= 25.0f) {
             rotObj.m_Length -= 3.0f;
         }
     }
-    if (input_->PushKey(DIK_S)) {
+    if (input_->WheelDown()) {
         if (rotObj.m_Length <= 75.0f) {
             rotObj.m_Length += 3.0f;
         }
     }
+
     //‰ñ“]‰^“®
     //Šp“x‚ðƒZƒbƒg
     radius = rotObj.m_Angle * 3.14f / 180.0f;
@@ -168,6 +169,9 @@ void GamePlayScene::Update()
     rotObj.m_PosX = rotObj.m_CenterX + add_x;
     rotObj.m_PosY = rotObj.m_CenterY + add_y;
     objSphere_->SetPosition({ (float)rotObj.m_PosX, 0, (float)rotObj.m_PosY });
+
+    //ƒJƒƒ‰‚É”½‰f
+    camera_->SetEye({ (float)rotObj.m_PosX, 20.0f, (float)rotObj.m_PosY });
 
 #pragma endregion
 
@@ -220,11 +224,17 @@ void GamePlayScene::Update()
     }
 #pragma endregion 
 
-    if (input_->WheelUp()) {
+    if (input_->MouesMoveUp()) {
         ImGui::Text("1111");
     }
-    if (input_->WheelDown()) {
-        ImGui::Text("1111\n1111\n1111\n");
+    if (input_->MouesMoveDown()) {
+        ImGui::Text("1111\n1111");
+    }
+    if (input_->MouesMoveLeft()) {
+        ImGui::Text("1111\n1111\n1111");
+    }
+    if (input_->MouesMoveRight()) {
+        ImGui::Text("1111\n1111\n1111\n1111");
     }
 
 
