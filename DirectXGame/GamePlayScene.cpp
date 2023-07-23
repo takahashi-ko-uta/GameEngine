@@ -172,14 +172,16 @@ void GamePlayScene::Update()
     }
 #pragma endregion 
 
+    float moniX = input_->GetMouseMonitorPos().x;
+    float moniY = input_->GetMouseMonitorPos().y;
 
-    float mouseX = input_->GetMouseWindowPos().x;
-    float mouseY = input_->GetMouseWindowPos().y;
+    float windowX = input_->GetMouseWindowPos().x;
+    float windowY = input_->GetMouseWindowPos().y;
 
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
-
-    ImGui::Text("mousePos(X:%f, Y:%f)", mouseX, mouseY);
+    ImGui::Text("mousePos(X:%f, Y:%f)", moniX, moniY);
+    ImGui::Text("mousePos(X:%f, Y:%f)", windowX, windowY);
 
 #pragma endregion
     

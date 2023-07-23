@@ -109,7 +109,7 @@ public: //メンバ関数
 	/// モニターの左上を絶対値(0,0)にしたときのマウス座標
 	/// </summary>
 	/// <returns>マウス座標</returns>
-	POINT GatMouseMonitorPos() { return pt; }
+	XMFLOAT2 GetMouseMonitorPos();// { return pt; }
 
 	/// <summary>
 	/// ウィンドウ上のマウス座標

@@ -11,6 +11,7 @@ public:	//メンバ関数
 	//メッセージの処理
 	bool ProcessMessage();
 	//getter
+	static WinApp* GetInstance();
 	HWND GetHwnd() const { return hwnd; }
 	HINSTANCE GetHInstance() const { return w.hInstance; }
 	//終了

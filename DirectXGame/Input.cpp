@@ -42,7 +42,7 @@ void Input::Initialize(WinApp* winApp)
 
 void Input::Update()
 {
-    pt;
+    //モニターのマウス座標取得
     GetCursorPos(&pt);
 
     //前回のキー入力を保存
@@ -206,18 +206,27 @@ bool Input::MouseMoveRight()
     return false;
 }
 
+Input::XMFLOAT2 Input::GetMouseMonitorPos()
+{
+    //マウスの座標
+    POINT Mpt = pt;
+
+    //モニターのマウス座標取得
+    GetCursorPos(&Mpt);
+
+    //float2に変換
+    XMFLOAT2 mousePos = { (float)Mpt.x,(float)Mpt.y };
+    return mousePos;
+}
+
 Input::XMFLOAT2 Input::GetMouseWindowPos()
 {
-    //ClientToScreen(winApp->GetHwnd(), &pt);
+    //マウスの座標
+    POINT Wpt = pt;
 
-    ScreenToClient(winApp->GetHwnd(), &pt);
-
-
-   /* short xPos, yPos;
-    xPos = GET_X_LPARAM(lParam); 
-    yPos = GET_Y_LPARAM(lParam);*/
-
-    XMFLOAT2 mousePos = { (float)pt.x,(float)pt.y + 23.0f };
+    ScreenToClient(winApp->GetHwnd(), &Wpt);
+    
+    XMFLOAT2 mousePos = { (float)Wpt.x,(float)Wpt.y};
     return mousePos;
 }
 
