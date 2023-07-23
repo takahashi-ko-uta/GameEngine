@@ -1,5 +1,6 @@
 #include "Input.h"
 #include <cassert>
+#include <windowsx.h>
 
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -8,7 +9,6 @@
 Input* Input::GetInstance()
 {
     static Input instance;
-
     return &instance;
 }
 
@@ -42,6 +42,9 @@ void Input::Initialize(WinApp* winApp)
 
 void Input::Update()
 {
+    pt;
+    GetCursorPos(&pt);
+
     //前回のキー入力を保存
     memcpy(keyPre, key, sizeof(key));
     // キーボード情報の取得開始
@@ -163,7 +166,7 @@ bool Input::WheelDown()
     return false;
 }
 
-bool Input::MouesMoveUp()
+bool Input::MouseMoveUp()
 {
     MouseMove mouseMove = GetMouseMove();
     if (mouseMove.lY < 0) {
@@ -173,7 +176,7 @@ bool Input::MouesMoveUp()
     return false;
 }
 
-bool Input::MouesMoveDown() 
+bool Input::MouseMoveDown() 
 {
     MouseMove mouseMove = GetMouseMove();
     if (mouseMove.lY > 0) {
@@ -183,7 +186,7 @@ bool Input::MouesMoveDown()
     return false;
 }
 
-bool Input::MouesMoveLeft()
+bool Input::MouseMoveLeft()
 {
     MouseMove mouseMove = GetMouseMove();
     if (mouseMove.lX < 0) {
@@ -193,7 +196,7 @@ bool Input::MouesMoveLeft()
     return false;
 }
 
-bool Input::MouesMoveRight()
+bool Input::MouseMoveRight()
 {
     MouseMove mouseMove = GetMouseMove();
     if (mouseMove.lX > 0) {
@@ -201,6 +204,21 @@ bool Input::MouesMoveRight()
     }
 
     return false;
+}
+
+Input::XMFLOAT2 Input::GetMouseWindowPos()
+{
+    //ClientToScreen(winApp->GetHwnd(), &pt);
+
+    ScreenToClient(winApp->GetHwnd(), &pt);
+
+
+   /* short xPos, yPos;
+    xPos = GET_X_LPARAM(lParam); 
+    yPos = GET_Y_LPARAM(lParam);*/
+
+    XMFLOAT2 mousePos = { (float)pt.x,(float)pt.y + 23.0f };
+    return mousePos;
 }
 
 Input::MouseMove Input::GetMouseMove()

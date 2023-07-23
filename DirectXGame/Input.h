@@ -4,6 +4,7 @@
 #define DIRECTINPUT_VERSION		0x0800	//DirectInputのバージョン指定
 #include <dinput.h>
 #include "WinApp.h"
+#include <DirectXMath.h>
 
 class Input
 {
@@ -12,12 +13,12 @@ public:
 		LONG    lX;
 		LONG    lY;
 		LONG    lZ;
-	};
-
-public:
+	};	
+private:
 	//namespace省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
 public: //メンバ関数
 	static Input* GetInstance();
 	//初期化
@@ -87,24 +88,33 @@ public: //メンバ関数
 	/// <summary>
 	/// マウスがに動いたかチェック
 	/// </summary>
-	bool MouesMoveUp();
+	bool MouseMoveUp();
 
 	/// <summary>
 	/// マウスがに動いたかチェック
 	/// </summary>
-	bool MouesMoveDown();
+	bool MouseMoveDown();
 
 	/// <summary>
 	/// マウスがに動いたかチェック
 	/// </summary>
-	bool MouesMoveLeft();
+	bool MouseMoveLeft();
 
 	/// <summary>
 	/// マウスがに動いたかチェック
 	/// </summary>
-	bool MouesMoveRight();
+	bool MouseMoveRight();
 
+	/// <summary>
+	/// モニターの左上を絶対値(0,0)にしたときのマウス座標
+	/// </summary>
+	/// <returns>マウス座標</returns>
+	POINT GatMouseMonitorPos() { return pt; }
 
+	/// <summary>
+	/// ウィンドウ上のマウス座標
+	/// </summary>
+	XMFLOAT2 GetMouseWindowPos();
 
 	/// <summary>
 	/// マウス移動量を取得
@@ -129,5 +139,7 @@ private://メンバ変数
 	ComPtr<IDirectInput8> directInput;
 	//WindoeAPI
 	WinApp* winApp = nullptr;
+	//マウスの座標
+	POINT pt;
 };
 

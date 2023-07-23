@@ -22,8 +22,8 @@ void GameCamera::Update()
     //マウスホイールを押していると
     if (input_->PushMouseMiddle()) {
         //マウスを動かすとカメラを回転
-        if (input_->MouesMoveLeft()) { rotObj.m_Angle += 1.0f; }
-        if (input_->MouesMoveRight()) { rotObj.m_Angle -= 1.0f; }
+        if (input_->MouseMoveLeft()) { rotObj.m_Angle += 1.0f; }
+        if (input_->MouseMoveRight()) { rotObj.m_Angle -= 1.0f; }
     }
 
     //マウスホイールで拡大縮小

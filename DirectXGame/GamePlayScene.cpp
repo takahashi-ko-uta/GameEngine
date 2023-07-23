@@ -85,7 +85,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     //オーディオ読み込み
     audio_->LoadWave("Alarm01.wav");
     //オーディオ再生
-    audio_->PlayWave("Alarm01.wav");
+    //audio_->PlayWave("Alarm01.wav");
 #pragma endregion  
 }
 
@@ -172,8 +172,14 @@ void GamePlayScene::Update()
     }
 #pragma endregion 
 
+
+    float mouseX = input_->GetMouseWindowPos().x;
+    float mouseY = input_->GetMouseWindowPos().y;
+
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
+
+    ImGui::Text("mousePos(X:%f, Y:%f)", mouseX, mouseY);
 
 #pragma endregion
     
