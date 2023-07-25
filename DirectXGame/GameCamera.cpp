@@ -1,4 +1,5 @@
 #include "GameCamera.h"
+#include "imgui.h"
 
 void GameCamera::Initialize(DirectXCommon* dxCommon, Input* input, Camera* camera)
 {
@@ -6,9 +7,13 @@ void GameCamera::Initialize(DirectXCommon* dxCommon, Input* input, Camera* camer
     this->input_ = input;
     this->camera_ = camera;
 
+    //初期位置
+    rotObj.m_Angle = 270.0f;
+    rotObj.m_Length = 75.0f;
     // 三角関数を使用し、円の位置を割り出す。
     add_x = cos(radius) * rotObj.m_Length;
     add_y = sin(radius) * rotObj.m_Length;
+
 }
 
 void GameCamera::Finalize()
@@ -22,8 +27,14 @@ void GameCamera::Update()
     //マウスホイールを押していると
     if (input_->PushMouseMiddle()) {
         //マウスを動かすとカメラを回転
-        if (input_->MouseMoveLeft()) { rotObj.m_Angle += 1.0f; }
-        if (input_->MouseMoveRight()) { rotObj.m_Angle -= 1.0f; }
+        if (input_->MouseMoveLeft()) {
+            rotObj.m_Angle += 1.0f;
+            if (rotObj.m_Angle >= 360.0f) { rotObj.m_Angle = 0.0f; }
+        }
+        if (input_->MouseMoveRight()) { 
+            rotObj.m_Angle -= 1.0f;
+            if (rotObj.m_Angle <= 0.0f) { rotObj.m_Angle = 360.0f; }
+        }
     }
 
     //マウスホイールで拡大縮小
@@ -50,7 +61,8 @@ void GameCamera::Update()
 
     //カメラに反映
     camera_->SetEye({ (float)rotObj.m_PosX, 20.0f, (float)rotObj.m_PosY });
-
+    ImGui::Text("Angle:%f", rotObj.m_Angle);
+    ImGui::Text("Length:%f", rotObj.m_Length);
 #pragma endregion
 
     camera_->Update();

@@ -46,15 +46,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     
 #pragma region オブジェクト関連
     //モデル読み込み
-    modelKnight = Model::LoadFromOBJ("knight");
     modelSphere_ = Model::LoadFromOBJ("sphere");
-
-    //ナイトのオブジェクト初期化
-    objKnight = Object3d::Create();
-    objKnight->SetModel(modelKnight);
-    objKnight->SetScale({ 1.5f,1.5f,1.5f });
-    objKnight->SetPosition({ 0.0f,6.0f,0.0f });
-
     //球のモデル初期化
     objSphere_ = Object3d::Create();
     objSphere_->SetModel(modelSphere_);
@@ -63,6 +55,10 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     //ステージの初期化
     gameStage_ = new GameStage();
     gameStage_->Initialize();
+
+    //プレイヤーの初期化
+    player_ = new Player();
+    player_->Initialize(input_);
 
 #pragma endregion
 
@@ -104,12 +100,13 @@ void GamePlayScene::Finalize()
     delete objSphere_;
     //ステージ解放
     gameStage_->Finalize();
+    //プレイヤー解放
+    player_->Finalize();
     //パーティクル解放
     delete particle1_;
     delete particle2_;
     //モデル解放
-    delete modelGround1_;
-    delete modelGround2_;
+    delete modelSphere_;
     //オーディオ解放
     audio_->Finalize();
     delete audio_;
@@ -117,8 +114,7 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
-    //移動量
-    float move = 0.3f;
+    
 
     //カメラの移動
     gameCamera_->Update();
@@ -187,12 +183,13 @@ void GamePlayScene::Update()
     
     //ステージ更新
     gameStage_->Update();
+    //プレイヤー更新
+    player_->Update();
     //各々の更新処理
     camera_->Update();
     input_->Update();
     sprite1_->Update();
     sprite2_->Update();
-    objKnight->Update();
     objSphere_->Update();
     particle1_->Update();
     particle2_->Update();
@@ -204,24 +201,26 @@ void GamePlayScene::Update()
 void GamePlayScene::Draw()
 {
     //スプライトの描画
-    spriteCommon_->PreDraw();
+    spriteCommon_->PreDraw();   //スプライト前処理
     sprite1_->Draw();
     sprite2_->Draw();
-    spriteCommon_->PostDraw();
+    spriteCommon_->PostDraw();  //スプライト後処理
 
     //オブジェクトの描画
-    Object3d::PreDraw(dxCommon_->GetCommandList());
+    Object3d::PreDraw(dxCommon_->GetCommandList()); //オブジェクト前処理
 
-    //ステージの描画
+    //ステージ描画
     gameStage_->Draw();
-    objSphere_->Draw();
-    objKnight->Draw();
+    //プレイヤー描画
+    player_->Draw();
 
-    Object3d::PostDraw();
+    objSphere_->Draw();
+
+    Object3d::PostDraw();                           //オブジェクト後処理
 
     // パーティクルの描画
-    ParticleManager::PreDraw(dxCommon_->GetCommandList());
+    ParticleManager::PreDraw(dxCommon_->GetCommandList());  //パーティクル前処理
     particle1_->Draw();
     particle2_->Draw();
-    ParticleManager::PostDraw();
+    ParticleManager::PostDraw();                            //パーティクル後処理
 }
