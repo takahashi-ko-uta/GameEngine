@@ -20,6 +20,12 @@ void Player::Update()
 {
 	Move();
 	Rotate();
+	Attack();
+
+	//’e‚ÌXV
+	if (bullet_) {
+		bullet_->Update();
+	}
 
 	obj_->Update();
 }
@@ -58,7 +64,21 @@ void Player::Rotate()
 	obj_->SetRotation(rot);
 }
 
+void Player::Attack()
+{
+	if (input_->TriggerMouseLeft()) {
+		Bullet* newBullet = new Bullet();
+		newBullet->Initialize(input_, obj_->GetPosition());
+
+		bullet_ = newBullet;
+	}
+}
+
 void Player::Draw()
 {
+	if (bullet_) {
+		bullet_->Draw();
+	}
+
 	obj_->Draw();
 }

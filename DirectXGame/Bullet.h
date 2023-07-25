@@ -3,30 +3,22 @@
 #include "Object3d.h"
 #include "Model.h"
 
-#include "Bullet.h"
-
-class Player
+class Bullet
 {
 public://メンバ関数
 	//初期化
-	void Initialize(Input* input);
+	void Initialize(Input* input, XMFLOAT3 pos);
 	//終了
 	void Finalize();
 	//毎フレーム処理
 	void Update();
-	//移動
-	void Move();
-	//回転
-	void Rotate();
-	//クリック
-	void Attack();
 	//描画
 	void Draw();
 
 private://メンバ変数
 	Input* input_ = nullptr;
+	XMFLOAT3 pos_;
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
-	Bullet* bullet_ = nullptr;
 };
 
