@@ -1,21 +1,23 @@
 #include "Matrix4.h"
 #include"Vector3.h"
-#include<cmath>  //sin  cos
+#include<cmath>
 
 //単位行列を求める
-Matrix4 identity()
+Matrix4 Matrix4::Identity()
 {
-	static const Matrix4 result
+	Matrix4 result
 	{
 		1.0f,0.0f,0.0f,0.0f,
 		0.0f,1.0f,0.0f,0.0f,
 		0.0f,0.0f,1.0f,0.0f,
 		0.0f,0.0f,0.0f,1.0f
 	};
+
 	return result;
 }
+
 //拡大縮小行列を求める
-Matrix4 scale(const Vector3& s)
+Matrix4 Matrix4::Scale(const Vector3& s)
 {
 	Matrix4 result
 	{
@@ -26,8 +28,14 @@ Matrix4 scale(const Vector3& s)
 	};
 	return result;
 }
+
+Matrix4 Matrix4::Rotate(Vector3 rot)
+{
+	return RotateZ(rot.z) * RotateX(rot.x) * RotateY(rot.y);
+}
+
 //x軸まわりの回転行列を求める
-Matrix4 rotateX(float angle)
+Matrix4 Matrix4::RotateX(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -41,8 +49,9 @@ Matrix4 rotateX(float angle)
 	};
 	return result;
 }
+
 //y軸まわりの回転行列を求める
-Matrix4 rotateY(float angle)
+Matrix4 Matrix4::RotateY(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -56,8 +65,9 @@ Matrix4 rotateY(float angle)
 	};
 	return result;
 }
+
 //z軸まわりの回転行列を求める
-Matrix4 rotateZ(float angle)
+Matrix4 Matrix4::RotateZ(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -71,8 +81,9 @@ Matrix4 rotateZ(float angle)
 	};
 	return result;
 }
+
 //平行移動行列を求める
-Matrix4 translate(const Vector3& t)
+Matrix4 Matrix4::Translate(const Vector3& t)
 {
 	Matrix4 result
 	{
@@ -83,8 +94,9 @@ Matrix4 translate(const Vector3& t)
 	};
 	return result;
 }
+
 //座標変換(ベクトルと行列の掛け算)を行うtransform 関数を作成する。(透視変換にも対応している)
-Vector3 transform(const Vector3& v, const Matrix4& m)
+Vector3 Matrix4::Transform(const Vector3& v, const Matrix4& m)
 {
 	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
 
@@ -96,6 +108,7 @@ Vector3 transform(const Vector3& v, const Matrix4& m)
 	};
 	return result;
 }
+
 //代入演算子 *= のオーバーロード関数(行列と行列の積)
 Matrix4& operator*=(Matrix4& m1, const Matrix4& m2)
 {
@@ -112,6 +125,7 @@ Matrix4& operator*=(Matrix4& m1, const Matrix4& m2)
 
 	return m1;
 }
+
 //2項演算子*のオーバーロード関数(行列と行列の積)
 Matrix4 operator*(const Matrix4& m1, const Matrix4& m2)
 {
@@ -119,8 +133,9 @@ Matrix4 operator*(const Matrix4& m1, const Matrix4& m2)
 
 	return result *= m2;
 }
+
 //2項演算子*のオーバーロード関数(ベクトルと行列の積)
 Vector3 operator*(const Vector3& v, const Matrix4& m)
 {
-	return transform(v, m);
+	return Matrix4::Transform(v, m);
 }

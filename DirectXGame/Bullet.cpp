@@ -20,8 +20,17 @@ void Bullet::Finalize()
 	delete obj_;
 }
 
-void Bullet::Update()
+void Bullet::Update(XMFLOAT3 velocity)
 {
+	velocity_ = velocity;
+	XMFLOAT3 move = obj_->GetPosition();
+
+	move.x += velocity_.x;
+	move.y += velocity_.y;
+	move.z += velocity_.z;
+
+	obj_->SetPosition(move);
+
 	obj_->Update();
 }
 

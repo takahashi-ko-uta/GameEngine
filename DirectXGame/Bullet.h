@@ -11,7 +11,7 @@ public://メンバ関数
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update();
+	void Update(XMFLOAT3 velocity);
 	//描画
 	void Draw();
 
@@ -20,5 +20,7 @@ private://メンバ変数
 	XMFLOAT3 pos_;
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
+
+	XMFLOAT3 velocity_;
 };
 

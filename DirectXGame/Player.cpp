@@ -1,15 +1,17 @@
 #include "Player.h"
 #define PI 3.14159265359
 
-void Player::Initialize(Input* input)
+void Player::Initialize(Input* input, DirectXCommon* dxCommon)
 {
 	this->input_ = input;
-
+	this->dxCommon_ = dxCommon;
 	//オブジェクトの生成
 	model_ = Model::LoadFromOBJ("ProtrudingObject");
 	obj_ = Object3d::Create();
 	obj_->SetModel(model_);
 	obj_->SetScale({ 3.0f,3.0f,3.0f });
+
+	worldTransform.Initialize(dxCommon_);
 }
 
 void Player::Finalize()
@@ -24,7 +26,8 @@ void Player::Update()
 
 	//弾の更新
 	if (bullet_) {
-		bullet_->Update();
+		XMFLOAT3 velocity = { 0.0f,0.0f,3.0f };
+		bullet_->Update(velocity);
 	}
 
 	obj_->Update();

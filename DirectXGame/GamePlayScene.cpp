@@ -58,7 +58,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
     //ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
     player_ = new Player();
-    player_->Initialize(input_);
+    player_->Initialize(input_, dxCommon_);
 
 #pragma endregion
 
