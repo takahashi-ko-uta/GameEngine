@@ -271,9 +271,7 @@ bool Object3d::Initialize()
 		IID_PPV_ARGS(&constBuffB0));
 	assert(SUCCEEDED(result));
 
-
-
-
+	worldTransform.Initialize();
 
 	return true;
 
@@ -293,10 +291,10 @@ void Object3d::Update()
 	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
 
 	// ワールド行列の合成
-	matWorld = XMMatrixIdentity(); // 変形をリセット
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
+	matWorld = XMMatrixIdentity();	// 変形をリセット
+	matWorld *= matScale;			// ワールド行列にスケーリングを反映
+	matWorld *= matRot;				// ワールド行列に回転を反映
+	matWorld *= matTrans;			// ワールド行列に平行移動を反映
 
 	// 親オブジェクトがあれば
 	if (parent != nullptr) {
@@ -311,7 +309,12 @@ void Object3d::Update()
 	constMap->mat = matWorld * camera_->GetMatView() * camera_->GetMatProjection();	// 行列の合成
 	constBuffB0->Unmap(0, nullptr);
 
+	worldTransform.translation = { position.x, position.y, position.z };
+	worldTransform.rotation = { rotation.x, rotation.y, rotation.z };
+	worldTransform.scale = { scale.x, scale.y, scale.z };
 
+	//worldTransform.matWorld = matWorld;
+	worldTransform.Update();
 }
 
 void Object3d::Draw()
@@ -332,4 +335,11 @@ void Object3d::Draw()
 
 	model->Draw(cmdList, 1);
 
+}
+
+void Object3d::SetVecPosition(const Vector3& vec)
+{
+	position.x = vec.x;
+	position.y = vec.y;
+	position.z = vec.z;
 }

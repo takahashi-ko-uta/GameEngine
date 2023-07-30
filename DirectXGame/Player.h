@@ -2,6 +2,8 @@
 #include "Input.h"
 #include "Object3d.h"
 #include "Model.h"
+#include <memory>
+#include <list>
 
 #include "Bullet.h"
 #include "WorldTransform.h"
@@ -29,7 +31,10 @@ private://ÉÅÉìÉoïœêî
 	Model* model_ = nullptr;
 	DirectXCommon* dxCommon_ = nullptr;
 	Object3d* obj_ = nullptr;
-	Bullet* bullet_ = nullptr;
-	WorldTransform worldTransform;
+	
+	Vector3 PLpos;
+	std::list<std::unique_ptr<Bullet>> bullets_;
+	WorldTransform w;
+	Vector3 velocity;
 };
 

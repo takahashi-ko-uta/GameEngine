@@ -125,6 +125,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionPrimitive.h" />
+    <ClInclude Include="D3D12Common.h" />
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="GameCamera.h" />

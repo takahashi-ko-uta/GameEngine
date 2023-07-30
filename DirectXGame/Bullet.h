@@ -7,20 +7,29 @@ class Bullet
 {
 public://メンバ関数
 	//初期化
-	void Initialize(Input* input, XMFLOAT3 pos);
+	void Initialize(Vector3 pos, const Vector3& velocity);
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update(XMFLOAT3 velocity);
+	void Update();
 	//描画
 	void Draw();
 
+	//getter
+	bool IsDead() const { return isDead; }
+
 private://メンバ変数
 	Input* input_ = nullptr;
-	XMFLOAT3 pos_;
+	Vector3 pos_;
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
 
-	XMFLOAT3 velocity_;
+	Vector3 velocity_;
+	//消えるまでの時間
+	static const int32_t lifeTime = 60 * 5;
+	//デスタイマー
+	int32_t deathTimer = lifeTime;
+	//デスフラグ
+	bool isDead = false;
 };
 

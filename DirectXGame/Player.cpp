@@ -1,4 +1,7 @@
 #include "Player.h"
+#include "imgui.h"
+#include "affinTransformation.h"
+
 #define PI 3.14159265359
 
 void Player::Initialize()
@@ -11,8 +14,7 @@ void Player::Initialize()
 	obj_ = Object3d::Create();
 	obj_->SetModel(model_);
 	obj_->SetScale({ 3.0f,3.0f,3.0f });
-
-	worldTransform.Initialize();
+	w.Initialize();
 }
 
 void Player::Finalize()
@@ -21,16 +23,40 @@ void Player::Finalize()
 
 void Player::Update()
 {
+	XMFLOAT3 pos = obj_->GetPosition();
+	XMFLOAT3 scale = obj_->GetScale();
+	XMFLOAT3 rot = obj_->GetRotation();
+
+
 	Move();
 	Rotate();
+	
+	//w = obj_->GetWorldTransform();
+	w.translation = { pos.x, pos.y, pos.z };
+	w.scale = { scale.x,scale.y,scale.z };
+	w.rotation = { rot.x,rot.y,rot.z };
+	w.Update();
+
+	PLpos = w.translation;
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<Bullet>& bullet) {
+		return bullet->IsDead();
+	});
+
 	Attack();
 
-	//弾の更新
-	if (bullet_) {
-		XMFLOAT3 velocity = { 0.0f,0.0f,3.0f };
-		bullet_->Update(velocity);
-	}
+	ImGui::Text("velocity(X:%f, Y:%f, Z:%f)", velocity.x, velocity.y, velocity.z);
 
+	ImGui::Text("objPos(X:%f, Y:%f, Z:%f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
+	ImGui::Text("wldPos(X:%f, Y:%f, Z:%f)", w.translation.x, w.translation.y, w.translation.z);
+
+	ImGui::Text("objRot(X:%f, Y:%f, Z:%f)", obj_->GetRotation().x, obj_->GetRotation().y, obj_->GetRotation().z);
+	ImGui::Text("wldRot(X:%f, Y:%f, Z:%f)", w.rotation.x, w.rotation.y, w.rotation.z);
+
+	w.Update();
+	for (std::unique_ptr<Bullet>& bullet : bullets_) {
+		bullet->Update();
+	}
 	obj_->Update();
 }
 
@@ -42,7 +68,7 @@ void Player::Move()
 	
 	XMFLOAT3 pos = obj_->GetPosition();
 
-	pos.z = -50.0f;
+	//pos.z = -50.0f;
 
 	//移動
 	if (input_->PushKey(DIK_W)) { pos.y += move; }
@@ -71,17 +97,37 @@ void Player::Rotate()
 void Player::Attack()
 {
 	if (input_->TriggerMouseLeft()) {
-		Bullet* newBullet = new Bullet();
-		newBullet->Initialize(input_, obj_->GetPosition());
+		//弾の速度
+		const float speed = 3.0f;
+		velocity = { 0.0f,0.0f,speed };
 
-		bullet_ = newBullet;
+		velocity.x = (velocity.x * w.matWorld.m[0][0]) +
+			(velocity.y * w.matWorld.m[1][0]) +
+			(velocity.z * w.matWorld.m[2][0]) +
+			(0 * w.matWorld.m[3][0]);
+
+		velocity.y = (velocity.x * w.matWorld.m[0][1]) +
+			(velocity.y * w.matWorld.m[1][1]) +
+			(velocity.z * w.matWorld.m[2][1]) +
+			(0 * w.matWorld.m[3][1]);
+
+		velocity.z = (velocity.x * w.matWorld.m[0][2]) +
+			(velocity.y * w.matWorld.m[1][2]) +
+			(velocity.z * w.matWorld.m[2][2]) +
+			(0 * w.matWorld.m[3][2]);
+
+
+		std::unique_ptr<Bullet> newBullet = std::make_unique<Bullet>();
+		newBullet->Initialize(PLpos, velocity);
+
+		bullets_.push_back(std::move(newBullet));
 	}
 }
 
 void Player::Draw()
 {
-	if (bullet_) {
-		bullet_->Draw();
+	for (std::unique_ptr<Bullet>& bullet : bullets_) {
+		bullet->Draw();
 	}
 
 	obj_->Draw();

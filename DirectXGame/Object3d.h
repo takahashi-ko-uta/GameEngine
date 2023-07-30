@@ -7,6 +7,8 @@
 #include <d3dx12.h>
 #include "Model.h"
 #include "Camera.h"
+#include "WorldTransform.h"
+
 
 /// <summary>
 /// 3Dオブジェクト
@@ -115,12 +117,16 @@ public: // メンバ関数
 	const XMFLOAT3& GetPosition() const { return position; }
 	const XMFLOAT3& GetScale() const { return scale; }
 	const XMFLOAT3& GetRotation() const { return rotation; }
+	const WorldTransform& GetWorldTransform() const { return worldTransform; }
+	const XMMATRIX& GetMatWorld() const { return matWorld; }
 
 	//setter
 	void SetModel(Model* model) { this->model = model; }
 	void SetPosition(const XMFLOAT3& position) { this->position = position; }
+	void SetVecPosition(const Vector3& vec);
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
+	void SetWorldTransform(const WorldTransform& worldTransform) { this->worldTransform = worldTransform; }
 
 private: // メンバ変数
 	//ComPtr<ID3D12Resource> constBuff; // 定数バッファ
@@ -140,6 +146,8 @@ private: // メンバ変数
 	Object3d* parent = nullptr;
 	//モデル
 	Model* model = nullptr;
-	////カメラ
-	//Camera* camera = nullptr;
+
+	WorldTransform worldTransform;
+	
+
 };
