@@ -24,16 +24,27 @@ void Framework::Run()
 void Framework::Initialize()
 {
 	//WindowsAPIの初期化
-	winApp = new WinApp();
+	winApp = WinApp::GetInstance();
+	//winApp = new WinApp();
 	winApp->Initialize();
 
 	//DirectXの初期化
-	dxCommon = new DirectXCommon();
+	dxCommon = DirectXCommon::GetInstance();
+	//dxCommon = new DirectXCommon();
 	dxCommon->Initialize(winApp);
 
 	//入力の初期化
-	input = new Input();
+	input = Input::GetInstance();
+	//input = new Input();
 	input->Initialize(winApp);
+
+	//スプライト共通部の初期化
+	spriteCommon = SpriteCommon::GetInstance();
+	spriteCommon->Initialize(dxCommon);
+
+	//オーディオの初期化
+	audio = Audio::GetInstance();
+	audio->Initialize();
 }
 
 void Framework::Update()
@@ -44,13 +55,11 @@ void Framework::Update()
 
 void Framework::Finalize()
 {
-	//入力解放
-	delete input;
-	//DirectX解放
-	delete dxCommon;
+	//オーディオ解放
+	audio->Finalize();
+
 	//WindowsAPI解放
 	winApp->Finalize();
-	delete winApp;
 }
 
 bool Framework::IsEndRequest()

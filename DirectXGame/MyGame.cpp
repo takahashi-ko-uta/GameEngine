@@ -13,7 +13,7 @@ void MyGame::Initialize()
 
     //ƒV[ƒ“‚Ì‰Šú‰»
     scene = new GamePlayScene();
-    scene->Initialize(dxCommon,input);
+    scene->Initialize();
 }
 
 void MyGame::Finalize()

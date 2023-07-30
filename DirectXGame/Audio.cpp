@@ -4,6 +4,11 @@
 #include <windows.h>
 #include <cassert>
 
+Audio* Audio::GetInstance()
+{
+    static Audio instance;
+    return &instance;
+}
 
 void Audio::Initialize(const std::string directoryPath)
 {

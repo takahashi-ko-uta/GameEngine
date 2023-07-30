@@ -18,7 +18,7 @@ class GameCamera
 {
 public://メンバ関数
 	//初期化
-	void Initialize(DirectXCommon* dxCommon, Input* input, Camera* camera);
+	void Initialize(Camera* camera);
 	//終了
 	void Finalize();
 	//毎フレーム処理

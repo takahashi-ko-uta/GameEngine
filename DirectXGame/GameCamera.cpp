@@ -1,11 +1,13 @@
 #include "GameCamera.h"
 #include "imgui.h"
 
-void GameCamera::Initialize(DirectXCommon* dxCommon, Input* input, Camera* camera)
+void GameCamera::Initialize(Camera* camera)
 {
-    this->dxCommon_ = dxCommon;
-    this->input_ = input;
+    this->dxCommon_ = DirectXCommon::GetInstance();
+    this->input_ = Input::GetInstance();
     this->camera_ = camera;
+
+
 
     //‰ŠúˆÊ’u
     rotObj.m_Angle = 270.0f;

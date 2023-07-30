@@ -10,7 +10,7 @@ class Player
 {
 public://メンバ関数
 	//初期化
-	void Initialize(Input* input, DirectXCommon* dxCommon);
+	void Initialize();
 	//終了
 	void Finalize();
 	//毎フレーム処理

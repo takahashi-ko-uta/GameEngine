@@ -5,29 +5,27 @@
 #include "imgui.h"
 #include "Collision.h"
 
-void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
+void GamePlayScene::Initialize()
 {
-    this->dxCommon_ = dxCommon;
-    this->input_ = input;
-    
+    dxCommon_ = DirectXCommon::GetInstance();
+    input_ = Input::GetInstance();
+
     //カメラ初期化
     camera_ = new Camera();
     camera_->Initialize();
     camera_->SetEye({ 0, 0, -100 });
 
     //オブジェクトの静的初期化
-    Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height, camera_);
+    Object3d::StaticInitialize(dxCommon_->GetDevice(), WinApp::window_width, WinApp::window_height, camera_);
     //パーティクルの静的初期化
-    ParticleManager::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
+    ParticleManager::StaticInitialize(dxCommon_->GetDevice(), WinApp::window_width, WinApp::window_height);
 
     //ゲーム用カメラ
     gameCamera_ = new GameCamera();
-    gameCamera_->Initialize(dxCommon_, input_, camera_);
+    gameCamera_->Initialize(camera_);
 
 #pragma region スプライト関連
-    //スプライト共通部の初期化
-    spriteCommon_ = new SpriteCommon();
-    spriteCommon_->Initialize(dxCommon);
+    spriteCommon_ = SpriteCommon::GetInstance();
     //テクスチャのセット
     spriteCommon_->LoadTexture(0, "texture.png");
     spriteCommon_->LoadTexture(1, "reimu.png");
@@ -58,7 +56,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
     //プレイヤーの初期化
     player_ = new Player();
-    player_->Initialize(input_, dxCommon_);
+    player_->Initialize();
 
 #pragma endregion
 
@@ -75,9 +73,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     plane.distance = objPlane_->GetPosition().y;*/
     
 #pragma region オーディオ関連
-    //オーディオ初期化
-    audio_ = new Audio();
-    audio_->Initialize();
+    audio_ = Audio::GetInstance();
     //オーディオ読み込み
     audio_->LoadWave("Alarm01.wav");
     //オーディオ再生
@@ -92,7 +88,7 @@ void GamePlayScene::Finalize()
     //ゲーム用カメラ解放
     delete gameCamera_;
     //スプライト共通部解放
-    delete spriteCommon_;
+    //delete spriteCommon_;
     //スプライト解放
     delete sprite1_;
     delete sprite2_;
@@ -107,9 +103,6 @@ void GamePlayScene::Finalize()
     delete particle2_;
     //モデル解放
     delete modelSphere_;
-    //オーディオ解放
-    audio_->Finalize();
-    delete audio_;
 }
 
 void GamePlayScene::Update()

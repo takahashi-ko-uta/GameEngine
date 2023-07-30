@@ -1,10 +1,11 @@
 #include "Player.h"
 #define PI 3.14159265359
 
-void Player::Initialize(Input* input, DirectXCommon* dxCommon)
+void Player::Initialize()
 {
-	this->input_ = input;
-	this->dxCommon_ = dxCommon;
+	input_ = Input::GetInstance();
+	dxCommon_ = DirectXCommon::GetInstance();
+
 	//オブジェクトの生成
 	model_ = Model::LoadFromOBJ("ProtrudingObject");
 	obj_ = Object3d::Create();

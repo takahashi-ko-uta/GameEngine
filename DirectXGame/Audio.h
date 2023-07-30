@@ -37,6 +37,8 @@ public:
         unsigned int bufferSize;
     };
 
+    static Audio* GetInstance();
+
     //‰Šú‰»
     void Initialize(const std::string directoryPath = "Resources/");
     //ƒf[ƒ^‰ğ•ú

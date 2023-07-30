@@ -18,7 +18,7 @@ class GamePlayScene
 {
 public://メンバ関数
 	//初期化
-	void Initialize(DirectXCommon* dxCommon, Input* input);
+	void Initialize();
 	//終了
 	void Finalize();
 	//毎フレーム処理

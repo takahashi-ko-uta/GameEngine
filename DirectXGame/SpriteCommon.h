@@ -16,6 +16,8 @@ struct ConstBufferDataMaterial{
 class SpriteCommon
 {
 public: //ƒƒ“ƒoŠÖ”
+
+	static SpriteCommon* GetInstance();
 	//‰Šú‰»
 	void Initialize(DirectXCommon* _dxCommon);
 
