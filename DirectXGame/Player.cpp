@@ -12,7 +12,7 @@ void Player::Initialize()
 	obj_->SetModel(model_);
 	obj_->SetScale({ 3.0f,3.0f,3.0f });
 
-	worldTransform.Initialize(dxCommon_);
+	worldTransform.Initialize();
 }
 
 void Player::Finalize()

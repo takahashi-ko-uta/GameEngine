@@ -24,7 +24,7 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;
 
 
-	void Initialize(DirectXCommon* dxCommon);
+	void Initialize();
 	void Update();
 	Vector3 GetWorldPosition() { return { matWorld.m[3][0],matWorld.m[3][1],matWorld.m[3][2] }; }
 };

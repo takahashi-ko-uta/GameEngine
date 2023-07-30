@@ -2,9 +2,9 @@
 #include "DirectXCommon.h"
 #include <d3dx12.h>
 
-void WorldTransform::Initialize(DirectXCommon* dxCommon)
+void WorldTransform::Initialize()
 {
-	this->dxCommon_ = dxCommon;
+	dxCommon_ = DirectXCommon::GetInstance();
 
 	// バッファの生成
 	HRESULT result = dxCommon_->GetDevice()->CreateCommittedResource(
