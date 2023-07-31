@@ -46,10 +46,11 @@ void Player::Update()
 	ImGui::Text("objRot(X:%f, Y:%f, Z:%f)", obj_->GetRotation().x, obj_->GetRotation().y, obj_->GetRotation().z);
 	ImGui::Text("wldRot(X:%f, Y:%f, Z:%f)", w.rotation.x, w.rotation.y, w.rotation.z);
 
-	w.Update();
+	//各毎フレーム処理
 	for (std::unique_ptr<Bullet>& bullet : bullets_) {
 		bullet->Update();
 	}
+	w.Update();
 	obj_->Update();
 }
 
@@ -97,26 +98,12 @@ void Player::Attack()
 		const float speed = 3.0f;
 		velocity = { 0.0f,0.0f,speed };
 		
-		Vector3 vec3;
-		vec3.x = (velocity.x * w.matWorld.m[0][0]) +
-			(velocity.y * w.matWorld.m[1][0]) +
-			(velocity.z * w.matWorld.m[2][0]) +
-			(0 * w.matWorld.m[3][0]);
+		//速度ベクトルを自機の向きに合わせて回転させる
+		velocity = Matrix4::Transform(velocity, w.matWorld);
 
-		vec3.y = (velocity.x * w.matWorld.m[0][1]) +
-			(velocity.y * w.matWorld.m[1][1]) +
-			(velocity.z * w.matWorld.m[2][1]) +
-			(0 * w.matWorld.m[3][1]);
-
-		vec3.z = (velocity.x * w.matWorld.m[0][2]) +
-			(velocity.y * w.matWorld.m[1][2]) +
-			(velocity.z * w.matWorld.m[2][2]) +
-			(0 * w.matWorld.m[3][2]);
-
-
+		//弾の生成と初期化
 		std::unique_ptr<Bullet> newBullet = std::make_unique<Bullet>();
-		newBullet->Initialize(w.GetWorldPosition(), vec3);
-
+		newBullet->Initialize(w.GetWorldPosition(), velocity);
 		bullets_.push_back(std::move(newBullet));
 	}
 }

@@ -99,7 +99,7 @@ Matrix4 Matrix4::Translate(const Vector3& t)
 //座標変換(ベクトルと行列の掛け算)を行うtransform 関数を作成する。(透視変換にも対応している)
 Vector3 Matrix4::Transform(const Vector3& v, const Matrix4& m)
 {
-	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
+	/*float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
 
 	Vector3 result
 	{
@@ -107,7 +107,27 @@ Vector3 Matrix4::Transform(const Vector3& v, const Matrix4& m)
 		(v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + m.m[3][1]) / w,
 		(v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + m.m[3][2]) / w
 	};
-	return result;
+	return result;*/
+
+	Vector3 vec3;
+
+	vec3.x = (v.x * m.m[0][0]) +
+		(v.y * m.m[1][0]) +
+		(v.z * m.m[2][0]) +
+		(0 * m.m[3][0]);
+
+	vec3.y = (v.x * m.m[0][1]) +
+		(v.y * m.m[1][1]) +
+		(v.z * m.m[2][1]) +
+		(0 * m.m[3][1]);
+
+	vec3.z = (v.x * m.m[0][2]) +
+		(v.y * m.m[1][2]) +
+		(v.z * m.m[2][2]) +
+		(0 * m.m[3][2]);
+
+	return vec3;
+
 }
 
 //代入演算子 *= のオーバーロード関数(行列と行列の積)
