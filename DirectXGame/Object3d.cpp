@@ -280,6 +280,8 @@ bool Object3d::Initialize()
 void Object3d::Update()
 {
 	HRESULT result;
+
+#pragma region XMMATRIX
 	XMMATRIX matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
@@ -301,6 +303,40 @@ void Object3d::Update()
 		// 親オブジェクトのワールド行列を掛ける
 		matWorld *= parent->matWorld;
 	}
+#pragma endregion 
+
+#pragma region Matrix4
+	Matrix4 mat4Scale, mat4Rot, mat4Trans;
+
+	//Vector3へ変換
+	Vector3 vecScale, vecRot, vecTrans;
+	vecScale = { scale.x, scale.y, scale.z };
+	vecRot = { rotation.x, rotation.y, rotation.z };
+	vecTrans = { position.x, position.y, position.z };
+
+	// スケール、回転、平行移動行列の計算
+	mat4Scale = Matrix4::Scale(vecScale);
+	mat4Rot = Matrix4::Identity();
+	mat4Rot *= Matrix4::RotateZ(XMConvertToRadians(vecRot.z));
+	mat4Rot *= Matrix4::RotateX(XMConvertToRadians(vecRot.x));
+	mat4Rot *= Matrix4::RotateY(XMConvertToRadians(vecRot.y));
+	mat4Trans = Matrix4::Translate(vecTrans);
+
+	// ワールド行列の合成
+	mat4World = Matrix4::Identity();	// 変形をリセット
+	mat4World *= mat4Scale;			// ワールド行列にスケーリングを反映
+	mat4World *= mat4Rot;				// ワールド行列に回転を反映
+	mat4World *= mat4Trans;			// ワールド行列に平行移動を反映
+
+	// 親オブジェクトがあれば
+	if (parent != nullptr) {
+		// 親オブジェクトのワールド行列を掛ける
+		mat4World *= parent->mat4World;
+	}
+#pragma endregion 
+	
+	worldTransform.matWorld = mat4World;
+	worldTransform.Update();
 
 	// 定数バッファへデータ転送
 	ConstBufferDataB0* constMap = nullptr;
@@ -308,13 +344,6 @@ void Object3d::Update()
 	//constMap->mat = matWorld * matView * matProjection;	// 行列の合成
 	constMap->mat = matWorld * camera_->GetMatView() * camera_->GetMatProjection();	// 行列の合成
 	constBuffB0->Unmap(0, nullptr);
-
-	worldTransform.translation = { position.x, position.y, position.z };
-	worldTransform.rotation = { rotation.x, rotation.y, rotation.z };
-	worldTransform.scale = { scale.x, scale.y, scale.z };
-
-	//worldTransform.matWorld = matWorld;
-	worldTransform.Update();
 }
 
 void Object3d::Draw()

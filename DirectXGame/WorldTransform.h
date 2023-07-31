@@ -26,5 +26,7 @@ public:
 	
 	void Initialize();
 	void Update();
+	Vector3 GetWorldScale() { return { matWorld.m[0][0],matWorld.m[1][1],matWorld.m[2][2] }; }
 	Vector3 GetWorldPosition() { return { matWorld.m[3][0],matWorld.m[3][1],matWorld.m[3][2] }; }
+	//Vector3 GetWorldRotation() { return { matWorld.m[3][0],matWorld.m[3][1],matWorld.m[3][2] }; }
 };

@@ -30,21 +30,14 @@ void Player::Update()
 
 	Move();
 	Rotate();
+	Attack();
 	
-	//w = obj_->GetWorldTransform();
-	w.translation = { pos.x, pos.y, pos.z };
-	w.scale = { scale.x,scale.y,scale.z };
-	w.rotation = { rot.x,rot.y,rot.z };
-	w.Update();
-
-	PLpos = w.translation;
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](std::unique_ptr<Bullet>& bullet) {
 		return bullet->IsDead();
 	});
 
-	Attack();
-
+	
 	ImGui::Text("velocity(X:%f, Y:%f, Z:%f)", velocity.x, velocity.y, velocity.z);
 
 	ImGui::Text("objPos(X:%f, Y:%f, Z:%f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
@@ -97,28 +90,32 @@ void Player::Rotate()
 void Player::Attack()
 {
 	if (input_->TriggerMouseLeft()) {
+		//objからworldTransformを取得
+		w.matWorld = obj_->GetMat4World();
+
 		//弾の速度
 		const float speed = 3.0f;
 		velocity = { 0.0f,0.0f,speed };
-
-		velocity.x = (velocity.x * w.matWorld.m[0][0]) +
+		
+		Vector3 vec3;
+		vec3.x = (velocity.x * w.matWorld.m[0][0]) +
 			(velocity.y * w.matWorld.m[1][0]) +
 			(velocity.z * w.matWorld.m[2][0]) +
 			(0 * w.matWorld.m[3][0]);
 
-		velocity.y = (velocity.x * w.matWorld.m[0][1]) +
+		vec3.y = (velocity.x * w.matWorld.m[0][1]) +
 			(velocity.y * w.matWorld.m[1][1]) +
 			(velocity.z * w.matWorld.m[2][1]) +
 			(0 * w.matWorld.m[3][1]);
 
-		velocity.z = (velocity.x * w.matWorld.m[0][2]) +
+		vec3.z = (velocity.x * w.matWorld.m[0][2]) +
 			(velocity.y * w.matWorld.m[1][2]) +
 			(velocity.z * w.matWorld.m[2][2]) +
 			(0 * w.matWorld.m[3][2]);
 
 
 		std::unique_ptr<Bullet> newBullet = std::make_unique<Bullet>();
-		newBullet->Initialize(PLpos, velocity);
+		newBullet->Initialize(w.GetWorldPosition(), vec3);
 
 		bullets_.push_back(std::move(newBullet));
 	}

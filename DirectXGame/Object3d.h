@@ -30,6 +30,7 @@ public: // サブクラス
 	{
 		//XMFLOAT4 color;	// 色 (RGBA)
 		XMMATRIX mat;	// ３Ｄ変換行列
+		//Matrix4 mat4;
 	};
 
 private: // 定数
@@ -118,7 +119,7 @@ public: // メンバ関数
 	const XMFLOAT3& GetScale() const { return scale; }
 	const XMFLOAT3& GetRotation() const { return rotation; }
 	const WorldTransform& GetWorldTransform() const { return worldTransform; }
-	const XMMATRIX& GetMatWorld() const { return matWorld; }
+	const Matrix4& GetMat4World() const { return mat4World; }
 
 	//setter
 	void SetModel(Model* model) { this->model = model; }
@@ -148,6 +149,7 @@ private: // メンバ変数
 	Model* model = nullptr;
 
 	WorldTransform worldTransform;
+	Matrix4 mat4World;
 	
 
 };
