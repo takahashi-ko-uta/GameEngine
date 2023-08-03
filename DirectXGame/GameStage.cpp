@@ -37,7 +37,7 @@ void GameStage::Finalize()
 
 void GameStage::Update()
 {
-    Select();
+    //Select();
 
     //各地面オブジェクトの更新
     for (int i = 0; i < stageSize; i++) {

@@ -46,7 +46,7 @@ void GameCamera::Update()
         }
     }
     if (input_->WheelDown()) {
-        if (rotObj.m_Length <= 75.0f) {
+        if (rotObj.m_Length <= 100.0f) {
             rotObj.m_Length += 3.0f;
         }
     }

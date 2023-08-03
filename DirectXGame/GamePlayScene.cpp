@@ -44,8 +44,8 @@ void GamePlayScene::Initialize()
     gameStage_->Initialize();
 
     //プレイヤーの初期化
-    player_ = new Player();
-    player_->Initialize(camera_);
+    //player_ = new Player();
+    //player_->Initialize(camera_);
 
 #pragma endregion
 
@@ -81,7 +81,7 @@ void GamePlayScene::Finalize()
     //ステージ解放
     gameStage_->Finalize();
     //プレイヤー解放
-    player_->Finalize();
+    //player_->Finalize();
     //パーティクル解放
     delete particle1_;
     delete particle2_;
@@ -160,7 +160,7 @@ void GamePlayScene::Update()
     //ステージ更新
     gameStage_->Update();
     //プレイヤー更新
-    player_->Update();
+    //player_->Update();
     //各々の更新処理
     camera_->Update();
     input_->Update();
@@ -177,7 +177,7 @@ void GamePlayScene::Draw()
     //スプライトの描画
     spriteCommon_->PreDraw();   //スプライト前処理
     gameSprite_->Draw();
-    player_->DrawUI();
+    //player_->DrawUI();
     spriteCommon_->PostDraw();  //スプライト後処理
 
     //オブジェクトの描画
@@ -186,7 +186,7 @@ void GamePlayScene::Draw()
     //ステージ描画
     gameStage_->Draw();
     //プレイヤー描画
-    player_->Draw();
+    //player_->Draw();
 
     objSphere_->Draw();
 

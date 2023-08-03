@@ -41,10 +41,10 @@ void Player::Update()
 	PLworldTransform.matWorld = obj_->GetMat4World();
 	RTworldTransform.matWorld = obj3Dreticle_->GetMat4World();
 
-	//Move();
-	//Rotate();
-	//Attack();
-	//Reticle3D();
+	Move();
+	Rotate();
+	Attack();
+	Reticle3D();
 
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](std::unique_ptr<Bullet>& bullet) {
@@ -99,7 +99,7 @@ void Player::Attack()
 {
 	if (input_->TriggerMouseLeft()) {
 		//弾の速度
-		const float speed = 0.05f;
+		const float speed = 3.0f;
 		velocity = { 0.0f,0.0f,speed };
 		
 		//速度ベクトルを自機の向きに合わせて回転させる
