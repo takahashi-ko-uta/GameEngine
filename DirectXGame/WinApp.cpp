@@ -27,9 +27,9 @@ void WinApp::Initialize()
 
     // ウィンドウクラスの設定
     w.cbSize = sizeof(WNDCLASSEX);
-    w.lpfnWndProc = (WNDPROC)WindowProc; // ウィンドウプロシージャを設定
-    w.lpszClassName = L"DirectXGame"; // ウィンドウクラス名
-    w.hInstance = GetModuleHandle(nullptr); // ウィンドウハンドル
+    w.lpfnWndProc = (WNDPROC)WindowProc;     // ウィンドウプロシージャを設定
+    w.lpszClassName = L"DirectXGame";        // ウィンドウクラス名
+    w.hInstance = GetModuleHandle(nullptr);  // ウィンドウハンドル
     w.hCursor = LoadCursor(NULL, IDC_ARROW); // カーソル指定
 
     // ウィンドウクラスをOSに登録する

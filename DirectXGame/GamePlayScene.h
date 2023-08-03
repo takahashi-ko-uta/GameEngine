@@ -11,6 +11,7 @@
 #include "ParticleManager.h"
 
 #include "GameCamera.h"
+#include "GameSprite.h"
 #include "GameStage.h"
 #include "Player.h"
 
@@ -32,9 +33,7 @@ private:
 	Camera* camera_ = nullptr;
 	//スプライト共通部の生成
 	SpriteCommon* spriteCommon_ = nullptr;
-	//スプライト生成
-	Sprite* sprite1_ = nullptr;
-	Sprite* sprite2_ = nullptr;
+	
 	//パーティクル生成
 	ParticleManager* particle1_ = nullptr;
 	ParticleManager* particle2_ = nullptr;
@@ -51,6 +50,8 @@ private:
 
 	//ゲーム用カメラ
 	GameCamera* gameCamera_ = nullptr;
+	//ゲームに使うスプライト
+	GameSprite* gameSprite_ = nullptr;
 	//ステージ
 	GameStage* gameStage_ = nullptr;
 	//Player

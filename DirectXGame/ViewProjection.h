@@ -1,9 +1,12 @@
 #pragma once
+#include "WinApp.h"
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <d3d12.h>
+#include "Vector3.h"
+#include "Matrix4.h"
 
-struct ViewProjection
+class ViewProjection
 {
 private:
 	// Microsoft::WRL::を省略
@@ -15,61 +18,42 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
 
-public://構造体、バッファ
+private:
+
 	struct ConstBufferDataViewProjection
 	{
-		XMMATRIX view;
-		XMMATRIX projection;
-		XMFLOAT3 cameraPos;
+		Matrix4 view;
+		Matrix4 projection;
+		Matrix4 viewProjection;
+		Vector3 cameraPos;
 	};
+
+	Matrix4 matView_;
+	Matrix4 matProjection_;
+	Matrix4 matViewProjection_;
+
+public:
+	void Initialize();
+	void Update();
+
+	Matrix4 GetViewProjectionMatrix() const { return matViewProjection_; }
+
+
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuff_;
 	//マッピング
 	ConstBufferDataViewProjection* constMap_;
 
-public://関数
-	//初期化
-	void Initialize();
-	//定数バッファ生成
-	void CreateConstBuffer();
-	//マッピング
-	void MapingCB();
-	//更新
-	void Update();
+	Vector3 eye = { 0.0f, 0.0f, -50.0f };
+	Vector3 target;
+	Vector3 up = { 0.0f,1.0f,0.0f };
 
-	//各行列更新
-	void UpdateView();
-	void UpdateProjection();
+	int fovAngleY = 45;
 
-	//転送
-	void Trans();
-
-public://変数
-	//視点
-	XMFLOAT3 eye_;
-	//注視点
-	XMFLOAT3 target_;
-	//上方向ベクトル
-	XMFLOAT3 up_;
-
-	//視野角
-	float angle_ = 0.0f;
-	//アスペクト比
-	float aspect_ = 0.0f;
+	// アスペクト比
+	float aspectRatio = WinApp::window_width / WinApp::window_height;
 	//ニアクリップ(手前側の深度限界)
-	float nearZ_ = 0.0f;
+	float nearZ = 0.1f;
 	//ファークリップ(奥側の深度限界)
-	float farZ_ = 0.0f;
-
-	//ビュー行列
-	XMMATRIX matView_;
-	//プロジェクション行列
-	XMMATRIX matProjection_;
-	//ビュープロジェクション行列(合成用)
-	XMMATRIX matViewProjection_;
-	//ビルボード行列
-	XMMATRIX matBillboard_;
-	//Y軸回りビルボード行列
-	XMMATRIX matBillboardY_;
-
+	float farZ = 1000.0f;
 };

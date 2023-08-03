@@ -45,3 +45,4 @@ void Bullet::Draw()
 {
 	obj_->Draw();
 }
+

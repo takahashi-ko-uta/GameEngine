@@ -63,8 +63,6 @@ void GameCamera::Update()
 
     //ƒJƒƒ‰‚É”½‰f
     camera_->SetEye({ (float)rotObj.m_PosX, 20.0f, (float)rotObj.m_PosY });
-    ImGui::Text("Angle:%f", rotObj.m_Angle);
-    ImGui::Text("Length:%f", rotObj.m_Length);
 #pragma endregion
 
     camera_->Update();

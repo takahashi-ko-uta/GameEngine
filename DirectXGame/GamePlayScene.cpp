@@ -26,20 +26,9 @@ void GamePlayScene::Initialize()
 
 #pragma region スプライト関連
     spriteCommon_ = SpriteCommon::GetInstance();
-    //テクスチャのセット
-    spriteCommon_->LoadTexture(0, "texture.png");
-    spriteCommon_->LoadTexture(1, "reimu.png");
-    //スプライト初期化
-    sprite1_ = new Sprite();
-    sprite1_->SetTextureIndex(0);
-    sprite1_->Initialize(spriteCommon_, 0);
-    sprite1_->SetSize({ 100,100 });
-
-    sprite2_ = new Sprite();
-    sprite2_->SetTextureIndex(1);
-    sprite2_->Initialize(spriteCommon_, 1);
-    sprite2_->SetSize({ 100,100 });
-    sprite2_->SetPosition({ 0,100 });
+   
+    gameSprite_ = new GameSprite();
+    gameSprite_->Initialize();
 #pragma endregion 
     
 #pragma region オブジェクト関連
@@ -56,7 +45,7 @@ void GamePlayScene::Initialize()
 
     //プレイヤーの初期化
     player_ = new Player();
-    player_->Initialize();
+    player_->Initialize(camera_);
 
 #pragma endregion
 
@@ -87,11 +76,6 @@ void GamePlayScene::Finalize()
     delete camera_;
     //ゲーム用カメラ解放
     delete gameCamera_;
-    //スプライト共通部解放
-    //delete spriteCommon_;
-    //スプライト解放
-    delete sprite1_;
-    delete sprite2_;
     //オブジェクト解放
     delete objSphere_;
     //ステージ解放
@@ -107,10 +91,10 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
-    
-
     //カメラの移動
     gameCamera_->Update();
+    //camera_->SetTarget({ 0.0f,0.0f,0.0f });
+    //camera_->SetEye({ 1.0f,250.0f,0.0f });
 
 #pragma region パーティクル生成 
     if (input_->PushKey(DIK_1)) {
@@ -169,11 +153,10 @@ void GamePlayScene::Update()
 
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
-    ImGui::Text("mousePos(X:%f, Y:%f)", moniX, moniY);
-    ImGui::Text("mousePos(X:%f, Y:%f)", windowX, windowY);
 
 #pragma endregion
     
+    gameSprite_->Update();
     //ステージ更新
     gameStage_->Update();
     //プレイヤー更新
@@ -181,8 +164,6 @@ void GamePlayScene::Update()
     //各々の更新処理
     camera_->Update();
     input_->Update();
-    sprite1_->Update();
-    sprite2_->Update();
     objSphere_->Update();
     particle1_->Update();
     particle2_->Update();
@@ -195,8 +176,8 @@ void GamePlayScene::Draw()
 {
     //スプライトの描画
     spriteCommon_->PreDraw();   //スプライト前処理
-    sprite1_->Draw();
-    sprite2_->Draw();
+    gameSprite_->Draw();
+    player_->DrawUI();
     spriteCommon_->PostDraw();  //スプライト後処理
 
     //オブジェクトの描画

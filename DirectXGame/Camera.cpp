@@ -1,10 +1,14 @@
 #include "Camera.h"
 #include "WinApp.h"
+#include <algorithm>
+#include <iostream>
 
 using namespace DirectX;
 
 void Camera::Initialize()
 {
+	//viewProjection.Initialize();
+
 	const float distance = 50.0f;
 
 	eye = { 0,0,-distance };
@@ -23,6 +27,13 @@ void Camera::Update()
 	UpdeteViewMatrix();
 	//透視投影
 	UpdeteProjectionMatrix();
+
+	//ビュープロジェクション行列作成
+	matViewProjection = matView * matProjection;
+
+	//viewProjection;
+
+	//viewProjection.Update();
 }
 
 void Camera::UpdeteViewMatrix()
@@ -40,3 +51,4 @@ void Camera::UpdeteProjectionMatrix()
 		0.1f, 1000.0f
 	);
 }
+

@@ -5,12 +5,13 @@ using namespace Microsoft::WRL;
 
 
 
-void Sprite::Initialize(SpriteCommon* spriteCommon, uint32_t textureIndex)
+void Sprite::Initialize(SpriteCommon* spriteCommon, uint32_t textureIndex, DirectX::XMFLOAT2 anchorPoint)
 {
 	HRESULT result{};
 
 	assert(spriteCommon);
 	spriteCommon_ = spriteCommon;
+	anchorPoint_ = anchorPoint;
 
 	//テクスチャサイズをイメージに合わせる
 	if (textureIndex != UINT32_MAX) {

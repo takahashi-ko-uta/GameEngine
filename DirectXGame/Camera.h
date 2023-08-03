@@ -1,6 +1,9 @@
 #pragma once
+#include "WorldTransform.h"
+#include "ViewProjection.h"
 #include <DirectXMath.h>
 #include <wrl.h>
+
 
 class Camera
 {
@@ -26,6 +29,7 @@ public://アクセッサ
 	//getter
 	const XMMATRIX& GetMatView() const { return matView; }
 	const XMMATRIX& GetMatProjection() const { return matProjection; }
+	const XMMATRIX& GetMatViewProjection() { return matViewProjection; }
 	const XMFLOAT3& GetEye() const { return eye; }
 	const XMFLOAT3& GetTarget() const { return target; }
 	const XMFLOAT3& GetUp() const { return up; }
@@ -41,6 +45,11 @@ protected:
 	XMMATRIX matView = {};
 	// 射影行列
 	XMMATRIX matProjection = {};
+
+	XMMATRIX matViewProjection = {};
+
+	//ViewProjection viewProjection;
+
 	// 視点座標
 	XMFLOAT3 eye;
 	// 注視点座標

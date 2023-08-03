@@ -1,7 +1,10 @@
 #include "GameStage.h"
+#include "imgui.h"
 
 void GameStage::Initialize()
 {
+    input = Input::GetInstance();
+
 	//モデル読み込み
 	modelGround1_ = Model::LoadFromOBJ("ground");
 	modelGround2_ = Model::LoadFromOBJ("ground2");
@@ -34,6 +37,7 @@ void GameStage::Finalize()
 
 void GameStage::Update()
 {
+    Select();
 
     //各地面オブジェクトの更新
     for (int i = 0; i < 5; i++) {
@@ -41,6 +45,20 @@ void GameStage::Update()
             objGround_[i][j]->Update();
         }
     }
+}
+
+void GameStage::Select()
+{
+    if (input->TriggerKey(DIK_W)) {
+        selectY += 1;
+        
+    }
+
+    //赤にする
+    objGround_[selectX][selectY]->SetColor({ 1,0,0,1 });
+
+
+    ImGui::Text("select(X:%f, Y:%f)", selectX, selectY);
 }
 
 void GameStage::Draw()

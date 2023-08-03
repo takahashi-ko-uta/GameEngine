@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "Object3d.h"
+#include "Input.h"
 
 class GameStage
 {
@@ -11,11 +12,16 @@ public://メンバ関数
 	void Finalize();
 	//毎フレーム処理
 	void Update();
+	void Select();
 	//描画
 	void Draw();
 private://メンバ変数
+	Input* input = nullptr;
 	Model* modelGround1_ = nullptr;
 	Model* modelGround2_ = nullptr;
 	Object3d* objGround_[5][5] = {};
+
+	int selectX = 0;
+	int selectY = 0;
 };
 

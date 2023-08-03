@@ -23,11 +23,7 @@ ID3D12GraphicsCommandList* Object3d::cmdList = nullptr;
 ComPtr<ID3D12RootSignature> Object3d::rootsignature;
 ComPtr<ID3D12PipelineState> Object3d::pipelinestate;
 Camera* Object3d::camera_ = nullptr;
-//XMMATRIX Object3d::matView{};
-//XMMATRIX Object3d::matProjection{};
-//XMFLOAT3 Object3d::eye = { 0, 0, -50.0f };
-//XMFLOAT3 Object3d::target = { 0, 0, 0 };
-//XMFLOAT3 Object3d::up = { 0, 1, 0 };
+
 
 void Object3d::StaticInitialize(ID3D12Device* device, int window_width, int window_height, Camera* camera)
 {
@@ -74,7 +70,6 @@ void Object3d::PostDraw()
 
 Object3d* Object3d::Create()
 {
-
 	// 3Dオブジェクトのインスタンスを生成
 	Object3d* object3d = new Object3d();
 	if (object3d == nullptr) {
@@ -240,7 +235,6 @@ void Object3d::InitializeGraphicsPipeline()
 	// グラフィックスパイプラインの生成
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestate));
 	assert(SUCCEEDED(result));
-
 }
 
 void Object3d::CreateModel()
@@ -343,6 +337,7 @@ void Object3d::Update()
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	//constMap->mat = matWorld * matView * matProjection;	// 行列の合成
 	constMap->mat = matWorld * camera_->GetMatView() * camera_->GetMatProjection();	// 行列の合成
+	constMap->color = this->color;
 	constBuffB0->Unmap(0, nullptr);
 }
 

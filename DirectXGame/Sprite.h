@@ -32,7 +32,7 @@ public:
 
 public: //ƒƒ“ƒoŠÖ”
 	//‰Šú‰»
-	void Initialize(SpriteCommon* spriteCommon, uint32_t textureIndex);
+	void Initialize(SpriteCommon* spriteCommon, uint32_t textureIndex, DirectX::XMFLOAT2 anchorPoint);
 
 	//•`‰æ
 	void Draw();

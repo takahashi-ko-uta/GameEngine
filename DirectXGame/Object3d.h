@@ -28,7 +28,7 @@ public: // サブクラス
 	// 定数バッファ用データ構造体B0
 	struct ConstBufferDataB0
 	{
-		//XMFLOAT4 color;	// 色 (RGBA)
+		XMFLOAT4 color;	// 色 (RGBA)
 		XMMATRIX mat;	// ３Ｄ変換行列
 		//Matrix4 mat4;
 	};
@@ -80,13 +80,6 @@ private: // 静的メンバ変数
 
 private:// 静的メンバ関数
 	/// <summary>
-	/// カメラ初期化
-	/// </summary>
-	/// <param name="window_width">画面横幅</param>
-	/// <param name="window_height">画面縦幅</param>
-	static void InitializeCamera(int window_width, int window_height);
-
-	/// <summary>
 	/// グラフィックパイプライン生成
 	/// </summary>
 	/// <returns>成否</returns>
@@ -96,11 +89,6 @@ private:// 静的メンバ関数
 	/// モデル作成
 	/// </summary>
 	static void CreateModel();
-
-	/// <summary>
-	/// ビュー行列を更新
-	/// </summary>
-	static void UpdateViewMatrix();
 
 public: // メンバ関数
 	bool Initialize();
@@ -128,6 +116,7 @@ public: // メンバ関数
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
 	void SetWorldTransform(const WorldTransform& worldTransform) { this->worldTransform = worldTransform; }
+	void SetColor(const XMFLOAT4 color) { this->color = color; }
 
 private: // メンバ変数
 	//ComPtr<ID3D12Resource> constBuff; // 定数バッファ
