@@ -49,16 +49,70 @@ void GameStage::Update()
 
 void GameStage::Select()
 {
+#pragma region 床の選択
     if (input->TriggerKey(DIK_W)) {
-        selectY += 1;
-        
+        selectFloor.y += 1;
+        if (selectFloor.y == 5) { selectFloor.y = 0; }
+    }
+    if (input->TriggerKey(DIK_S)) {
+        selectFloor.y -= 1;
+        if (selectFloor.y == -1) { selectFloor.y = 4; }
+    }
+    if (input->TriggerKey(DIK_A)) {
+        selectFloor.x -= 1;
+        if (selectFloor.x == -1) { selectFloor.x = 4; }
+    }
+    if (input->TriggerKey(DIK_D)) {
+        selectFloor.x += 1;
+        if (selectFloor.x == 5) { selectFloor.x = 0; }
+    }
+#pragma endregion
+   
+    
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            //選択されたオブジェクト(床)を赤にする
+            if (i == selectFloor.x && j == selectFloor.y) {
+                objGround_[i][j]->SetColor({ 0.5,0,0,1 });
+            }
+            //スタート地点のオブジェクト(床)を緑にする
+            else if (i == startFloor.x && j == startFloor.y) {
+                objGround_[i][j]->SetColor({ 0,0.5,0,1 });
+            }
+            //ゴール地点のオブジェクト(床)を青にする
+            else if (i == goalFloor.x && j == goalFloor.y) {
+                objGround_[i][j]->SetColor({ 0,0,0.5,1 });
+            }
+            //何も指定されてないオブジェクト(床)は元の色
+            else {
+                objGround_[i][j]->SetColor({ 1,1,1,1 });
+            }
+        }
     }
 
-    //赤にする
-    objGround_[selectX][selectY]->SetColor({ 1,0,0,1 });
+    //スペースを押したらスタート地点を設定
+    if (input->TriggerKey(DIK_SPACE)) {
+        //スタート地点がまだ決まってなかったらスタート地点を設定
+        if (startFloor.x > 5) {
+            startFloor = selectFloor;
+        }
 
+        //もしスタート地点が既に決まってらゴール地点を設定
+        if (startFloor.x < 5) {
+            goalFloor = selectFloor;
+        }
+    }
 
-    ImGui::Text("select(X:%f, Y:%f)", selectX, selectY);
+    //スタート地点、ゴール地点をリセット
+    if (input->TriggerKey(DIK_R)) {
+        startFloor = { 99,99 };
+        goalFloor = { 99,99 };
+    }
+
+  
+    ImGui::Text("select(X:%.0f, Y:%.0f)", selectFloor.x, selectFloor.y);
+    ImGui::Text(" start(X:%.0f, Y:%.0f)", startFloor.x, startFloor.y);
+    ImGui::Text("  goal(X:%.0f, Y:%.0f)", goalFloor.x, goalFloor.y);
 }
 
 void GameStage::Draw()

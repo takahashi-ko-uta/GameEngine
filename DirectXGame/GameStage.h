@@ -21,7 +21,8 @@ private://ƒƒ“ƒo•Ï”
 	Model* modelGround2_ = nullptr;
 	Object3d* objGround_[5][5] = {};
 
-	int selectX = 0;
-	int selectY = 0;
+	XMFLOAT2 selectFloor;
+	XMFLOAT2 startFloor = { 99.0f,99.0f };	//‚ ‚è‚¦‚È‚¢”’l‚ğ“ü‚ê‚Æ‚­
+	XMFLOAT2 goalFloor = { 99.0f,99.0f };	//‚ ‚è‚¦‚È‚¢”’l‚ğ“ü‚ê‚Æ‚­
 };
 
