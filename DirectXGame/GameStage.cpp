@@ -10,8 +10,8 @@ void GameStage::Initialize()
 	modelGround2_ = Model::LoadFromOBJ("ground2");
 
     //地面のオブジェクト初期化
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
+    for (int i = 0; i < stageSize; i++) {
+        for (int j = 0; j < stageSize; j++) {
             //オブジェクト生成
             objGround_[i][j] = Object3d::Create();
             //3Dオブジェクトと3Dモデルをひも付け
@@ -26,7 +26,7 @@ void GameStage::Initialize()
             objGround_[i][j]->SetScale({ size,size,size });
 
             //3Dオブジェクトの位置を指定
-            objGround_[i][j]->SetPosition({ ((float)i - 2) * size * 2, -2.5f, ((float)j - 2) * size * 2 });
+            objGround_[i][j]->SetPosition({ ((float)i - stageSize/2) * size * 2, -2.5f, ((float)j - stageSize/2) * size * 2 });
         }
     }
 }
@@ -40,8 +40,8 @@ void GameStage::Update()
     Select();
 
     //各地面オブジェクトの更新
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
+    for (int i = 0; i < stageSize; i++) {
+        for (int j = 0; j < stageSize; j++) {
             objGround_[i][j]->Update();
         }
     }
@@ -52,25 +52,25 @@ void GameStage::Select()
 #pragma region 床の選択
     if (input->TriggerKey(DIK_W)) {
         selectFloor.y += 1;
-        if (selectFloor.y == 5) { selectFloor.y = 0; }
+        if (selectFloor.y == stageSize) { selectFloor.y = 0; }
     }
     if (input->TriggerKey(DIK_S)) {
         selectFloor.y -= 1;
-        if (selectFloor.y == -1) { selectFloor.y = 4; }
+        if (selectFloor.y == -1) { selectFloor.y = stageSize - 1; }
     }
     if (input->TriggerKey(DIK_A)) {
         selectFloor.x -= 1;
-        if (selectFloor.x == -1) { selectFloor.x = 4; }
+        if (selectFloor.x == -1) { selectFloor.x = stageSize - 1; }
     }
     if (input->TriggerKey(DIK_D)) {
         selectFloor.x += 1;
-        if (selectFloor.x == 5) { selectFloor.x = 0; }
+        if (selectFloor.x == stageSize) { selectFloor.x = 0; }
     }
 #pragma endregion
    
     
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
+    for (int i = 0; i < stageSize; i++) {
+        for (int j = 0; j < stageSize; j++) {
             //選択されたオブジェクト(床)を赤にする
             if (i == selectFloor.x && j == selectFloor.y) {
                 objGround_[i][j]->SetColor({ 0.5,0,0,1 });
@@ -93,12 +93,12 @@ void GameStage::Select()
     //スペースを押したらスタート地点を設定
     if (input->TriggerKey(DIK_SPACE)) {
         //スタート地点がまだ決まってなかったらスタート地点を設定
-        if (startFloor.x > 5) {
+        if (startFloor.x > stageSize) {
             startFloor = selectFloor;
         }
 
         //もしスタート地点が既に決まってらゴール地点を設定
-        if (startFloor.x < 5) {
+        if (startFloor.x < stageSize) {
             goalFloor = selectFloor;
         }
     }
@@ -118,8 +118,8 @@ void GameStage::Select()
 void GameStage::Draw()
 {
     //ステージの描画
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
+    for (int i = 0; i < stageSize; i++) {
+        for (int j = 0; j < stageSize; j++) {
             objGround_[i][j]->Draw();
         }
     }

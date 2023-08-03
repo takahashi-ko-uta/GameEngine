@@ -19,7 +19,10 @@ private://メンバ変数
 	Input* input = nullptr;
 	Model* modelGround1_ = nullptr;
 	Model* modelGround2_ = nullptr;
-	Object3d* objGround_[5][5] = {};
+	//ステージの幅
+	const static int stageSize = 11;//真ん中があるといいので奇数
+
+	Object3d* objGround_[stageSize][stageSize] = {};
 
 	XMFLOAT2 selectFloor;
 	XMFLOAT2 startFloor = { 99.0f,99.0f };	//ありえない数値を入れとく
