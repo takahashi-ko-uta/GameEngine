@@ -15,6 +15,10 @@ public://メンバ関数
 	void Select();
 	//描画
 	void Draw();
+
+	//getter
+	const XMFLOAT3 GetSpawnFloor(int num);
+
 private://メンバ変数
 	Input* input = nullptr;
 	Model* modelGround1_ = nullptr;
@@ -27,5 +31,7 @@ private://メンバ変数
 	XMFLOAT2 selectFloor;
 	XMFLOAT2 startFloor = { 99.0f,99.0f };	//ありえない数値を入れとく
 	XMFLOAT2 goalFloor = { 99.0f,99.0f };	//ありえない数値を入れとく
+
+	XMFLOAT2 spawnFloor[4];
 };
 

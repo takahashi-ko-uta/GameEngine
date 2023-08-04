@@ -9,6 +9,7 @@ void GameStage::Initialize()
 	modelGround1_ = Model::LoadFromOBJ("ground");
 	modelGround2_ = Model::LoadFromOBJ("ground2");
 
+#pragma region 床オブジェクト初期化
     //地面のオブジェクト初期化
     for (int i = 0; i < stageSize; i++) {
         for (int j = 0; j < stageSize; j++) {
@@ -26,9 +27,16 @@ void GameStage::Initialize()
             objGround_[i][j]->SetScale({ size,size,size });
 
             //3Dオブジェクトの位置を指定
-            objGround_[i][j]->SetPosition({ ((float)i - stageSize/2) * size * 2, -2.5f, ((float)j - stageSize/2) * size * 2 });
+            objGround_[i][j]->SetPosition({ ((float)i - stageSize / 2) * size * 2, 0.0f, ((float)j - stageSize / 2) * size * 2 });
         }
     }
+#pragma endregion 
+    
+    //兵隊のスポーン位置を設定
+    spawnFloor[0] = { 4,4 };
+    spawnFloor[1] = { 4,6 };
+    spawnFloor[2] = { 6,4 };
+    spawnFloor[3] = { 6,6 };
 }
 
 void GameStage::Finalize()
@@ -37,7 +45,7 @@ void GameStage::Finalize()
 
 void GameStage::Update()
 {
-    //Select();
+    Select();
 
     //各地面オブジェクトの更新
     for (int i = 0; i < stageSize; i++) {
@@ -68,7 +76,7 @@ void GameStage::Select()
     }
 #pragma endregion
    
-    
+#pragma region 床の色変換
     for (int i = 0; i < stageSize; i++) {
         for (int j = 0; j < stageSize; j++) {
             //選択されたオブジェクト(床)を赤にする
@@ -89,6 +97,9 @@ void GameStage::Select()
             }
         }
     }
+#pragma endregion
+    
+    
 
     //スペースを押したらスタート地点を設定
     if (input->TriggerKey(DIK_SPACE)) {
@@ -109,7 +120,6 @@ void GameStage::Select()
         goalFloor = { 99,99 };
     }
 
-  
     ImGui::Text("select(X:%.0f, Y:%.0f)", selectFloor.x, selectFloor.y);
     ImGui::Text(" start(X:%.0f, Y:%.0f)", startFloor.x, startFloor.y);
     ImGui::Text("  goal(X:%.0f, Y:%.0f)", goalFloor.x, goalFloor.y);
@@ -123,4 +133,17 @@ void GameStage::Draw()
             objGround_[i][j]->Draw();
         }
     }
+}
+
+const XMFLOAT3 GameStage::GetSpawnFloor(int num)
+{
+
+    XMFLOAT3 spawnPos;
+
+    int x = spawnFloor[num].x;
+    int y = spawnFloor[num].y;
+
+    spawnPos = objGround_[x][y]->GetPosition();
+    
+    return spawnPos;
 }

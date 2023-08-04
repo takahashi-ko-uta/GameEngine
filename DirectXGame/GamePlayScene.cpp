@@ -43,6 +43,12 @@ void GamePlayScene::Initialize()
     gameStage_ = new GameStage();
     gameStage_->Initialize();
 
+    //兵隊の初期化
+    for (int i = 0; i < 4; i++) {
+        soldier[i] = new Soldier();
+        soldier[i]->Initialize(gameStage_->GetSpawnFloor(i),i);
+    }
+
     //プレイヤーの初期化
     //player_ = new Player();
     //player_->Initialize(camera_);
@@ -95,6 +101,7 @@ void GamePlayScene::Update()
     gameCamera_->Update();
     //camera_->SetTarget({ 0.0f,0.0f,0.0f });
     //camera_->SetEye({ 1.0f,250.0f,0.0f });
+    //camera_->SetEye({ 0.0f,5.0f,-80.0f });
 
 #pragma region パーティクル生成 
     if (input_->PushKey(DIK_1)) {
@@ -159,6 +166,10 @@ void GamePlayScene::Update()
     gameSprite_->Update();
     //ステージ更新
     gameStage_->Update();
+    //各兵隊の更新
+    for (int i = 0; i < 4; i++) {
+        soldier[i]->Update();
+    }
     //プレイヤー更新
     //player_->Update();
     //各々の更新処理
@@ -187,6 +198,10 @@ void GamePlayScene::Draw()
     gameStage_->Draw();
     //プレイヤー描画
     //player_->Draw();
+    //各兵隊の更新
+    for (int i = 0; i < 4; i++) {
+        soldier[i]->Draw();
+    }
 
     objSphere_->Draw();
 

@@ -62,7 +62,7 @@ void GameCamera::Update()
     rotObj.m_PosY = rotObj.m_CenterY + add_y;
 
     //ƒJƒƒ‰‚É”½‰f
-    camera_->SetEye({ (float)rotObj.m_PosX, 20.0f, (float)rotObj.m_PosY });
+    camera_->SetEye({ (float)rotObj.m_PosX, 40.0f, (float)rotObj.m_PosY });
 #pragma endregion
 
     camera_->Update();

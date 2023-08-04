@@ -14,6 +14,7 @@
 #include "GameSprite.h"
 #include "GameStage.h"
 #include "Player.h"
+#include "Soldier.h"
 
 class GamePlayScene
 {
@@ -56,5 +57,8 @@ private:
 	GameStage* gameStage_ = nullptr;
 	//Player
 	Player* player_ = nullptr;
+
+	//•º‘à(4•”‘à)
+	Soldier* soldier[4];
 };
 
