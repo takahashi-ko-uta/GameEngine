@@ -59,6 +59,7 @@ private:
 	Player* player_ = nullptr;
 
 	//•º‘à(4•”‘à)
-	Soldier* soldier[4];
+	Soldier* soldier_[4];
+	XMFLOAT3 soldiersPos_[4];//Še•º‘à‚ÌˆÊ’u
 };
 

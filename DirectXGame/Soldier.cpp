@@ -12,7 +12,7 @@ void Soldier::Initialize(XMFLOAT3 spawnPos, int soldierNum)
     obj_->SetScale({ 1.0f,1.0f,1.0f });
     obj_->SetPosition({ spawnPos_.x,6.0f,spawnPos_.z });
 
-    //soldierNum‚É‚æ‚Á‚ÄF•Ï‚¦‚é
+    //soldierNum‚É‚æ‚Á‚ÄF•Ï‚¦‚é(0`3‚Ü‚Å)
     if (soldierNum == 0) { obj_->SetColor({ 1,0,0,1 }); }
     if (soldierNum == 1) { obj_->SetColor({ 0,1,0,1 }); }
     if (soldierNum == 2) { obj_->SetColor({ 0,0,1,1 }); }

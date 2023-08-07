@@ -13,12 +13,14 @@ public://メンバ関数
 	//毎フレーム処理
 	void Update();
 	void Select();
+	void SetSoldiersFloor();
 	//描画
 	void Draw();
 
 	//getter
 	const XMFLOAT3 GetSpawnFloor(int num);
-
+	//setter
+	void SetSoldiersPos(XMFLOAT3 soldiersPos[4]);
 private://メンバ変数
 	Input* input = nullptr;
 	Model* modelGround1_ = nullptr;
@@ -33,5 +35,8 @@ private://メンバ変数
 	XMFLOAT2 goalFloor = { 99.0f,99.0f };	//ありえない数値を入れとく
 
 	XMFLOAT2 spawnFloor[4];
+	XMFLOAT3 soldiersPos[4];//各兵隊の位置
+
+	XMFLOAT2 soldiersFloor[4];
 };
 

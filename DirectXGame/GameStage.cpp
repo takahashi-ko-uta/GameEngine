@@ -57,6 +57,8 @@ void GameStage::Update()
 
 void GameStage::Select()
 {
+    SetSoldiersFloor();
+
 #pragma region 床の選択
     if (input->TriggerKey(DIK_W)) {
         selectFloor.y += 1;
@@ -100,6 +102,18 @@ void GameStage::Select()
 #pragma endregion
     
     
+    //for (int i = 0; i < stageSize; i++) {
+    //    for (int j = 0; j < stageSize; j++) {
+    //        for (int x = 0; x < 4; x++) {
+    //            //兵隊のx,zと各床のx,zを比べて同じだったら保存する
+    //            if (objGround_[i][j]->GetPosition().x == soldiersPos[x].x &&
+    //                objGround_[i][j]->GetPosition().z == soldiersPos[x].z) {
+
+    //                soldiersFloor[x] = { (float)i,(float)j };
+    //            }
+    //        }
+    //    }
+    //}
 
     //スペースを押したらスタート地点を設定
     if (input->TriggerKey(DIK_SPACE)) {
@@ -120,9 +134,31 @@ void GameStage::Select()
         goalFloor = { 99,99 };
     }
 
+    ImGui::Text("soldiers0(X:%.0f, Y:%.0f)", soldiersFloor[0].x, soldiersFloor[0].y);
+    ImGui::Text("soldiers1(X:%.0f, Y:%.0f)", soldiersFloor[1].x, soldiersFloor[1].y);
+    ImGui::Text("soldiers2(X:%.0f, Y:%.0f)", soldiersFloor[2].x, soldiersFloor[2].y);
+    ImGui::Text("soldiers3(X:%.0f, Y:%.0f)", soldiersFloor[3].x, soldiersFloor[3].y);
+
+
     ImGui::Text("select(X:%.0f, Y:%.0f)", selectFloor.x, selectFloor.y);
     ImGui::Text(" start(X:%.0f, Y:%.0f)", startFloor.x, startFloor.y);
     ImGui::Text("  goal(X:%.0f, Y:%.0f)", goalFloor.x, goalFloor.y);
+}
+
+void GameStage::SetSoldiersFloor()
+{
+    for (int i = 0; i < stageSize; i++) {
+        for (int j = 0; j < stageSize; j++) {
+            for (int x = 0; x < 4; x++) {
+                //兵隊のx,zと各床のx,zを比べて同じだったら保存する
+                if (objGround_[i][j]->GetPosition().x == soldiersPos[x].x &&
+                    objGround_[i][j]->GetPosition().z == soldiersPos[x].z) {
+
+                    soldiersFloor[x] = { (float)i,(float)j };
+                }
+            }
+        }
+    }
 }
 
 void GameStage::Draw()
@@ -146,4 +182,11 @@ const XMFLOAT3 GameStage::GetSpawnFloor(int num)
     spawnPos = objGround_[x][y]->GetPosition();
     
     return spawnPos;
+}
+
+void GameStage::SetSoldiersPos(XMFLOAT3 soldiersPos[4])
+{
+    for (int i = 0; i < 4; i++) {
+        this->soldiersPos[i] = soldiersPos[i];
+    }
 }

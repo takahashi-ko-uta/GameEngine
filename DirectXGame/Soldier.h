@@ -15,6 +15,9 @@ public:
 	//•`‰æ
 	void Draw();
 
+	//getter
+	const XMFLOAT3 GetPosition() const { return obj_->GetPosition(); }
+
 private:
 	Input* input_ = nullptr;
 	Model* model_ = nullptr;

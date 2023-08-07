@@ -45,8 +45,8 @@ void GamePlayScene::Initialize()
 
     //兵隊の初期化
     for (int i = 0; i < 4; i++) {
-        soldier[i] = new Soldier();
-        soldier[i]->Initialize(gameStage_->GetSpawnFloor(i),i);
+        soldier_[i] = new Soldier();
+        soldier_[i]->Initialize(gameStage_->GetSpawnFloor(i),i);
     }
 
     //プレイヤーの初期化
@@ -103,6 +103,13 @@ void GamePlayScene::Update()
     //camera_->SetEye({ 1.0f,250.0f,0.0f });
     //camera_->SetEye({ 0.0f,5.0f,-80.0f });
 
+    //兵隊の位置をsoldiersPosにまとめる
+    for (int i = 0; i < 4; i++) {
+        soldiersPos_[i] = soldier_[i]->GetPosition();
+    }
+    gameStage_->SetSoldiersPos(soldiersPos_);
+
+
 #pragma region パーティクル生成 
     if (input_->PushKey(DIK_1)) {
         particle1_->SetTexture("effect1.png");
@@ -152,12 +159,6 @@ void GamePlayScene::Update()
     }
 #pragma endregion 
 
-    float moniX = input_->GetMouseMonitorPos().x;
-    float moniY = input_->GetMouseMonitorPos().y;
-
-    float windowX = input_->GetMouseWindowPos().x;
-    float windowY = input_->GetMouseWindowPos().y;
-
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
 
@@ -168,7 +169,7 @@ void GamePlayScene::Update()
     gameStage_->Update();
     //各兵隊の更新
     for (int i = 0; i < 4; i++) {
-        soldier[i]->Update();
+        soldier_[i]->Update();
     }
     //プレイヤー更新
     //player_->Update();
@@ -200,7 +201,7 @@ void GamePlayScene::Draw()
     //player_->Draw();
     //各兵隊の更新
     for (int i = 0; i < 4; i++) {
-        soldier[i]->Draw();
+        soldier_[i]->Draw();
     }
 
     objSphere_->Draw();
