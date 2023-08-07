@@ -13,7 +13,8 @@ public://ƒƒ“ƒoŠÖ”
 	//–ˆƒtƒŒ[ƒ€ˆ—
 	void Update();
 	void Select();
-	void SetSoldiersFloor();
+	void SetSoldiersFloor();//•º‘à‚Ì‚¢‚é°‚ğæ“¾
+	void ChangeFloorColor();
 	//•`‰æ
 	void Draw();
 

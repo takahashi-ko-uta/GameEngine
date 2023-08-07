@@ -57,6 +57,7 @@ void GameStage::Update()
 
 void GameStage::Select()
 {
+    //兵隊のいる床を取得
     SetSoldiersFloor();
 
 #pragma region 床の選択
@@ -77,44 +78,10 @@ void GameStage::Select()
         if (selectFloor.x == stageSize) { selectFloor.x = 0; }
     }
 #pragma endregion
-   
-#pragma region 床の色変換
-    for (int i = 0; i < stageSize; i++) {
-        for (int j = 0; j < stageSize; j++) {
-            //選択されたオブジェクト(床)を赤にする
-            if (i == selectFloor.x && j == selectFloor.y) {
-                objGround_[i][j]->SetColor({ 0.5,0,0,1 });
-            }
-            //スタート地点のオブジェクト(床)を緑にする
-            else if (i == startFloor.x && j == startFloor.y) {
-                objGround_[i][j]->SetColor({ 0,0.5,0,1 });
-            }
-            //ゴール地点のオブジェクト(床)を青にする
-            else if (i == goalFloor.x && j == goalFloor.y) {
-                objGround_[i][j]->SetColor({ 0,0,0.5,1 });
-            }
-            //何も指定されてないオブジェクト(床)は元の色
-            else {
-                objGround_[i][j]->SetColor({ 1,1,1,1 });
-            }
-        }
-    }
-#pragma endregion
-    
-    
-    //for (int i = 0; i < stageSize; i++) {
-    //    for (int j = 0; j < stageSize; j++) {
-    //        for (int x = 0; x < 4; x++) {
-    //            //兵隊のx,zと各床のx,zを比べて同じだったら保存する
-    //            if (objGround_[i][j]->GetPosition().x == soldiersPos[x].x &&
-    //                objGround_[i][j]->GetPosition().z == soldiersPos[x].z) {
 
-    //                soldiersFloor[x] = { (float)i,(float)j };
-    //            }
-    //        }
-    //    }
-    //}
-
+    //床の状況に応じて色を変える   
+    ChangeFloorColor();
+    
     //スペースを押したらスタート地点を設定
     if (input->TriggerKey(DIK_SPACE)) {
         //スタート地点がまだ決まってなかったらスタート地点を設定
@@ -156,6 +123,30 @@ void GameStage::SetSoldiersFloor()
 
                     soldiersFloor[x] = { (float)i,(float)j };
                 }
+            }
+        }
+    }
+}
+
+void GameStage::ChangeFloorColor()
+{
+    for (int i = 0; i < stageSize; i++) {
+        for (int j = 0; j < stageSize; j++) {
+            //選択されたオブジェクト(床)を赤にする
+            if (i == selectFloor.x && j == selectFloor.y) {
+                objGround_[i][j]->SetColor({ 0.5,0,0,1 });
+            }
+            //スタート地点のオブジェクト(床)を緑にする
+            else if (i == startFloor.x && j == startFloor.y) {
+                objGround_[i][j]->SetColor({ 0,0.5,0,1 });
+            }
+            //ゴール地点のオブジェクト(床)を青にする
+            else if (i == goalFloor.x && j == goalFloor.y) {
+                objGround_[i][j]->SetColor({ 0,0,0.5,1 });
+            }
+            //何も指定されてないオブジェクト(床)は元の色
+            else {
+                objGround_[i][j]->SetColor({ 1,1,1,1 });
             }
         }
     }
