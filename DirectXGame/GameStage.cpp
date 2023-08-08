@@ -32,6 +32,12 @@ void GameStage::Initialize()
     }
 #pragma endregion 
     
+    for (int i = 0; i < 4; i++){
+        startFloor[i] = { 99,99 };
+        goalFloor[i] = { 99,99 };
+    }
+
+
     //兵隊のスポーン位置を設定
     spawnFloor[0] = { 4,4 };
     spawnFloor[1] = { 4,6 };
@@ -84,32 +90,45 @@ void GameStage::Select()
     
     //スペースを押したらスタート地点を設定
     if (input->TriggerKey(DIK_SPACE)) {
-        //スタート地点がまだ決まってなかったらスタート地点を設定
-        if (startFloor.x > stageSize) {
-            startFloor = selectFloor;
-        }
-
-        //もしスタート地点が既に決まってらゴール地点を設定
-        if (startFloor.x < stageSize) {
-            goalFloor = selectFloor;
+        for (int i = 0; i < 4; i++) {
+            //スタートは常に更新
+            startFloor[i] = soldiersFloor[i];
+            //選択した床の上に兵隊がいたら、その兵隊の番号を取得
+            if (selectFloor.x == soldiersFloor[i].x && selectFloor.y == soldiersFloor[i].y) {
+                selectSoldier = i;
+            }
+            //番号を取得した兵隊のゴールを更新
+            else if (selectSoldier != 5) {
+                goalFloor[selectSoldier] = selectFloor;
+            }
         }
     }
 
     //スタート地点、ゴール地点をリセット
     if (input->TriggerKey(DIK_R)) {
-        startFloor = { 99,99 };
-        goalFloor = { 99,99 };
+        for (int i = 0; i < 4; i++){
+            startFloor[i] = {99,99};
+            goalFloor[i] = {99,99};
+        }
     }
 
-    ImGui::Text("soldiers0(X:%.0f, Y:%.0f)", soldiersFloor[0].x, soldiersFloor[0].y);
+    /*ImGui::Text("soldiers0(X:%.0f, Y:%.0f)", soldiersFloor[0].x, soldiersFloor[0].y);
     ImGui::Text("soldiers1(X:%.0f, Y:%.0f)", soldiersFloor[1].x, soldiersFloor[1].y);
     ImGui::Text("soldiers2(X:%.0f, Y:%.0f)", soldiersFloor[2].x, soldiersFloor[2].y);
-    ImGui::Text("soldiers3(X:%.0f, Y:%.0f)", soldiersFloor[3].x, soldiersFloor[3].y);
+    ImGui::Text("soldiers3(X:%.0f, Y:%.0f)", soldiersFloor[3].x, soldiersFloor[3].y);*/
 
 
     ImGui::Text("select(X:%.0f, Y:%.0f)", selectFloor.x, selectFloor.y);
-    ImGui::Text(" start(X:%.0f, Y:%.0f)", startFloor.x, startFloor.y);
-    ImGui::Text("  goal(X:%.0f, Y:%.0f)", goalFloor.x, goalFloor.y);
+
+    ImGui::Text("selectSoldier: %d", selectSoldier);
+
+    ImGui::Text("S[0](%.0f,%.0f),[1](%.0f,%.0f),[2](%.0f,%.0f),[3](%.0f,%.0f)",
+        soldiersFloor[0].x, soldiersFloor[0].y, soldiersFloor[1].x, soldiersFloor[1].y, soldiersFloor[2].x, soldiersFloor[2].y, soldiersFloor[3].x, soldiersFloor[3].y);
+
+    ImGui::Text("S[0](%.0f,%.0f),[1](%.0f,%.0f),[2](%.0f,%.0f),[3](%.0f,%.0f)",
+        startFloor[0].x, startFloor[0].y, startFloor[1].x, startFloor[1].y, startFloor[2].x, startFloor[2].y, startFloor[3].x, startFloor[3].y);
+    ImGui::Text("G[0](%.0f,%.0f),[1](%.0f,%.0f),[2](%.0f,%.0f),[3](%.0f,%.0f)",
+        goalFloor[0].x, goalFloor[0].y, goalFloor[1].x, goalFloor[1].y, goalFloor[2].x, goalFloor[2].y, goalFloor[3].x, goalFloor[3].y);
 }
 
 void GameStage::SetSoldiersFloor()
@@ -121,7 +140,7 @@ void GameStage::SetSoldiersFloor()
                 if (objGround_[i][j]->GetPosition().x == soldiersPos[x].x &&
                     objGround_[i][j]->GetPosition().z == soldiersPos[x].z) {
 
-                    soldiersFloor[x] = { (float)i,(float)j };
+                    soldiersFloor[x] = { i,j };
                 }
             }
         }
@@ -137,11 +156,11 @@ void GameStage::ChangeFloorColor()
                 objGround_[i][j]->SetColor({ 0.5,0,0,1 });
             }
             //スタート地点のオブジェクト(床)を緑にする
-            else if (i == startFloor.x && j == startFloor.y) {
+            else if (i == startFloor[selectSoldier].x && j == startFloor[selectSoldier].y) {
                 objGround_[i][j]->SetColor({ 0,0.5,0,1 });
             }
             //ゴール地点のオブジェクト(床)を青にする
-            else if (i == goalFloor.x && j == goalFloor.y) {
+            else if (i == goalFloor[selectSoldier].x && j == goalFloor[selectSoldier].y) {
                 objGround_[i][j]->SetColor({ 0,0,0.5,1 });
             }
             //何も指定されてないオブジェクト(床)は元の色
@@ -150,6 +169,13 @@ void GameStage::ChangeFloorColor()
             }
         }
     }
+
+
+    //objGround_[selectFloor.x][selectFloor.y]->SetColor({ 0.5,0,0,1 });
+    //for (int i = 0; i < 4; i++) {
+    //    objGround_[startFloor[i].x][startFloor[i].y]->SetColor({0,0.5,0,1});
+    //    objGround_[goalFloor[i].x][goalFloor[i].y]->SetColor({ 0,0,0.5,1 });
+    //}
 }
 
 void GameStage::Draw()

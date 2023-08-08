@@ -31,13 +31,15 @@ private://メンバ変数
 
 	Object3d* objGround_[stageSize][stageSize] = {};
 
-	XMFLOAT2 selectFloor;
-	XMFLOAT2 startFloor = { 99.0f,99.0f };	//ありえない数値を入れとく
-	XMFLOAT2 goalFloor = { 99.0f,99.0f };	//ありえない数値を入れとく
-
-	XMFLOAT2 spawnFloor[4];
+	XMINT2 selectFloor;
+	bool IsGoal = false;//goalFloorに保存するか否か
+	int selectSoldier = 5;//何も選択してないときは5
+	XMINT2 startFloor[4];
+	XMINT2 goalFloor[4];
+	  
+	XMINT2 spawnFloor[4];
 	XMFLOAT3 soldiersPos[4];//各兵隊の位置
 
-	XMFLOAT2 soldiersFloor[4];
+	XMINT2 soldiersFloor[4];
 };
 
