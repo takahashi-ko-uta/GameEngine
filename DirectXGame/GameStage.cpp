@@ -112,22 +112,19 @@ void GameStage::Select()
         }
     }
 
-    /*ImGui::Text("soldiers0(X:%.0f, Y:%.0f)", soldiersFloor[0].x, soldiersFloor[0].y);
-    ImGui::Text("soldiers1(X:%.0f, Y:%.0f)", soldiersFloor[1].x, soldiersFloor[1].y);
-    ImGui::Text("soldiers2(X:%.0f, Y:%.0f)", soldiersFloor[2].x, soldiersFloor[2].y);
-    ImGui::Text("soldiers3(X:%.0f, Y:%.0f)", soldiersFloor[3].x, soldiersFloor[3].y);*/
+    XMFLOAT3 selectPos = objGround_[selectFloor.x][selectFloor.y]->GetPosition();
 
-
-    ImGui::Text("select(X:%.0f, Y:%.0f)", selectFloor.x, selectFloor.y);
+    ImGui::Text("select(X:%d, Y:%d)", selectFloor.x, selectFloor.y);
+    ImGui::Text("selectPos(X:%.0f, Y:%.0f)", selectPos.x, selectPos.z);
 
     ImGui::Text("selectSoldier: %d", selectSoldier);
 
-    ImGui::Text("S[0](%.0f,%.0f),[1](%.0f,%.0f),[2](%.0f,%.0f),[3](%.0f,%.0f)",
+    ImGui::Text("Soldiers[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
         soldiersFloor[0].x, soldiersFloor[0].y, soldiersFloor[1].x, soldiersFloor[1].y, soldiersFloor[2].x, soldiersFloor[2].y, soldiersFloor[3].x, soldiersFloor[3].y);
 
-    ImGui::Text("S[0](%.0f,%.0f),[1](%.0f,%.0f),[2](%.0f,%.0f),[3](%.0f,%.0f)",
+    ImGui::Text("S[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
         startFloor[0].x, startFloor[0].y, startFloor[1].x, startFloor[1].y, startFloor[2].x, startFloor[2].y, startFloor[3].x, startFloor[3].y);
-    ImGui::Text("G[0](%.0f,%.0f),[1](%.0f,%.0f),[2](%.0f,%.0f),[3](%.0f,%.0f)",
+    ImGui::Text("G[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
         goalFloor[0].x, goalFloor[0].y, goalFloor[1].x, goalFloor[1].y, goalFloor[2].x, goalFloor[2].y, goalFloor[3].x, goalFloor[3].y);
 }
 
@@ -136,12 +133,13 @@ void GameStage::SetSoldiersFloor()
     for (int i = 0; i < stageSize; i++) {
         for (int j = 0; j < stageSize; j++) {
             for (int x = 0; x < 4; x++) {
-                //•º‘à‚Ìx,z‚ÆŠe°‚Ìx,z‚ð”ä‚×‚Ä“¯‚¶‚¾‚Á‚½‚ç•Û‘¶‚·‚é
-                if (objGround_[i][j]->GetPosition().x == soldiersPos[x].x &&
-                    objGround_[i][j]->GetPosition().z == soldiersPos[x].z) {
+                //•º‘à‚Ìx,z‚ÆŠe°‚Ìx,z‚ð”ä‚×‚ÄŒë·+-5‚¾‚Á‚½‚ç•Û‘¶‚·‚é
+                if ((objGround_[i][j]->GetPosition().x + 5) >= soldiersPos[x].x && (objGround_[i][j]->GetPosition().x - 5) <= soldiersPos[x].x &&
+                    (objGround_[i][j]->GetPosition().z + 5) >= soldiersPos[x].z && (objGround_[i][j]->GetPosition().z - 5) <= soldiersPos[x].z) {
 
                     soldiersFloor[x] = { i,j };
                 }
+
             }
         }
     }
