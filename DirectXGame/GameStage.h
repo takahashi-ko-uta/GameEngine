@@ -20,6 +20,8 @@ public://メンバ関数
 
 	//getter
 	const XMFLOAT3 GetSpawnFloor(int num);
+	void GetMapData(int mapData[11][11]);
+
 	//setter
 	void SetSoldiersPos(XMFLOAT3 soldiersPos[4]);
 private://メンバ変数
@@ -28,6 +30,23 @@ private://メンバ変数
 	Model* modelGround2_ = nullptr;
 	//ステージの幅
 	const static int stageSize = 11;//真ん中があるといいので奇数
+
+	int map[3];
+
+	int32_t MapData[11][11] = {
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1,
+		1,1,1,1,1,1,1,1,1,1,1
+	};
+
 
 	Object3d* objGround_[stageSize][stageSize] = {};
 

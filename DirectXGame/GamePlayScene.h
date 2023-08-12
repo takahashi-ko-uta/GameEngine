@@ -15,6 +15,7 @@
 #include "GameStage.h"
 #include "Player.h"
 #include "Soldier.h"
+#include "SearchRoute.h"
 
 class GamePlayScene
 {
@@ -57,6 +58,8 @@ private:
 	GameStage* gameStage_ = nullptr;
 	//Player
 	Player* player_ = nullptr;
+
+	SearchRoute* route = nullptr;
 
 	//•º‘à(4•”‘à)
 	Soldier* soldier_[4];

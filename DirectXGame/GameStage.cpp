@@ -10,6 +10,7 @@ void GameStage::Initialize()
 	modelGround2_ = Model::LoadFromOBJ("ground2");
 
 #pragma region 床オブジェクト初期化
+
     //地面のオブジェクト初期化
     for (int i = 0; i < stageSize; i++) {
         for (int j = 0; j < stageSize; j++) {
@@ -27,7 +28,13 @@ void GameStage::Initialize()
             objGround_[i][j]->SetScale({ size,size,size });
 
             //3Dオブジェクトの位置を指定
-            objGround_[i][j]->SetPosition({ ((float)i - stageSize / 2) * size * 2, 0.0f, ((float)j - stageSize / 2) * size * 2 });
+            if (MapData[i][j] == 1) {
+                objGround_[i][j]->SetPosition({ ((float)i - stageSize / 2) * size * 2, 0.0f, ((float)j - stageSize / 2) * size * 2 });
+            }
+            else if (MapData[i][j] == 0) {
+                objGround_[i][j]->SetPosition({ 0, 0, -50 });
+            }
+            
         }
     }
 #pragma endregion 
@@ -114,7 +121,7 @@ void GameStage::Select()
 
     XMFLOAT3 selectPos = objGround_[selectFloor.x][selectFloor.y]->GetPosition();
 
-    ImGui::Text("select(X:%d, Y:%d)", selectFloor.x, selectFloor.y);
+    /*ImGui::Text("select(X:%d, Y:%d)", selectFloor.x, selectFloor.y);
     ImGui::Text("selectPos(X:%.0f, Y:%.0f)", selectPos.x, selectPos.z);
 
     ImGui::Text("selectSoldier: %d", selectSoldier);
@@ -125,7 +132,7 @@ void GameStage::Select()
     ImGui::Text("S[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
         startFloor[0].x, startFloor[0].y, startFloor[1].x, startFloor[1].y, startFloor[2].x, startFloor[2].y, startFloor[3].x, startFloor[3].y);
     ImGui::Text("G[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
-        goalFloor[0].x, goalFloor[0].y, goalFloor[1].x, goalFloor[1].y, goalFloor[2].x, goalFloor[2].y, goalFloor[3].x, goalFloor[3].y);
+        goalFloor[0].x, goalFloor[0].y, goalFloor[1].x, goalFloor[1].y, goalFloor[2].x, goalFloor[2].y, goalFloor[3].x, goalFloor[3].y);*/
 }
 
 void GameStage::SetSoldiersFloor()
@@ -197,6 +204,15 @@ const XMFLOAT3 GameStage::GetSpawnFloor(int num)
     spawnPos = objGround_[x][y]->GetPosition();
     
     return spawnPos;
+}
+
+void GameStage::GetMapData(int mapData[11][11])
+{
+    for (int i = 0; i < 11; i++) {
+        for (int j = 0; j < 11; j++) {
+            mapData[i][j] = MapData[i][j];
+        }
+    }
 }
 
 void GameStage::SetSoldiersPos(XMFLOAT3 soldiersPos[4])

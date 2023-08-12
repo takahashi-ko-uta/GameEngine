@@ -59,6 +59,8 @@ void GamePlayScene::Initialize()
     particle1_ = ParticleManager::Create();
     particle2_ = ParticleManager::Create();
  
+    route = new SearchRoute();
+    route->CreateMap();
 
     //当たり判定
     /*sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
@@ -162,6 +164,13 @@ void GamePlayScene::Update()
 #pragma region ImGuiテキスト
     ImGui::Text("particle[1][2]");
 
+
+    
+
+    SearchRoute::Cell start = SearchRoute::Cell(3, 1);
+    SearchRoute::Cell goal = SearchRoute::Cell(0, 0);
+
+    route->AStar(start, goal);
 #pragma endregion
     
     gameSprite_->Update();
