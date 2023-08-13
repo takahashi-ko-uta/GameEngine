@@ -5,6 +5,7 @@
 #include <queue>
 #include <vector>
 #include <math.h>
+#include <DirectXMath.h>
 
 class SearchRoute
 {
@@ -57,8 +58,7 @@ public:
 		float HeuristicCost;				// ヒューリスティックコスト
 		float TotalCost;					// コスト(ヒューリスティックコスト込み)
 	};
-
-
+	
 	// 昇順ソート用関数
 	bool Less(Node* a, Node* b);
 	// セル範囲チェック関数
