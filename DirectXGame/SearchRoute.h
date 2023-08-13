@@ -6,6 +6,7 @@
 #include <vector>
 #include <math.h>
 #include <DirectXMath.h>
+using namespace DirectX;
 
 class SearchRoute
 {
@@ -16,25 +17,6 @@ public:
 		NotFound,		// 未発見
 		Erased,			// 削除
 		CouldntErased	// 削除できない
-	};
-
-	// Mapのマス目
-	struct Cell
-	{
-		Cell() :
-			X(-1),
-			Y(-1)
-		{
-		}
-
-		Cell(int x, int y)
-		{
-			X = x;
-			Y = y;
-		}
-
-		int X;		// 列
-		int Y;		// 行
 	};
 
 	// ノード
@@ -53,7 +35,7 @@ public:
 			AdjacentNodes.clear();
 		}
 
-		Cell Position;						// ノード座標
+		XMINT2 Position;						// ノード座標
 		std::vector<Node*> AdjacentNodes;	// 隣接ノード(辺)
 		float HeuristicCost;				// ヒューリスティックコスト
 		float TotalCost;					// コスト(ヒューリスティックコスト込み)
@@ -70,12 +52,12 @@ public:
 	// ヒューリスティックコスト計算(ノードとゴールまでの距離を返している)
 	float CalculateHeuristic(const Node* node, const Node* Goal);
 	// セル比較
-	bool IsEqualCell(const Cell& a, const Cell& b);
+	bool IsEqualCell(const XMINT2& a, const XMINT2& b);
 
 	EraseResult EraseNode(std::list<Node*>& list, Node* new_node, float new_cost);
 	// オープンリストに追加
 	bool AddAdjacentNode(std::list<Node*>& open_list, std::list<Node*>& close_list, Node* adjacent_node, float cost);
-	void AStar(Cell start, Cell goal);
+	void AStar(XMINT2 start, XMINT2 goal);
 private:
 	const static int MapWidth = 5;
 	const static int MapHeight = 5;

@@ -167,8 +167,8 @@ void GamePlayScene::Update()
 
     
 
-    SearchRoute::Cell start = SearchRoute::Cell(3, 1);
-    SearchRoute::Cell goal = SearchRoute::Cell(0, 0);
+    XMINT2 start = XMINT2(3, 1);
+    XMINT2 goal = XMINT2(0, 0);
 
     route->AStar(start, goal);
 #pragma endregion
