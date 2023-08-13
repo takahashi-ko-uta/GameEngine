@@ -12,27 +12,27 @@ void GameStage::Initialize()
 #pragma region 床オブジェクト初期化
 
     //地面のオブジェクト初期化
-    for (int i = 0; i < stageSize; i++) {
-        for (int j = 0; j < stageSize; j++) {
+    for (int y = 0; y < mapSize; y++) {
+        for (int x = 0; x < mapSize; x++) {
             //オブジェクト生成
-            objGround_[i][j] = Object3d::Create();
+            objGround_[y][x] = Object3d::Create();
             //3Dオブジェクトと3Dモデルをひも付け
-            if ((i + j) % 2 == 0) {
-                objGround_[i][j]->SetModel(modelGround1_);
+            if ((y + x) % 2 == 0) {
+                objGround_[y][x]->SetModel(modelGround1_);
             }
             else {
-                objGround_[i][j]->SetModel(modelGround2_);
+                objGround_[y][x]->SetModel(modelGround2_);
             }
             //3Dオブジェクトのスケールを指定
             float size = 5.0f;
-            objGround_[i][j]->SetScale({ size,size,size });
+            objGround_[y][x]->SetScale({ size,size,size });
 
             //3Dオブジェクトの位置を指定
-            if (MapData[i][j] == 1) {
-                objGround_[i][j]->SetPosition({ ((float)i - stageSize / 2) * size * 2, 0.0f, ((float)j - stageSize / 2) * size * 2 });
+            if (MapData[y][x] == 1) {
+                objGround_[y][x]->SetPosition({ ((float)y - mapSize / 2) * size * 2, 0.0f, ((float)x - mapSize / 2) * size * 2 });
             }
-            else if (MapData[i][j] == 0) {
-                objGround_[i][j]->SetPosition({ 0, 0, -50 });
+            else if (MapData[y][x] == 0) {
+                objGround_[y][x]->SetPosition({ 0, 0, -50 });
             }
             
         }
@@ -61,9 +61,9 @@ void GameStage::Update()
     Select();
 
     //各地面オブジェクトの更新
-    for (int i = 0; i < stageSize; i++) {
-        for (int j = 0; j < stageSize; j++) {
-            objGround_[i][j]->Update();
+    for (int y = 0; y < mapSize; y++) {
+        for (int x = 0; x < mapSize; x++) {
+            objGround_[y][x]->Update();
         }
     }
 }
@@ -76,19 +76,19 @@ void GameStage::Select()
 #pragma region 床の選択
     if (input->TriggerKey(DIK_W)) {
         selectFloor.y += 1;
-        if (selectFloor.y == stageSize) { selectFloor.y = 0; }
+        if (selectFloor.y == mapSize) { selectFloor.y = 0; }
     }
     if (input->TriggerKey(DIK_S)) {
         selectFloor.y -= 1;
-        if (selectFloor.y == -1) { selectFloor.y = stageSize - 1; }
+        if (selectFloor.y == -1) { selectFloor.y = mapSize - 1; }
     }
     if (input->TriggerKey(DIK_A)) {
         selectFloor.x -= 1;
-        if (selectFloor.x == -1) { selectFloor.x = stageSize - 1; }
+        if (selectFloor.x == -1) { selectFloor.x = mapSize - 1; }
     }
     if (input->TriggerKey(DIK_D)) {
         selectFloor.x += 1;
-        if (selectFloor.x == stageSize) { selectFloor.x = 0; }
+        if (selectFloor.x == mapSize) { selectFloor.x = 0; }
     }
 #pragma endregion
 
@@ -137,14 +137,14 @@ void GameStage::Select()
 
 void GameStage::SetSoldiersFloor()
 {
-    for (int i = 0; i < stageSize; i++) {
-        for (int j = 0; j < stageSize; j++) {
-            for (int x = 0; x < 4; x++) {
+    for (int y = 0; y < mapSize; y++) {
+        for (int x = 0; x < mapSize; x++) {
+            for (int i = 0; i < 4; i++) {
                 //兵隊のx,zと各床のx,zを比べて誤差+-5だったら保存する
-                if ((objGround_[i][j]->GetPosition().x + 5) >= soldiersPos[x].x && (objGround_[i][j]->GetPosition().x - 5) <= soldiersPos[x].x &&
-                    (objGround_[i][j]->GetPosition().z + 5) >= soldiersPos[x].z && (objGround_[i][j]->GetPosition().z - 5) <= soldiersPos[x].z) {
+                if ((objGround_[y][x]->GetPosition().x + 5) >= soldiersPos[i].x && (objGround_[y][x]->GetPosition().x - 5) <= soldiersPos[i].x &&
+                    (objGround_[y][x]->GetPosition().z + 5) >= soldiersPos[i].z && (objGround_[y][x]->GetPosition().z - 5) <= soldiersPos[i].z) {
 
-                    soldiersFloor[x] = { i,j };
+                    soldiersFloor[i] = { y,x };
                 }
 
             }
@@ -154,23 +154,23 @@ void GameStage::SetSoldiersFloor()
 
 void GameStage::ChangeFloorColor()
 {
-    for (int i = 0; i < stageSize; i++) {
-        for (int j = 0; j < stageSize; j++) {
+    for (int y = 0; y < mapSize; y++) {
+        for (int x = 0; x < mapSize; x++) {
             //選択されたオブジェクト(床)を赤にする
-            if (i == selectFloor.x && j == selectFloor.y) {
-                objGround_[i][j]->SetColor({ 0.5,0,0,1 });
+            if (y == selectFloor.x && x == selectFloor.y) {
+                objGround_[y][x]->SetColor({ 0.5,0,0,1 });
             }
             //スタート地点のオブジェクト(床)を緑にする
-            else if (i == startFloor[selectSoldier].x && j == startFloor[selectSoldier].y) {
-                objGround_[i][j]->SetColor({ 0,0.5,0,1 });
+            else if (y == startFloor[selectSoldier].x && x == startFloor[selectSoldier].y) {
+                objGround_[y][x]->SetColor({ 0,0.5,0,1 });
             }
             //ゴール地点のオブジェクト(床)を青にする
-            else if (i == goalFloor[selectSoldier].x && j == goalFloor[selectSoldier].y) {
-                objGround_[i][j]->SetColor({ 0,0,0.5,1 });
+            else if (y == goalFloor[selectSoldier].x && x == goalFloor[selectSoldier].y) {
+                objGround_[y][x]->SetColor({ 0,0,0.5,1 });
             }
             //何も指定されてないオブジェクト(床)は元の色
             else {
-                objGround_[i][j]->SetColor({ 1,1,1,1 });
+                objGround_[y][x]->SetColor({ 1,1,1,1 });
             }
         }
     }
@@ -186,9 +186,9 @@ void GameStage::ChangeFloorColor()
 void GameStage::Draw()
 {
     //ステージの描画
-    for (int i = 0; i < stageSize; i++) {
-        for (int j = 0; j < stageSize; j++) {
-            objGround_[i][j]->Draw();
+    for (int y = 0; y < mapSize; y++) {
+        for (int x = 0; x < mapSize; x++) {
+            objGround_[y][x]->Draw();
         }
     }
 }
@@ -206,11 +206,13 @@ const XMFLOAT3 GameStage::GetSpawnFloor(int num)
     return spawnPos;
 }
 
-void GameStage::GetMapData(int mapData[11][11])
+void GameStage::GetMapData(int mapData[11][11], int mapSize)
 {
-    for (int i = 0; i < 11; i++) {
-        for (int j = 0; j < 11; j++) {
-            mapData[i][j] = MapData[i][j];
+    mapSize = this->mapSize;
+
+    for (int y = 0; y < 11; y++) {
+        for (int x = 0; x < 11; x++) {
+            mapData[y][x] = MapData[y][x];
         }
     }
 }

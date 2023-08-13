@@ -20,7 +20,7 @@ public://メンバ関数
 
 	//getter
 	const XMFLOAT3 GetSpawnFloor(int num);
-	void GetMapData(int mapData[11][11]);
+	void GetMapData(int mapData[11][11], int mapSize);
 
 	//setter
 	void SetSoldiersPos(XMFLOAT3 soldiersPos[4]);
@@ -29,7 +29,7 @@ private://メンバ変数
 	Model* modelGround1_ = nullptr;
 	Model* modelGround2_ = nullptr;
 	//ステージの幅
-	const static int stageSize = 11;//真ん中があるといいので奇数
+	const static int mapSize = 11;//真ん中があるといいので奇数
 
 	int map[3];
 
@@ -48,7 +48,7 @@ private://メンバ変数
 	};
 
 
-	Object3d* objGround_[stageSize][stageSize] = {};
+	Object3d* objGround_[mapSize][mapSize] = {};
 
 	XMINT2 selectFloor;
 	bool IsGoal = false;//goalFloorに保存するか否か
