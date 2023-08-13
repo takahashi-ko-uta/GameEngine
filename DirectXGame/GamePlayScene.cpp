@@ -167,7 +167,7 @@ void GamePlayScene::Update()
 
     
 
-    XMINT2 start = XMINT2(3, 1);
+    XMINT2 start = XMINT2(10, 10);
     XMINT2 goal = XMINT2(0, 0);
 
     route->AStar(start, goal);

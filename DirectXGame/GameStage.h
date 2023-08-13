@@ -20,7 +20,7 @@ public://ƒƒ“ƒoŠÖ”
 
 	//getter
 	const XMFLOAT3 GetSpawnFloor(int num);
-	void GetMapData(int mapData[11][11], int mapSize);
+	void GetMapData(int mapData[11][11], int mapSizeX, int mapSizeY);
 
 	//setter
 	void SetSoldiersPos(XMFLOAT3 soldiersPos[4]);

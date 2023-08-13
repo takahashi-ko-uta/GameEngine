@@ -59,19 +59,24 @@ public:
 	bool AddAdjacentNode(std::list<Node*>& open_list, std::list<Node*>& close_list, Node* adjacent_node, float cost);
 	void AStar(XMINT2 start, XMINT2 goal);
 private:
-	const static int MapWidth = 5;
-	const static int MapHeight = 5;
+	const static int MapWidth = 11;
+	const static int MapHeight = 11;
 	const static int Infinity = 100000;
 
 	// コストテーブル
 	int CostTable[MapHeight][MapWidth] =
 	{
-		//0  1  2  3  4
-		{ 1, 1, 1, 1, 1, }, // 0
-		{ 1, 0, 1, 1, 0, }, // 1
-		{ 1, 0, 0, 1, 1, }, // 2
-		{ 1, 1, 0, 0, 1, }, // 3
-		{ 0, 1, 1, 1, 1, }, // 4
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1,
+			1,1,1,1,1,1,1,1,1,1,1
 	};
 
 	// グラフ

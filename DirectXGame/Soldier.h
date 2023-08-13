@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "Object3d.h"
 #include "Input.h"
+#include "SearchRoute.h"
 
 class Soldier
 {

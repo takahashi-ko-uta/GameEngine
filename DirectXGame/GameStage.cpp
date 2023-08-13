@@ -206,9 +206,10 @@ const XMFLOAT3 GameStage::GetSpawnFloor(int num)
     return spawnPos;
 }
 
-void GameStage::GetMapData(int mapData[11][11], int mapSize)
+void GameStage::GetMapData(int mapData[11][11], int mapSizeX, int mapSizeY)
 {
-    mapSize = this->mapSize;
+    mapSizeX = this->mapSize;
+    mapSizeY = this->mapSize;
 
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 11; x++) {
