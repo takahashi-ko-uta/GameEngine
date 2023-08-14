@@ -35,10 +35,7 @@ private:
 	Camera* camera_ = nullptr;
 	//スプライト共通部の生成
 	SpriteCommon* spriteCommon_ = nullptr;
-	
-	//パーティクル生成
-	ParticleManager* particle1_ = nullptr;
-	ParticleManager* particle2_ = nullptr;
+
 	//モデル生成
 	Model* modelSphere_ = nullptr;
 	//3Dオブジェクト生成
@@ -60,9 +57,13 @@ private:
 	Player* player_ = nullptr;
 
 	SearchRoute* route = nullptr;
+	XMINT2 start = XMINT2(10, 10);
+	XMINT2 goal = XMINT2(0, 0);
 
 	//兵隊(4部隊)
 	Soldier* soldier_[4];
 	XMFLOAT3 soldiersPos_[4];//各兵隊の位置
+	XMINT2 startFloor[4];
+	XMINT2 goalFloor[4];
 };
 

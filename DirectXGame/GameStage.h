@@ -21,6 +21,9 @@ public://ƒƒ“ƒoŠÖ”
 	//getter
 	const XMFLOAT3 GetSpawnFloor(int num);
 	void GetMapData(int mapData[11][11], int mapSizeX, int mapSizeY);
+	void GetFloorPos(XMFLOAT3 floorPos[11][11]);
+	void GetStartPos(XMINT2 startFloor[4]);
+	void GetGoalPos(XMINT2 goalFloor[4]);
 
 	//setter
 	void SetSoldiersPos(XMFLOAT3 soldiersPos[4]);
@@ -33,7 +36,7 @@ private://ƒƒ“ƒo•Ï”
 
 	int map[3];
 
-	int32_t MapData[11][11] = {
+	int32_t MapData[mapSize][mapSize] = {
 		1,1,1,1,1,1,1,1,1,1,1,
 		1,1,1,1,1,1,1,1,1,1,1,
 		1,1,1,1,1,1,1,1,1,1,1,
@@ -48,7 +51,8 @@ private://ƒƒ“ƒo•Ï”
 	};
 
 
-	Object3d* objGround_[mapSize][mapSize] = {};
+	Object3d* objFloor_[mapSize][mapSize] = {};
+	XMFLOAT3 floorPos[11][11];
 
 	XMINT2 selectFloor;
 	bool IsGoal = false;//goalFloor‚É•Û‘¶‚·‚é‚©”Û‚©

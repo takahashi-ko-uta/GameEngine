@@ -12,7 +12,7 @@ public:
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update();
+	void Update(XMINT2 startFloor, XMINT2 goalFloor);
 	//描画
 	void Draw();
 
@@ -25,5 +25,7 @@ private:
 	Object3d* obj_ = nullptr;
 
 	XMFLOAT3 spawnPos_;//初期位置
+	XMINT2 startFloor;
+	XMINT2 goalFloor;
 };
 

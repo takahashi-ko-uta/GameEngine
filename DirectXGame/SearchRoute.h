@@ -58,6 +58,9 @@ public:
 	// オープンリストに追加
 	bool AddAdjacentNode(std::list<Node*>& open_list, std::list<Node*>& close_list, Node* adjacent_node, float cost);
 	void AStar(XMINT2 start, XMINT2 goal);
+
+	//getter
+	void GetRoute(XMINT2 route[40]);
 private:
 	const static int MapWidth = 11;
 	const static int MapHeight = 11;
@@ -81,5 +84,8 @@ private:
 
 	// グラフ
 	Node Map[MapHeight][MapWidth];
+
+	XMINT2 routeSave[40];
+	//int num = 0;
 };
 

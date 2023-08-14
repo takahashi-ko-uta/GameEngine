@@ -55,10 +55,6 @@ void GamePlayScene::Initialize()
 
 #pragma endregion
 
-    // パーティクル生成
-    particle1_ = ParticleManager::Create();
-    particle2_ = ParticleManager::Create();
- 
     route = new SearchRoute();
     route->CreateMap();
 
@@ -90,9 +86,6 @@ void GamePlayScene::Finalize()
     gameStage_->Finalize();
     //プレイヤー解放
     //player_->Finalize();
-    //パーティクル解放
-    delete particle1_;
-    delete particle2_;
     //モデル解放
     delete modelSphere_;
 }
@@ -105,72 +98,23 @@ void GamePlayScene::Update()
     //camera_->SetEye({ 1.0f,250.0f,0.0f });
     //camera_->SetEye({ 0.0f,5.0f,-80.0f });
 
+#pragma region 兵隊関連
     //兵隊の位置をsoldiersPosにまとめる
     for (int i = 0; i < 4; i++) {
         soldiersPos_[i] = soldier_[i]->GetPosition();
     }
-    gameStage_->SetSoldiersPos(soldiersPos_);
 
+    gameStage_->GetStartPos(startFloor);
+    gameStage_->GetGoalPos(goalFloor);
 
-#pragma region パーティクル生成 
-    if (input_->PushKey(DIK_1)) {
-        particle1_->SetTexture("effect1.png");
-        for (int i = 0; i < 100; i++) {
-            //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
-            const float md_pos = 10.0f;
-            XMFLOAT3 pos{};
-            pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-            pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-            pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-            //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
-            const float md_vel = 0.1f;
-            XMFLOAT3 vel{};
-            vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-            vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-            vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-            //重力に見立ててYのみ[0.001ff,0]でランダムに分布
-            XMFLOAT3 acc{};
-            const float md_acc = 0.001f;
-            acc.y = -(float)rand() / RAND_MAX * md_acc;
-            //追加
-            particle1_->Add(30, pos, vel, acc, 1.0f, 0.0f);
-        }
-    }
-    if (input_->PushKey(DIK_2)) {
-        particle1_->SetTexture("effect2.png");
-        for (int i = 0; i < 100; i++) {
-            //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
-            const float md_pos = 10.0f;
-            XMFLOAT3 pos{};
-            pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-            pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-            pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-            //X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
-            const float md_vel = 0.1f;
-            XMFLOAT3 vel{};
-            vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-            vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-            vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-            //重力に見立ててYのみ[0.001ff,0]でランダムに分布
-            XMFLOAT3 acc{};
-            const float md_acc = 0.001f;
-            acc.y = -(float)rand() / RAND_MAX * md_acc;
-            //追加
-            particle2_->Add(30, pos, vel, acc, 1.0f, 0.0f);
-        }
-    }
-#pragma endregion 
-
-#pragma region ImGuiテキスト
-    ImGui::Text("particle[1][2]");
-
-
+#pragma endregion
     
 
-    XMINT2 start = XMINT2(10, 10);
-    XMINT2 goal = XMINT2(0, 0);
+    gameStage_->SetSoldiersPos(soldiersPos_);
 
     route->AStar(start, goal);
+#pragma region ImGuiテキスト
+
 #pragma endregion
     
     gameSprite_->Update();
@@ -178,7 +122,7 @@ void GamePlayScene::Update()
     gameStage_->Update();
     //各兵隊の更新
     for (int i = 0; i < 4; i++) {
-        soldier_[i]->Update();
+        soldier_[i]->Update(startFloor[i],goalFloor[i]);
     }
     //プレイヤー更新
     //player_->Update();
@@ -186,8 +130,7 @@ void GamePlayScene::Update()
     camera_->Update();
     input_->Update();
     objSphere_->Update();
-    particle1_->Update();
-    particle2_->Update();
+
     //当たり判定の更新
    /* sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     plane.distance = objPlane_->GetPosition().y;*/
@@ -219,7 +162,6 @@ void GamePlayScene::Draw()
 
     // パーティクルの描画
     ParticleManager::PreDraw(dxCommon_->GetCommandList());  //パーティクル前処理
-    particle1_->Draw();
-    particle2_->Draw();
+
     ParticleManager::PostDraw();                            //パーティクル後処理
 }

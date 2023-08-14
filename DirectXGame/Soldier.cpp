@@ -24,8 +24,11 @@ void Soldier::Finalize()
     
 }
 
-void Soldier::Update()
+void Soldier::Update(XMINT2 startFloor, XMINT2 goalFloor)
 {
+    this->startFloor = startFloor;
+    this->goalFloor = goalFloor;
+
     obj_->Update();
 }
 

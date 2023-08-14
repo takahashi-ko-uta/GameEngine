@@ -250,15 +250,23 @@ void SearchRoute::AStar(XMINT2 start, XMINT2 goal)
 	while (route_list.empty() == false)
 	{
 		XMINT2 route = route_list.front();
-
+		int num = 0;
 		// スタートセルなら終了
 		if (IsEqualCell(route, start) == true)
 		{
 			// 復元した経路を表示
 			for (XMINT2& cell : route_list)
 			{
-				ImGui::Text("x = %d y = %d\n", cell.x, cell.y);
+				routeSave[num] = cell;
+				//ImGui::Text("x = %d y = %d\n", cell.x, cell.y);
+				num++;
 			}
+			for (int i = 0; i < 40; i++) {
+				if (i > num) {
+					routeSave[num] = { 99,99 };//99,99が出たら終わり
+				}
+			}
+
 			break;
 		}
 		else
@@ -270,11 +278,24 @@ void SearchRoute::AStar(XMINT2 start, XMINT2 goal)
 			}
 			else
 			{
-				ImGui::Text("経路は見つからなかった\n");
+				ImGui::Text("noRoute");
 				break;
 			}
 		}
+		
 	}
 
-	ImGui::Text("探索回数 = %d\n", count);
+	ImGui::Text("count = %d\n", count);
+	//ImGui::Text("num = %d\n", num);
+
+	/*for (int i = 0; i < 40; i++) {
+		ImGui::Text("x:%d, y:%d", routeSave[i].x, routeSave[i].y);
+	}*/
+}
+
+void SearchRoute::GetRoute(XMINT2 route[40])
+{
+	for (int i = 0; i < 40; i++){
+		route[i] = this->routeSave[i];
+	}
 }
