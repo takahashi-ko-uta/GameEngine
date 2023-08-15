@@ -1,4 +1,6 @@
 #include "Soldier.h"
+#include "imgui.h"
+
 
 void Soldier::Initialize(XMFLOAT3 spawnPos, int soldierNum)
 {
@@ -57,6 +59,12 @@ void Soldier::Move()
     for (int i = 0; i < 40; i++) {
 
     }
+    route_[1].x;
+
+    ImGui::Text("count = %d\n", route_[1].x);
+
+    //floorPos[route_[1]->x][route_[1].y]
+
 }
 
 void Soldier::CreateRoute()

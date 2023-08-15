@@ -46,7 +46,7 @@ void GamePlayScene::Initialize()
     //•º‘à‚Ì‰Šú‰»
     for (int i = 0; i < 4; i++) {
         soldier_[i] = new Soldier();
-        soldier_[i]->Initialize(gameStage_->GetSpawnFloor(i),i);
+        soldier_[i]->Initialize(gameStage_->GetSpawnPos(i),i);
     }
 
     //ƒvƒŒƒCƒ„[‚Ì‰Šú‰»

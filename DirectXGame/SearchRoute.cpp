@@ -257,7 +257,7 @@ void SearchRoute::AStar(Cell start, Cell goal)
 			{
 				routeSave[num].x = cell.X;
 				routeSave[num].y = cell.Y;
-				ImGui::Text("x = %d y = %d\n", cell.X, cell.Y);
+				//ImGui::Text("x = %d y = %d\n", cell.X, cell.Y);
 				num++;
 			}
 			for (int i = 0; i < 40; i++) {

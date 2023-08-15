@@ -201,7 +201,7 @@ void GameStage::Draw()
     }
 }
 
-const XMFLOAT3 GameStage::GetSpawnFloor(int num)
+const XMFLOAT3 GameStage::GetSpawnPos(int num)
 {
 
     XMFLOAT3 spawnPos;

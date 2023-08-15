@@ -20,7 +20,7 @@ public://ÉÅÉìÉoä÷êî
 	void Draw();
 
 	//getter
-	const XMFLOAT3 GetSpawnFloor(int num);
+	const XMFLOAT3 GetSpawnPos(int num);
 	void GetMapData(int mapData[11][11], int mapSizeX, int mapSizeY);
 	void GetFloorPos(XMFLOAT3 floorPos[11][11]);
 	void GetStartPos(XMINT2 startFloor[4]);
