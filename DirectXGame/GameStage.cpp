@@ -95,23 +95,11 @@ void GameStage::Select()
     //床の状況に応じて色を変える   
     ChangeFloorColor();
     
-    //スペースを押したらスタート地点を設定
-    if (input->TriggerKey(DIK_SPACE)) {
-        for (int i = 0; i < 4; i++) {
-            //スタートは常に更新
-            startFloor[i] = soldiersFloor[i];
-            //選択した床の上に兵隊がいたら、その兵隊の番号を取得
-            if (selectFloor.x == soldiersFloor[i].x && selectFloor.y == soldiersFloor[i].y) {
-                selectSoldier = i;
-            }
-            //番号を取得した兵隊のゴールを更新
-            else if (selectSoldier != 5) {
-                goalFloor[selectSoldier] = selectFloor;
-            }
-        }
-    }
+    //スタートとゴールを決める
+    SetStartGoal();
 
-    //スタート地点、ゴール地点をリセット
+    
+    //スタート地点、ゴール地点をリセット(後で消す)
     if (input->TriggerKey(DIK_R)) {
         for (int i = 0; i < 4; i++){
             startFloor[i] = {99,99};
@@ -133,6 +121,26 @@ void GameStage::Select()
         startFloor[0].x, startFloor[0].y, startFloor[1].x, startFloor[1].y, startFloor[2].x, startFloor[2].y, startFloor[3].x, startFloor[3].y);
     ImGui::Text("G[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
         goalFloor[0].x, goalFloor[0].y, goalFloor[1].x, goalFloor[1].y, goalFloor[2].x, goalFloor[2].y, goalFloor[3].x, goalFloor[3].y);
+}
+
+void GameStage::SetStartGoal()
+{
+    //スペースを押したらスタート地点を設定
+    if (input->TriggerKey(DIK_SPACE)) {
+        for (int i = 0; i < 4; i++) {
+            //スタートは常に更新
+            startFloor[i] = soldiersFloor[i];
+            //選択した床の上に兵隊がいたら、その兵隊の番号を取得
+            if (selectFloor.x == soldiersFloor[i].x && selectFloor.y == soldiersFloor[i].y) {
+                selectSoldier = i;
+            }
+            //選択した床の上に兵隊がいなければ、番号を取得した兵隊のゴールを更新
+            else if (selectSoldier != 5 && 
+                selectFloor.x != soldiersFloor[i].x && selectFloor.y != soldiersFloor[i].y) {
+                goalFloor[selectSoldier] = selectFloor;
+            }
+        }
+    }
 }
 
 void GameStage::SetSoldiersFloor()

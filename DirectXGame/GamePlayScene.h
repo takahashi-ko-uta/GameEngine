@@ -56,15 +56,11 @@ private:
 	//Player
 	Player* player_ = nullptr;
 
-	SearchRoute* route = nullptr;
-	SearchRoute::Cell start = SearchRoute::Cell(10, 10);
-	SearchRoute::Cell goal = SearchRoute::Cell(0, 0);
-	XMINT2 routeSave[40];
-
 	//•º‘à(4•”‘à)
 	Soldier* soldier_[4];
 	XMFLOAT3 soldiersPos_[4];//Še•º‘à‚ÌˆÊ’u
 	XMINT2 startFloor[4];
 	XMINT2 goalFloor[4];
+	XMFLOAT3 floorPos[11][11];
 };
 

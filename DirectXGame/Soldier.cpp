@@ -17,6 +17,11 @@ void Soldier::Initialize(XMFLOAT3 spawnPos, int soldierNum)
     if (soldierNum == 1) { obj_->SetColor({ 0,1,0,1 }); }
     if (soldierNum == 2) { obj_->SetColor({ 0,0,1,1 }); }
     if (soldierNum == 3) { obj_->SetColor({ 1,0,1,1 }); }
+
+    searchRoute_ = new SearchRoute();
+    searchRoute_->CreateMap();
+    //start_ = SearchRoute::Cell(10, 10);
+    //goal_ = SearchRoute::Cell(0, 0);
 }
 
 void Soldier::Finalize()
@@ -24,12 +29,68 @@ void Soldier::Finalize()
     
 }
 
-void Soldier::Update(XMINT2 startFloor, XMINT2 goalFloor)
+void Soldier::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11])
 {
+    //スタートとゴールを取得
     this->startFloor = startFloor;
     this->goalFloor = goalFloor;
 
+    //床の座標を取得
+    for (int y = 0; y < 11; y++) {
+        for (int x = 0; x < 11; x++) {
+            this->floorPos[y][x] = floorPos[y][x];
+        }
+    }
+
+    Move();
+
     obj_->Update();
+}
+
+void Soldier::Move()
+{
+    //ルート作成
+    CreateRoute();
+    //兵隊の床の位置を取得
+    CreateSoldierFloor();
+    
+    for (int i = 0; i < 40; i++) {
+
+    }
+}
+
+void Soldier::CreateRoute()
+{
+    //スタートとゴールを保存
+    SearchRoute::Cell oldStart = start_;
+    SearchRoute::Cell oldGoal = goal_;
+
+    //スタートとゴールを更新
+    start_ = SearchRoute::Cell(startFloor.x, startFloor.y);
+    goal_ = SearchRoute::Cell(goalFloor.x, goalFloor.y);
+
+    //ゴールが変更されたらrouteを再検索する
+    if (goal_.X != oldGoal.X && goal_.Y != oldGoal.Y) {
+        searchRoute_->AStar(start_, goal_);
+    }
+
+    //ルートを取得
+    searchRoute_->GetRoute(route_);
+}
+
+void Soldier::CreateSoldierFloor()
+{
+    //兵隊の床の位置を取得
+    for (int y = 0; y < 11; y++) {
+        for (int x = 0; x < 1; x++) {
+            //兵隊のx,zと各床のx,zを比べて誤差+-5だったら保存する
+            if ((floorPos[y][x].x + 5) >= obj_->GetPosition().x && (floorPos[y][x].x - 5) <= obj_->GetPosition().x &&
+                (floorPos[y][x].z + 5) >= obj_->GetPosition().z && (floorPos[y][x].z - 5) <= obj_->GetPosition().z) {
+
+                soldierFloor = { y,x };
+            }
+        }
+    }
 }
 
 void Soldier::Draw()

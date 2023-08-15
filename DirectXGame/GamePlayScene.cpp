@@ -55,9 +55,6 @@ void GamePlayScene::Initialize()
 
 #pragma endregion
 
-    route = new SearchRoute();
-    route->CreateMap();
-
     //当たり判定
     /*sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     sphere.radius = 5.0f;
@@ -104,31 +101,22 @@ void GamePlayScene::Update()
         soldiersPos_[i] = soldier_[i]->GetPosition();
     }
 
+    //スタートとゴールを取得する
     gameStage_->GetStartPos(startFloor);
     gameStage_->GetGoalPos(goalFloor);
+
+    //床の座標を取得
+    gameStage_->GetFloorPos(floorPos);
+
+    gameStage_->SetSoldiersPos(soldiersPos_);
 
 #pragma endregion
     
 
-    gameStage_->SetSoldiersPos(soldiersPos_);
-    SearchRoute::Cell oldStart = start;
-    SearchRoute::Cell oldGoal = goal;
-
-    if (input_->TriggerKey(DIK_1)) {
-        start = SearchRoute::Cell(5, 2);
-        goal = SearchRoute::Cell(2, 7);
-    }
-
-    if (goal.X != oldGoal.X && goal.Y != oldGoal.Y) {
-        route->AStar(start, goal);
-    }
-
-    route->GetRoute(routeSave);
-
+   
+    
 #pragma region ImGuiテキスト
-    for (int i = 0; i < 40; i++) {
-        ImGui::Text("x:%d, y:%d", routeSave[i].x, routeSave[i].y);
-    }
+    
 #pragma endregion
     
     gameSprite_->Update();
@@ -136,7 +124,7 @@ void GamePlayScene::Update()
     gameStage_->Update();
     //各兵隊の更新
     for (int i = 0; i < 4; i++) {
-        soldier_[i]->Update(startFloor[i],goalFloor[i]);
+        soldier_[i]->Update(startFloor[i], goalFloor[i], floorPos);
     }
     //プレイヤー更新
     //player_->Update();
