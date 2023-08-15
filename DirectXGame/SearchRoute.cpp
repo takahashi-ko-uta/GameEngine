@@ -34,24 +34,24 @@ void SearchRoute::CreateMap()
 	{
 		for (int x = 0; x < MapWidth; x++)
 		{
-			Map[y][x].Position.x = x;
-			Map[y][x].Position.y = y;
+			Map[y][x].Position.X = x;
+			Map[y][x].Position.Y = y;
 
-			XMINT2 adjacent_cells[] =
+			Cell adjacent_cells[] =
 			{
-				XMINT2(x, y - 1),
-				XMINT2(x - 1, y),
-				XMINT2(x + 1, y),
-				XMINT2(x, y + 1),
+				Cell(x, y - 1),
+				Cell(x - 1, y),
+				Cell(x + 1, y),
+				Cell(x, y + 1),
 			};
 
 			// 隣接ノードの追加
-			for (const XMINT2& cell : adjacent_cells)
+			for (const Cell& cell : adjacent_cells)
 			{
-				if (IsCellWithinTheRange(cell.x, cell.y) == true &&
-					CostTable[cell.y][cell.x] == 1)
+				if (IsCellWithinTheRange(cell.X, cell.Y) == true &&
+					CostTable[cell.Y][cell.X] == 1)
 				{
-					Map[y][x].AdjacentNodes.push_back(&Map[cell.y][cell.x]);
+					Map[y][x].AdjacentNodes.push_back(&Map[cell.Y][cell.X]);
 				}
 			}
 		}
@@ -74,18 +74,16 @@ void SearchRoute::InitCost(int heuristic_cost, int total_cost)
 // ヒューリスティックコスト計算(ノードとゴールまでの距離を返している)
 float SearchRoute::CalculateHeuristic(const Node* node, const Node* Goal)
 {
-	float x = fabsf(Goal->Position.x - node->Position.x);
-	float y = fabsf(Goal->Position.y - node->Position.y);
+	float x = fabsf(Goal->Position.X - node->Position.X);
+	float y = fabsf(Goal->Position.Y - node->Position.Y);
 
 	return sqrtf(x * x + y * y);
 }
 
 // セル比較
-bool SearchRoute::IsEqualCell(const XMINT2& a, const XMINT2& b)
+bool SearchRoute::IsEqualCell(const Cell& a, const Cell& b)
 {
-	if (a.x == b.x &&
-		a.y == b.y)
-	{
+	if (a.X == b.X &&	a.Y == b.Y){
 		return true;
 	}
 
@@ -145,22 +143,22 @@ bool SearchRoute::AddAdjacentNode(std::list<Node*>& open_list, std::list<Node*>&
 	return false;
 }
 
-void SearchRoute::AStar(XMINT2 start, XMINT2 goal)
+void SearchRoute::AStar(Cell start, Cell goal)
 {
 	std::list<Node*> open_list;
 	std::list<Node*> close_list;
 
 	//const Node* start_node = &Map[start.Y][start.X];
-	const Node* goal_node = &Map[goal.y][goal.x];
+	const Node* goal_node = &Map[goal.Y][goal.X];
 
 	// 更新したノード位置保存用
-	XMINT2 last_update_cells[MapHeight][MapWidth];
+	Cell last_update_cells[MapHeight][MapWidth];
 
 	// グラフの初期化
 	InitCost(Infinity, 0);
 
 	// スタートノードの指定
-	open_list.push_back(&Map[start.y][start.x]);
+	open_list.push_back(&Map[start.Y][start.X]);
 
 	// 経路探索回数
 	int count = 0;
@@ -192,7 +190,7 @@ void SearchRoute::AStar(XMINT2 start, XMINT2 goal)
 			}
 
 			// ノード間コスト
-			float edge_cost = CostTable[adjacent_node->Position.y][adjacent_node->Position.x];
+			float edge_cost = CostTable[adjacent_node->Position.Y][adjacent_node->Position.X];
 			// 取得ノードのトータルコスト
 			float node_cost = search_node->TotalCost;
 			/*
@@ -207,14 +205,14 @@ void SearchRoute::AStar(XMINT2 start, XMINT2 goal)
 				// トータルコストを更新
 				adjacent_node->TotalCost = total_cost;
 
-				if (adjacent_node->Position.y == 0 && adjacent_node->Position.x == 2)
+				if (adjacent_node->Position.Y == 0 && adjacent_node->Position.X == 2)
 				{
 					int xx = 0;
 					xx = 100;
 				}
 
 				// 経路を更新したセルを保存
-				last_update_cells[adjacent_node->Position.y][adjacent_node->Position.x] = search_node->Position;
+				last_update_cells[adjacent_node->Position.Y][adjacent_node->Position.X] = search_node->Position;
 			}
 		}
 
@@ -243,22 +241,23 @@ void SearchRoute::AStar(XMINT2 start, XMINT2 goal)
 	}
 
 	// 経路復元
-	std::list<XMINT2> route_list;
+	std::list<Cell> route_list;
 
 	// ゴールセルから復元する
 	route_list.push_back(goal);
 	while (route_list.empty() == false)
 	{
-		XMINT2 route = route_list.front();
+		Cell route = route_list.front();
 		int num = 0;
 		// スタートセルなら終了
 		if (IsEqualCell(route, start) == true)
 		{
 			// 復元した経路を表示
-			for (XMINT2& cell : route_list)
+			for (Cell& cell : route_list)
 			{
-				routeSave[num] = cell;
-				//ImGui::Text("x = %d y = %d\n", cell.x, cell.y);
+				routeSave[num].x = cell.X;
+				routeSave[num].y = cell.Y;
+				ImGui::Text("x = %d y = %d\n", cell.X, cell.Y);
 				num++;
 			}
 			for (int i = 0; i < 40; i++) {
@@ -271,10 +270,10 @@ void SearchRoute::AStar(XMINT2 start, XMINT2 goal)
 		}
 		else
 		{
-			if (IsCellWithinTheRange(route.x, route.y) == true)
+			if (IsCellWithinTheRange(route.X, route.Y) == true)
 			{
 				// 追加
-				route_list.push_front(last_update_cells[route.y][route.x]);
+				route_list.push_front(last_update_cells[route.Y][route.X]);
 			}
 			else
 			{
@@ -288,9 +287,9 @@ void SearchRoute::AStar(XMINT2 start, XMINT2 goal)
 	ImGui::Text("count = %d\n", count);
 	//ImGui::Text("num = %d\n", num);
 
-	/*for (int i = 0; i < 40; i++) {
+	for (int i = 0; i < 40; i++) {
 		ImGui::Text("x:%d, y:%d", routeSave[i].x, routeSave[i].y);
-	}*/
+	}
 }
 
 void SearchRoute::GetRoute(XMINT2 route[40])

@@ -111,10 +111,24 @@ void GamePlayScene::Update()
     
 
     gameStage_->SetSoldiersPos(soldiersPos_);
+    SearchRoute::Cell oldStart = start;
+    SearchRoute::Cell oldGoal = goal;
 
-    route->AStar(start, goal);
+    if (input_->TriggerKey(DIK_1)) {
+        start = SearchRoute::Cell(5, 2);
+        goal = SearchRoute::Cell(2, 7);
+    }
+
+    if (goal.X != oldGoal.X && goal.Y != oldGoal.Y) {
+        route->AStar(start, goal);
+    }
+
+    route->GetRoute(routeSave);
+
 #pragma region ImGuiテキスト
-
+    for (int i = 0; i < 40; i++) {
+        ImGui::Text("x:%d, y:%d", routeSave[i].x, routeSave[i].y);
+    }
 #pragma endregion
     
     gameSprite_->Update();

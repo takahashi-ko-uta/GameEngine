@@ -19,6 +19,26 @@ public:
 		CouldntErased	// 削除できない
 	};
 
+	// Mapのマス目
+	struct Cell
+	{
+		Cell() :
+			X(-1),
+			Y(-1)
+		{
+		}
+
+		Cell(int x, int y)
+		{
+			X = x;
+			Y = y;
+		}
+
+		int X;		// 列
+		int Y;		// 行
+	};
+
+
 	// ノード
 	struct Node
 	{
@@ -35,7 +55,7 @@ public:
 			AdjacentNodes.clear();
 		}
 
-		XMINT2 Position;						// ノード座標
+		Cell Position;						// ノード座標
 		std::vector<Node*> AdjacentNodes;	// 隣接ノード(辺)
 		float HeuristicCost;				// ヒューリスティックコスト
 		float TotalCost;					// コスト(ヒューリスティックコスト込み)
@@ -52,12 +72,12 @@ public:
 	// ヒューリスティックコスト計算(ノードとゴールまでの距離を返している)
 	float CalculateHeuristic(const Node* node, const Node* Goal);
 	// セル比較
-	bool IsEqualCell(const XMINT2& a, const XMINT2& b);
+	bool IsEqualCell(const Cell& a, const Cell& b);
 
 	EraseResult EraseNode(std::list<Node*>& list, Node* new_node, float new_cost);
 	// オープンリストに追加
 	bool AddAdjacentNode(std::list<Node*>& open_list, std::list<Node*>& close_list, Node* adjacent_node, float cost);
-	void AStar(XMINT2 start, XMINT2 goal);
+	void AStar(Cell start, Cell goal);
 
 	//getter
 	void GetRoute(XMINT2 route[40]);
@@ -86,6 +106,6 @@ private:
 	Node Map[MapHeight][MapWidth];
 
 	XMINT2 routeSave[40];
-	//int num = 0;
+
 };
 
