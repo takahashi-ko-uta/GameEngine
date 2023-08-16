@@ -120,18 +120,29 @@ void GameStage::SetStartGoal()
 {
     //スペースを押したらスタート地点を設定
     if (input->TriggerKey(DIK_SPACE)) {
+        int32_t oldNum = selectSoldier;
         for (int i = 0; i < 4; i++) {
             //スタートは常に更新
             startFloor[i] = soldiersFloor[i];
+            
             //選択した床の上に兵隊がいたら、その兵隊の番号を取得
             if (selectFloor.x == soldiersFloor[i].x && selectFloor.y == soldiersFloor[i].y) {
                 selectSoldier = i;
+               
             }
             //選択した床の上に兵隊がいなければ、番号を取得した兵隊のゴールを更新
-            else if (selectSoldier != 5 && 
+            /*else if (selectSoldier != 5 && 
                 selectFloor.x != soldiersFloor[i].x && selectFloor.y != soldiersFloor[i].y) {
                 goalFloor[selectSoldier] = selectFloor;
-            }
+            }*/
+            ////ゴールをセット
+            //if (selectSoldier != 5 && selectSoldier == oldNum) {
+            //    goalFloor[selectSoldier] = selectFloor;
+            //}
+        }
+        //ゴールをセット
+        if (selectSoldier != 5 && selectSoldier == oldNum) {
+            goalFloor[selectSoldier] = selectFloor;
         }
     }
 }

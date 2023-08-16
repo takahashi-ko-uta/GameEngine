@@ -88,8 +88,8 @@ void Soldier::Move()
         move.z = 0.0f;
     }
 
-
-    if (X == 99 && Y == 99) {//99‚Ì‚Í‘S‚Ä0‚É‚·‚é
+    //route_‚Í99‚¾‚Á‚½‚çƒS[ƒ‹‚É‚Â‚¢‚Ä‚¢‚é
+    if (X == 99 && Y == 99) {
         move = { 0,0,0 };
         routeNum_ = 0;
         isMove = false;
@@ -116,7 +116,7 @@ void Soldier::Move()
         }
     }
     
-    ImGui::Text("isMove:%d", isMove);
+    /*ImGui::Text("isMove:%d", isMove);
     ImGui::Text("Num:%d", routeNum_);
     ImGui::Text("move(x:%0.2f,z:%0.2f)", move.x, move.z);
     ImGui::Text("pos(x:%0.2f,z:%0.2f)", pos.x, pos.z);
@@ -124,7 +124,7 @@ void Soldier::Move()
 
     for (int i = 0; i < 40; i++) {
         ImGui::Text("x:%d, y:%d", route_[i].x, route_[i].y);
-    }
+    }*/
 }
 
 void Soldier::CreateRoute()
