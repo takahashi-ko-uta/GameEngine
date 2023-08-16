@@ -44,7 +44,7 @@ void Soldier::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][
     //床の座標を取得
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 11; x++) {
-            this->floorPos[y][x] = floorPos[y][x];
+            this->floorPos_[y][x] = floorPos[y][x];
         }
     }
 
@@ -59,13 +59,72 @@ void Soldier::Move()
     CreateRoute();
     //兵隊の床の位置を取得
     ChangeSoldierFloor();
-    
-    for (int i = 0; i < 40; i++) {
 
+    //移動
+    int32_t X = route_[routeNum_].x;
+    int32_t Y = route_[routeNum_].y;
+
+    XMFLOAT3 move = { 0.0f, 0.0f, 0.0f };
+    XMFLOAT3 pos = obj_->GetPosition();
+
+    // 移動量
+    if (floorPos_[X][Y].x < pos.x) {
+        move.x = -1.0f;
     }
-    route_[1].x;
+    else if(floorPos_[X][Y].x > pos.x) {
+        move.x = 1.0f;
+    }
+    else {
+        move.x = 0.0f;
+    }
 
-    ImGui::Text("count = %d\n", route_[1].x);
+    if (floorPos_[X][Y].z < pos.z) {
+        move.z = -1.0f;
+    }
+    else if(floorPos_[X][Y].z > pos.z) {
+        move.z = 1.0f;
+    }
+    else {
+        move.z = 0.0f;
+    }
+
+
+    if (X == 99 && Y == 99) {//99の時は全て0にする
+        move = { 0,0,0 };
+        routeNum_ = 0;
+        isMove = false;
+    }
+    
+
+
+   
+    if (isMove == true) {
+        //目的地に行くまで続ける
+        if (floorPos_[X][Y].x != pos.x ||
+            floorPos_[X][Y].z != pos.z) {
+
+
+            pos.x += move.x;
+            pos.z += move.z;
+            obj_->SetPosition(pos);
+        }
+        //目的地に着いたら
+        else if (floorPos_[X][Y].x == pos.x &&
+            floorPos_[X][Y].z == pos.z) {
+            //次の目的地をセット
+            routeNum_++;
+        }
+    }
+    
+    ImGui::Text("isMove:%d", isMove);
+    ImGui::Text("Num:%d", routeNum_);
+    ImGui::Text("move(x:%0.2f,z:%0.2f)", move.x, move.z);
+    ImGui::Text("pos(x:%0.2f,z:%0.2f)", pos.x, pos.z);
+    ImGui::Text("floorPos(x:%0.2f,z:%0.2f)", floorPos_[X][Y].x, floorPos_[X][Y].z);
+
+    for (int i = 0; i < 40; i++) {
+        ImGui::Text("x:%d, y:%d", route_[i].x, route_[i].y);
+    }
 }
 
 void Soldier::CreateRoute()
@@ -81,6 +140,7 @@ void Soldier::CreateRoute()
     //ゴールが変更されたらrouteを再検索する
     if (goal_.X != oldGoal.X || goal_.Y != oldGoal.Y) {
         searchRoute_->AStar(start_, goal_);
+        isMove = true;
     }
 
     //ルートを取得
@@ -93,8 +153,8 @@ void Soldier::ChangeSoldierFloor()
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 1; x++) {
             //兵隊のx,zと各床のx,zを比べて誤差+-5だったら保存する
-            if ((floorPos[y][x].x + 5) >= obj_->GetPosition().x && (floorPos[y][x].x - 5) <= obj_->GetPosition().x &&
-                (floorPos[y][x].z + 5) >= obj_->GetPosition().z && (floorPos[y][x].z - 5) <= obj_->GetPosition().z) {
+            if ((floorPos_[y][x].x + 5) >= obj_->GetPosition().x && (floorPos_[y][x].x - 5) <= obj_->GetPosition().x &&
+                (floorPos_[y][x].z + 5) >= obj_->GetPosition().z && (floorPos_[y][x].z - 5) <= obj_->GetPosition().z) {
 
                 soldierFloor = { y,x };
             }
@@ -108,8 +168,8 @@ void Soldier::ChangeSpawnFloor()
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 1; x++) {
             //兵隊のx,zと各床のx,zを比べて誤差+-5だったら保存する
-            if ((floorPos[y][x].x + 5) >= spawnPos_.x && (floorPos[y][x].x - 5) <= spawnPos_.x &&
-                (floorPos[y][x].z + 5) >= spawnPos_.z && (floorPos[y][x].z - 5) <= spawnPos_.z) {
+            if ((floorPos_[y][x].x + 5) >= spawnPos_.x && (floorPos_[y][x].x - 5) <= spawnPos_.x &&
+                (floorPos_[y][x].z + 5) >= spawnPos_.z && (floorPos_[y][x].z - 5) <= spawnPos_.z) {
 
                 spawnFloor_ = { y,x };
             }

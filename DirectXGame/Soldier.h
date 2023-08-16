@@ -3,6 +3,7 @@
 #include "Object3d.h"
 #include "Input.h"
 #include "SearchRoute.h"
+using namespace DirectX;
 
 class Soldier
 {
@@ -42,7 +43,9 @@ private:
 	SearchRoute::Cell start_ = SearchRoute::Cell(0, 0);
 	SearchRoute::Cell goal_ = SearchRoute::Cell(0, 0);
 	XMINT2 route_[40];
-	XMFLOAT3 floorPos[11][11];
+	int32_t routeNum_ = 0;
+	bool isMove = false;//ˆÚ“®‚µ‚Ä‚¢‚é‚©
+	XMFLOAT3 floorPos_[11][11];
 	XMINT2 soldierFloor;
 
 };

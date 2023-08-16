@@ -99,14 +99,6 @@ void GameStage::Select()
     //スタートとゴールを決める
     SetStartGoal();
 
-    
-    //スタート地点、ゴール地点をリセット(後で消す)
-    if (input->TriggerKey(DIK_R)) {
-        for (int i = 0; i < 4; i++){
-            startFloor[i] = {99,99};
-            goalFloor[i] = {99,99};
-        }
-    }
 
     XMFLOAT3 selectPos = objFloor_[selectFloor.x][selectFloor.y]->GetPosition();
 
