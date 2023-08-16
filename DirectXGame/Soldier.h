@@ -17,8 +17,11 @@ public:
 	void Move();
 	//ルート作成
 	void CreateRoute();
-	//兵隊の床の位置取得
-	void CreateSoldierFloor();
+	//兵隊の位置を床(XMINT2型)に変更
+	void ChangeSoldierFloor();
+	//スポーンの位置を床(XMINT2型)に変更
+	void ChangeSpawnFloor();
+
 	//描画
 	void Draw();
 
@@ -31,6 +34,7 @@ private:
 	Object3d* obj_ = nullptr;
 
 	XMFLOAT3 spawnPos_;	//初期位置
+	XMINT2 spawnFloor_;
 	XMINT2 startFloor;	//スタート位置
 	XMINT2 goalFloor;	//ゴール位置
 
@@ -40,5 +44,6 @@ private:
 	XMINT2 route_[40];
 	XMFLOAT3 floorPos[11][11];
 	XMINT2 soldierFloor;
+
 };
 

@@ -39,16 +39,17 @@ void GameStage::Initialize()
     }
 #pragma endregion 
     
-    for (int i = 0; i < 4; i++){
-        startFloor[i] = { 99,99 };
-        goalFloor[i] = { 99,99 };
-    }
-
     //兵隊のスポーン位置を設定
     spawnFloor[0] = { 4,4 };
     spawnFloor[1] = { 4,6 };
     spawnFloor[2] = { 6,4 };
     spawnFloor[3] = { 6,6 };
+
+    //スタートとゴール初期化
+    for (int i = 0; i < 4; i++) {
+        startFloor[i] = { spawnFloor[i].x,spawnFloor[i].y};
+        goalFloor[i] = { spawnFloor[i].x,spawnFloor[i].y };
+    }
 }
 
 void GameStage::Finalize()

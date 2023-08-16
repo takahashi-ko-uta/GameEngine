@@ -22,8 +22,12 @@ void Soldier::Initialize(XMFLOAT3 spawnPos, int soldierNum)
 
     searchRoute_ = new SearchRoute();
     searchRoute_->CreateMap();
-    //start_ = SearchRoute::Cell(10, 10);
-    //goal_ = SearchRoute::Cell(0, 0);
+    ChangeSpawnFloor();
+    //start_ = SearchRoute::Cell(spawnFloor_.x, spawnFloor_.y);
+    //goal_ = SearchRoute::Cell(spawnFloor_.x, spawnFloor_.y);
+
+    start_ = SearchRoute::Cell(0, 0);
+    goal_ = SearchRoute::Cell(5, 5);
 }
 
 void Soldier::Finalize()
@@ -54,7 +58,7 @@ void Soldier::Move()
     //ルート作成
     CreateRoute();
     //兵隊の床の位置を取得
-    CreateSoldierFloor();
+    ChangeSoldierFloor();
     
     for (int i = 0; i < 40; i++) {
 
@@ -62,9 +66,6 @@ void Soldier::Move()
     route_[1].x;
 
     ImGui::Text("count = %d\n", route_[1].x);
-
-    //floorPos[route_[1]->x][route_[1].y]
-
 }
 
 void Soldier::CreateRoute()
@@ -78,7 +79,7 @@ void Soldier::CreateRoute()
     goal_ = SearchRoute::Cell(goalFloor.x, goalFloor.y);
 
     //ゴールが変更されたらrouteを再検索する
-    if (goal_.X != oldGoal.X && goal_.Y != oldGoal.Y) {
+    if (goal_.X != oldGoal.X || goal_.Y != oldGoal.Y) {
         searchRoute_->AStar(start_, goal_);
     }
 
@@ -86,7 +87,7 @@ void Soldier::CreateRoute()
     searchRoute_->GetRoute(route_);
 }
 
-void Soldier::CreateSoldierFloor()
+void Soldier::ChangeSoldierFloor()
 {
     //兵隊の床の位置を取得
     for (int y = 0; y < 11; y++) {
@@ -96,6 +97,21 @@ void Soldier::CreateSoldierFloor()
                 (floorPos[y][x].z + 5) >= obj_->GetPosition().z && (floorPos[y][x].z - 5) <= obj_->GetPosition().z) {
 
                 soldierFloor = { y,x };
+            }
+        }
+    }   
+}
+
+void Soldier::ChangeSpawnFloor()
+{
+    //スポーンの床の位置を取得
+    for (int y = 0; y < 11; y++) {
+        for (int x = 0; x < 1; x++) {
+            //兵隊のx,zと各床のx,zを比べて誤差+-5だったら保存する
+            if ((floorPos[y][x].x + 5) >= spawnPos_.x && (floorPos[y][x].x - 5) <= spawnPos_.x &&
+                (floorPos[y][x].z + 5) >= spawnPos_.z && (floorPos[y][x].z - 5) <= spawnPos_.z) {
+
+                spawnFloor_ = { y,x };
             }
         }
     }

@@ -277,19 +277,19 @@ void SearchRoute::AStar(Cell start, Cell goal)
 			}
 			else
 			{
-				ImGui::Text("noRoute");
+				//ImGui::Text("noRoute");
 				break;
 			}
 		}
 		
 	}
 
-	ImGui::Text("count = %d\n", count);
+	//ImGui::Text("count = %d\n", count);
 	//ImGui::Text("num = %d\n", num);
 
-	for (int i = 0; i < 40; i++) {
+	/*for (int i = 0; i < 40; i++) {
 		ImGui::Text("x:%d, y:%d", routeSave[i].x, routeSave[i].y);
-	}
+	}*/
 }
 
 void SearchRoute::GetRoute(XMINT2 route[40])
