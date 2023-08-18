@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "Soldier.h"
 #include "SearchRoute.h"
+#include "EnemyShip.h"
 
 class GamePlayScene
 {
@@ -62,5 +63,8 @@ private:
 	XMINT2 startFloor[4];
 	XMINT2 goalFloor[4];
 	XMFLOAT3 floorPos[11][11];
+
+	//“G
+	EnemyShip* ENship = nullptr;
 };
 

@@ -55,6 +55,9 @@ void GamePlayScene::Initialize()
 
 #pragma endregion
 
+    ENship = new EnemyShip();
+    ENship->Initialize();
+
     //当たり判定
     /*sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     sphere.radius = 5.0f;
@@ -119,6 +122,8 @@ void GamePlayScene::Update()
     
 #pragma endregion
     
+
+#pragma region 各アップデート
     gameSprite_->Update();
     //ステージ更新
     gameStage_->Update();
@@ -132,7 +137,10 @@ void GamePlayScene::Update()
     camera_->Update();
     input_->Update();
     objSphere_->Update();
+#pragma endregion
 
+    
+    ENship->Update();
     //当たり判定の更新
    /* sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     plane.distance = objPlane_->GetPosition().y;*/
@@ -159,6 +167,8 @@ void GamePlayScene::Draw()
     }
 
     objSphere_->Draw();
+
+    ENship->Draw();
 
     Object3d::PostDraw();                           //オブジェクト後処理
 
