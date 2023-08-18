@@ -145,7 +145,10 @@
       <Filter>ソース ファイル\game</Filter>
     </ClCompile>
     <ClCompile Include="SearchRoute.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyShip.cpp">
+      <Filter>ソース ファイル\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,8 +239,11 @@
     <ClInclude Include="Soldier.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyShip.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
     <ClInclude Include="SearchRoute.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,9 +8,9 @@ void GameStage::Initialize()
 	//モデル読み込み
 	modelGround1_ = Model::LoadFromOBJ("ground");
 	modelGround2_ = Model::LoadFromOBJ("ground2");
+    modelSea_ = Model::LoadFromOBJ("sea");
 
 #pragma region 床オブジェクト初期化
-
     //地面のオブジェクト初期化
     for (int y = 0; y < mapSize; y++) {
         for (int x = 0; x < mapSize; x++) {
@@ -39,6 +39,12 @@ void GameStage::Initialize()
     }
 #pragma endregion 
     
+    //海のオブジェクト初期化
+    objSea_ = Object3d::Create();
+    objSea_->SetModel(modelSea_);
+    objSea_->SetColor({ 0.0f,0.0f,1.0f,1.0f });
+    objSea_->SetScale({ 25.0f,1.0f,25.0f });
+
     //兵隊のスポーン位置を設定
     spawnFloor[0] = { 4,4 };
     spawnFloor[1] = { 4,6 };
@@ -67,6 +73,8 @@ void GameStage::Update()
             objFloor_[y][x]->Update();
         }
     }
+    
+    objSea_->Update();
 }
 
 void GameStage::Select()
@@ -176,13 +184,6 @@ void GameStage::ChangeFloorColor()
             }
         }
     }
-
-
-    //objGround_[selectFloor.x][selectFloor.y]->SetColor({ 0.5,0,0,1 });
-    //for (int i = 0; i < 4; i++) {
-    //    objGround_[startFloor[i].x][startFloor[i].y]->SetColor({0,0.5,0,1});
-    //    objGround_[goalFloor[i].x][goalFloor[i].y]->SetColor({ 0,0,0.5,1 });
-    //}
 }
 
 void GameStage::Draw()
@@ -193,6 +194,9 @@ void GameStage::Draw()
             objFloor_[y][x]->Draw();
         }
     }
+
+    //海の描画
+    objSea_->Draw();
 }
 
 const XMFLOAT3 GameStage::GetSpawnPos(int num)

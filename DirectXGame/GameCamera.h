@@ -23,7 +23,10 @@ public://メンバ関数
 	void Finalize();
 	//毎フレーム処理
 	void Update();
-
+	//回転
+	void Rotate();
+	//拡大縮小
+	void Zoom();
 
 private://メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;

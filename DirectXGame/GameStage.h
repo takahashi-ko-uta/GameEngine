@@ -32,6 +32,7 @@ private://メンバ変数
 	Input* input = nullptr;
 	Model* modelGround1_ = nullptr;
 	Model* modelGround2_ = nullptr;
+	Model* modelSea_ = nullptr;
 	//ステージの幅
 	const static int mapSize = 11;//真ん中があるといいので奇数
 
@@ -53,6 +54,7 @@ private://メンバ変数
 
 
 	Object3d* objFloor_[mapSize][mapSize] = {};
+	Object3d* objSea_ = nullptr;
 	XMFLOAT3 floorPos[11][11];
 
 	XMINT2 selectFloor;
