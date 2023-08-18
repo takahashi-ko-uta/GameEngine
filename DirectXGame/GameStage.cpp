@@ -43,7 +43,7 @@ void GameStage::Initialize()
     objSea_ = Object3d::Create();
     objSea_->SetModel(modelSea_);
     objSea_->SetColor({ 0.0f,0.0f,1.0f,1.0f });
-    objSea_->SetScale({ 25.0f,1.0f,25.0f });
+    objSea_->SetScale({ 30.0f,1.0f,30.0f });
 
     //兵隊のスポーン位置を設定
     spawnFloor[0] = { 4,4 };
