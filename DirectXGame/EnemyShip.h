@@ -16,5 +16,8 @@ public:
 private:
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
+
+	int32_t direction = 0;
+
 };
 

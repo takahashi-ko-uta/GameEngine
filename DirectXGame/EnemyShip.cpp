@@ -18,6 +18,7 @@ void EnemyShip::Finalize()
 
 void EnemyShip::Update()
 {
+
     obj_->Update();
 }
 
