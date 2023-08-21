@@ -6,19 +6,20 @@ void SoldierRoute::Initialize(XMFLOAT3 spawnPos, int soldierNum)
 {
 	input_ = Input::GetInstance();
     this->spawnPos_ = spawnPos;
+    this->soldierNum_ = soldierNum;
     //モデル読み込み
     model_ = Model::LoadFromOBJ("mark");
     //球のモデル初期化
     obj_ = Object3d::Create();
     obj_->SetModel(model_);
     obj_->SetScale({ 1.0f,1.0f,1.0f });
-    obj_->SetPosition({ spawnPos_.x,6.0f,spawnPos_.z });
+    obj_->SetPosition({ spawnPos_.x,10.0f,spawnPos_.z });
 
     //soldierNumによって色変える(0～3まで)
-    if (soldierNum == 0) { obj_->SetColor({ 1,0,0,1 }); }
-    if (soldierNum == 1) { obj_->SetColor({ 0,1,0,1 }); }
-    if (soldierNum == 2) { obj_->SetColor({ 0,0,1,1 }); }
-    if (soldierNum == 3) { obj_->SetColor({ 1,0,1,1 }); }
+    if (soldierNum_ == 0) { obj_->SetColor({ 1,0,0,1 }); }
+    if (soldierNum_ == 1) { obj_->SetColor({ 0,1,0,1 }); }
+    if (soldierNum_ == 2) { obj_->SetColor({ 0,0,1,1 }); }
+    if (soldierNum_ == 3) { obj_->SetColor({ 1,0,1,1 }); }
 
     searchRoute_ = new SearchRoute();
     searchRoute_->CreateMap();
@@ -35,11 +36,18 @@ void SoldierRoute::Finalize()
     
 }
 
-void SoldierRoute::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11])
+void SoldierRoute::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11], int selectSoldier)
 {
+    if (selectSoldier == soldierNum_) {
+        isSelect_ = true;
+    }
+    else {
+        isSelect_ = false;
+    }
+
     //スタートとゴールを取得
-    this->startFloor = startFloor;
-    this->goalFloor = goalFloor;
+    this->startFloor_ = startFloor;
+    this->goalFloor_ = goalFloor;
 
     //床の座標を取得
     for (int y = 0; y < 11; y++) {
@@ -92,13 +100,13 @@ void SoldierRoute::Move()
     if (X == 99 && Y == 99) {
         move = { 0,0,0 };
         routeNum_ = 0;
-        isMove = false;
+        isMove_ = false;
     }
     
 
 
    
-    if (isMove == true) {
+    if (isMove_ == true) {
         //目的地に行くまで続ける
         if (floorPos_[X][Y].x != pos.x ||
             floorPos_[X][Y].z != pos.z) {
@@ -124,13 +132,13 @@ void SoldierRoute::CreateRoute()
     SearchRoute::Cell oldGoal = goal_;
 
     //スタートとゴールを更新
-    start_ = SearchRoute::Cell(startFloor.x, startFloor.y);
-    goal_ = SearchRoute::Cell(goalFloor.x, goalFloor.y);
+    start_ = SearchRoute::Cell(startFloor_.x, startFloor_.y);
+    goal_ = SearchRoute::Cell(goalFloor_.x, goalFloor_.y);
 
     //ゴールが変更されたらrouteを再検索する
     if (goal_.X != oldGoal.X || goal_.Y != oldGoal.Y) {
         searchRoute_->AStar(start_, goal_);
-        isMove = true;
+        isMove_ = true;
     }
 
     //ルートを取得
@@ -146,7 +154,7 @@ void SoldierRoute::ChangeSoldierFloor()
             if ((floorPos_[y][x].x + 5) >= obj_->GetPosition().x && (floorPos_[y][x].x - 5) <= obj_->GetPosition().x &&
                 (floorPos_[y][x].z + 5) >= obj_->GetPosition().z && (floorPos_[y][x].z - 5) <= obj_->GetPosition().z) {
 
-                soldierFloor = { y,x };
+                soldierFloor_ = { y,x };
             }
         }
     }   
@@ -169,5 +177,7 @@ void SoldierRoute::ChangeSpawnFloor()
 
 void SoldierRoute::Draw()
 {
-    //obj_->Draw();
+    if (isSelect_ == true) {
+        obj_->Draw();
+    }   
 }

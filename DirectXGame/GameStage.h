@@ -25,6 +25,7 @@ public://ÉÅÉìÉoä÷êî
 	void GetFloorPos(XMFLOAT3 floorPos[11][11]);
 	void GetStartPos(XMINT2 startFloor[4]);
 	void GetGoalPos(XMINT2 goalFloor[4]);
+	int GetSelectSoldier() { return selectSoldier; }
 
 	//setter
 	void SetSoldiersPos(XMFLOAT3 soldiersPos[4]);

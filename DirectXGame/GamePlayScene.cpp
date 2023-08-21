@@ -127,7 +127,7 @@ void GamePlayScene::Update()
     //各兵隊の更新
     for (int i = 0; i < 4; i++) {
         //兵隊
-        solider_[i]->Update(startFloor[i], goalFloor[i], floorPos);
+        solider_[i]->Update(startFloor[i], goalFloor[i], floorPos, gameStage_->GetSelectSoldier());
     }
     //プレイヤー更新
     //player_->Update();

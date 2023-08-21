@@ -10,7 +10,7 @@ class Leader
 {
 public:
 	//初期化
-	void Initialize();
+	void Initialize(int soldierNum);
 	//終了
 	void Finalize();
 	//毎フレーム処理
@@ -21,6 +21,8 @@ public:
 private:
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
+
+	XMFLOAT3 floorPos;//指定されている床の座標
 
 };
 
@@ -33,7 +35,7 @@ public:
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11]);
+	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11],int selectSoldier);
 	//描画
 	void Draw();
 

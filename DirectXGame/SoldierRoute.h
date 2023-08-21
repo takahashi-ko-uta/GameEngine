@@ -16,7 +16,7 @@ public:
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11]);
+	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11], int selectSoldier);
 	//移動
 	void Move();
 	//ルート作成
@@ -37,19 +37,21 @@ private:
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
 
+	int soldierNum_;
 	XMFLOAT3 spawnPos_;	//初期位置
 	XMINT2 spawnFloor_;
-	XMINT2 startFloor;	//スタート位置
-	XMINT2 goalFloor;	//ゴール位置
+	XMINT2 startFloor_;	//スタート位置
+	XMINT2 goalFloor_;	//ゴール位置
 
 	SearchRoute* searchRoute_ = nullptr;
 	SearchRoute::Cell start_ = SearchRoute::Cell(0, 0);
 	SearchRoute::Cell goal_ = SearchRoute::Cell(0, 0);
 	XMINT2 route_[40];
 	int32_t routeNum_ = 0;
-	bool isMove = false;//移動しているか
+	bool isMove_ = false;//移動しているか
 	XMFLOAT3 floorPos_[11][11];
-	XMINT2 soldierFloor;
+	XMINT2 soldierFloor_;
 
+	bool isSelect_ = false;//いま選ばれているか
 };
 
