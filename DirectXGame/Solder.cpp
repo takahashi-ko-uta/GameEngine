@@ -30,8 +30,12 @@ void Leader::Draw()
 
 
 #pragma region Solider
-void Solider::Initialize()
+void Solider::Initialize(XMFLOAT3 spawnPos, int soldierNum)
 {
+    //兵隊のルートの初期化
+    soldierRoute_ = new SoldierRoute();
+    soldierRoute_->Initialize(spawnPos, soldierNum);
+
     //リーダーの初期化
     leader = new Leader();
     leader->Initialize();
@@ -43,13 +47,15 @@ void Solider::Finalize()
 
 }
 
-void Solider::Update(XMFLOAT3 pos)
+void Solider::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11])
 {
-    leader->Update(pos);
+    soldierRoute_->Update(startFloor, goalFloor, floorPos);
+    leader->Update(soldierRoute_->GetPosition());
 }
 
 void Solider::Draw()
 {
+    soldierRoute_->Draw();
     leader->Draw();
 }
 #pragma endregion

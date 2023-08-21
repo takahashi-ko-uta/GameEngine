@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "Object3d.h"
+#include "SoldierRoute.h"
 
 
 
@@ -28,13 +29,17 @@ class Solider
 {
 public:
 	//‰Šú‰»
-	void Initialize();
+	void Initialize(XMFLOAT3 spawnPos, int soldierNum);
 	//I—¹
 	void Finalize();
 	//–ˆƒtƒŒ[ƒ€ˆ—
-	void Update(XMFLOAT3 pos);
+	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11]);
 	//•`‰æ
 	void Draw();
+
+	//getter
+	XMFLOAT3 GetSoldierRoutePos() { return soldierRoute_->GetPosition(); }
 private:
+	SoldierRoute* soldierRoute_ = nullptr;
 	Leader* leader = nullptr;
 };
