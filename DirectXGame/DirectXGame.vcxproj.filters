@@ -141,13 +141,16 @@
     <ClCompile Include="Vector3Math.cpp">
       <Filter>ソース ファイル\math</Filter>
     </ClCompile>
-    <ClCompile Include="Soldier.cpp">
+    <ClCompile Include="SoldierRoute.cpp">
       <Filter>ソース ファイル\game</Filter>
     </ClCompile>
     <ClCompile Include="SearchRoute.cpp">
       <Filter>ソース ファイル\game</Filter>
     </ClCompile>
     <ClCompile Include="EnemyShip.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Solder.cpp">
       <Filter>ソース ファイル\game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -236,13 +239,16 @@
     <ClInclude Include="GameSprite.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
-    <ClInclude Include="Soldier.h">
+    <ClInclude Include="SoldierRoute.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
     <ClInclude Include="EnemyShip.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
     <ClInclude Include="SearchRoute.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Solder.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>

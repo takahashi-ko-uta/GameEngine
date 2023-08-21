@@ -1,13 +1,13 @@
-#include "Soldier.h"
+#include "SoldierRoute.h"
 #include "imgui.h"
 
 
-void Soldier::Initialize(XMFLOAT3 spawnPos, int soldierNum)
+void SoldierRoute::Initialize(XMFLOAT3 spawnPos, int soldierNum)
 {
 	input_ = Input::GetInstance();
     this->spawnPos_ = spawnPos;
     //モデル読み込み
-    model_ = Model::LoadFromOBJ("Soldier");
+    model_ = Model::LoadFromOBJ("mark");
     //球のモデル初期化
     obj_ = Object3d::Create();
     obj_->SetModel(model_);
@@ -30,12 +30,12 @@ void Soldier::Initialize(XMFLOAT3 spawnPos, int soldierNum)
     goal_ = SearchRoute::Cell(5, 5);
 }
 
-void Soldier::Finalize()
+void SoldierRoute::Finalize()
 {
     
 }
 
-void Soldier::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11])
+void SoldierRoute::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11])
 {
     //スタートとゴールを取得
     this->startFloor = startFloor;
@@ -53,7 +53,7 @@ void Soldier::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][
     obj_->Update();
 }
 
-void Soldier::Move()
+void SoldierRoute::Move()
 {
     //ルート作成
     CreateRoute();
@@ -117,7 +117,7 @@ void Soldier::Move()
     }
 }
 
-void Soldier::CreateRoute()
+void SoldierRoute::CreateRoute()
 {
     //スタートとゴールを保存
     SearchRoute::Cell oldStart = start_;
@@ -137,7 +137,7 @@ void Soldier::CreateRoute()
     searchRoute_->GetRoute(route_);
 }
 
-void Soldier::ChangeSoldierFloor()
+void SoldierRoute::ChangeSoldierFloor()
 {
     //兵隊の床の位置を取得
     for (int y = 0; y < 11; y++) {
@@ -152,7 +152,7 @@ void Soldier::ChangeSoldierFloor()
     }   
 }
 
-void Soldier::ChangeSpawnFloor()
+void SoldierRoute::ChangeSpawnFloor()
 {
     //スポーンの床の位置を取得
     for (int y = 0; y < 11; y++) {
@@ -167,7 +167,7 @@ void Soldier::ChangeSpawnFloor()
     }
 }
 
-void Soldier::Draw()
+void SoldierRoute::Draw()
 {
-    obj_->Draw();
+    //obj_->Draw();
 }

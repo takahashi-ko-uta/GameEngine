@@ -14,9 +14,10 @@
 #include "GameSprite.h"
 #include "GameStage.h"
 #include "Player.h"
-#include "Soldier.h"
+#include "SoldierRoute.h"
 #include "SearchRoute.h"
 #include "EnemyShip.h"
+#include "Solder.h"
 
 class GamePlayScene
 {
@@ -58,11 +59,15 @@ private:
 	Player* player_ = nullptr;
 
 	//兵隊(4部隊)
-	Soldier* soldier_[4];
+	//兵隊のルート検索
+	SoldierRoute* soldierRoute_[4];
 	XMFLOAT3 soldiersPos_[4];//各兵隊の位置
 	XMINT2 startFloor[4];
 	XMINT2 goalFloor[4];
 	XMFLOAT3 floorPos[11][11];
+
+	//兵隊
+	Solider* solider_[4];
 
 	//敵
 	EnemyShip* ENship = nullptr;

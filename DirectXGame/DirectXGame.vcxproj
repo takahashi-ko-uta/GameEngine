@@ -114,7 +114,8 @@
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SearchRoute.cpp" />
-    <ClCompile Include="Soldier.cpp" />
+    <ClCompile Include="Solder.cpp" />
+    <ClCompile Include="SoldierRoute.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="Vector3.cpp" />
@@ -147,7 +148,8 @@
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SearchRoute.h" />
-    <ClInclude Include="Soldier.h" />
+    <ClInclude Include="Solder.h" />
+    <ClInclude Include="SoldierRoute.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="Vector3.h" />

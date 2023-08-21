@@ -5,7 +5,10 @@
 #include "SearchRoute.h"
 using namespace DirectX;
 
-class Soldier
+/// <summary>
+/// •”‘à‚ÌˆÊ’u
+/// </summary>
+class SoldierRoute
 {
 public:
 	//‰Šú‰»

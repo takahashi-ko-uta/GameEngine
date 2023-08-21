@@ -42,14 +42,6 @@ void EnemyShip::Update(XMFLOAT3 floorPos[11][11])
     //’…—¤‚Ü‚Å‚Ì“®‚«
     Move();
 
-    ImGui::Text("num:%d", num);
-
-    ImGui::Text("direction: %d,isSpawn: %d,isSelect: %d, isMove: %d", direction, isSpawn,isSelect,isMove);
-    ImGui::Text("objRot:%.0f", obj_->GetRotation().z);
-    ImGui::Text("objPos: (%.0f, %.0f, %.0f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
-    ImGui::Text("goalFloor:(%d, %d)", goalFloor.x, goalFloor.y);
-    ImGui::Text("goalPos:(%.0f, %.0f, %.0f)", goalPos.x, goalPos.y, goalPos.z);
-
     obj_->Update();
 }
 

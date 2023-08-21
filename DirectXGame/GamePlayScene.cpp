@@ -45,8 +45,13 @@ void GamePlayScene::Initialize()
 
     //兵隊の初期化
     for (int i = 0; i < 4; i++) {
-        soldier_[i] = new Soldier();
-        soldier_[i]->Initialize(gameStage_->GetSpawnPos(i),i);
+        //兵隊のルートの初期化
+        soldierRoute_[i] = new SoldierRoute();
+        soldierRoute_[i]->Initialize(gameStage_->GetSpawnPos(i),i);
+
+        //兵隊
+        solider_[i] = new Solider();
+        solider_[i]->Initialize();
     }
 
     //プレイヤーの初期化
@@ -101,7 +106,7 @@ void GamePlayScene::Update()
 #pragma region 兵隊関連
     //兵隊の位置をsoldiersPosにまとめる
     for (int i = 0; i < 4; i++) {
-        soldiersPos_[i] = soldier_[i]->GetPosition();
+        soldiersPos_[i] = soldierRoute_[i]->GetPosition();
     }
 
     //スタートとゴールを取得する
@@ -126,7 +131,10 @@ void GamePlayScene::Update()
     gameStage_->Update();
     //各兵隊の更新
     for (int i = 0; i < 4; i++) {
-        soldier_[i]->Update(startFloor[i], goalFloor[i], floorPos);
+        //兵隊のルート
+        soldierRoute_[i]->Update(startFloor[i], goalFloor[i], floorPos);
+        //兵隊
+        solider_[i]->Update(soldierRoute_[i]->GetPosition());
     }
     //プレイヤー更新
     //player_->Update();
@@ -160,7 +168,8 @@ void GamePlayScene::Draw()
     //player_->Draw();
     //各兵隊の更新
     for (int i = 0; i < 4; i++) {
-        soldier_[i]->Draw();
+        soldierRoute_[i]->Draw();
+        solider_[i]->Draw();
     }
 
     objSphere_->Draw();
