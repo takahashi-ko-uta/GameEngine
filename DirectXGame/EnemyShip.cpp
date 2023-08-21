@@ -71,7 +71,7 @@ void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
         startPos = { 250.0f,-10.0f,randomPos };         //スタート位置
         goalFloor = XMINT2(10, floorNum);               //着陸する床
         goalPos = floorPos_[goalFloor.x][goalFloor.y];  //着陸する座標
-        goalPos = { goalPos.x + 13, 4.0f,goalPos.z };   //↑のままだと床にめり込むため調整
+        goalPos = { goalPos.x + 13, 0.0f,goalPos.z };   //↑のままだと床にめり込むため調整
         break;
 
     case 1://-x方向
@@ -79,7 +79,7 @@ void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
         startPos = { -250.0f,-10.0f,randomPos };
         goalFloor = XMINT2(0, floorNum);
         goalPos = floorPos_[goalFloor.x][goalFloor.y];
-        goalPos = { goalPos.x -13, 6.0f,goalPos.z };
+        goalPos = { goalPos.x -13, 0.0f,goalPos.z };
         break;
 
     case 2://+z方向
@@ -87,7 +87,7 @@ void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
         startPos = { randomPos,-10.0f,250.0f };
         goalFloor = XMINT2(floorNum, 10);
         goalPos = floorPos_[goalFloor.x][goalFloor.y];
-        goalPos = { goalPos.x, 4.0f,goalPos.z + 13 };
+        goalPos = { goalPos.x, 0.0f,goalPos.z + 13 };
         break;
 
     case 3://-z方向
@@ -95,7 +95,7 @@ void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
         startPos = { randomPos,-10.0f,-250.0f };
         goalFloor = XMINT2(floorNum, 0);
         goalPos = floorPos_[goalFloor.x][goalFloor.y];
-        goalPos = { goalPos.x, 4.0f,goalPos.z - 13 };
+        goalPos = { goalPos.x, 0.0f,goalPos.z - 13 };
         break;
     }
 
