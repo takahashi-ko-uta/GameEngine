@@ -114,10 +114,7 @@ void GamePlayScene::Update()
     gameStage_->SetSoldiersPos(soldiersPos_);
 
 #pragma endregion
-    
 
-   
-    
 #pragma region ImGuiテキスト
     
 #pragma endregion
@@ -140,7 +137,7 @@ void GamePlayScene::Update()
 #pragma endregion
 
     
-    ENship->Update();
+    ENship->Update(floorPos);
     //当たり判定の更新
    /* sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     plane.distance = objPlane_->GetPosition().y;*/

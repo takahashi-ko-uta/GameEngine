@@ -115,16 +115,6 @@ void Soldier::Move()
             routeNum_++;
         }
     }
-    
-    /*ImGui::Text("isMove:%d", isMove);
-    ImGui::Text("Num:%d", routeNum_);
-    ImGui::Text("move(x:%0.2f,z:%0.2f)", move.x, move.z);
-    ImGui::Text("pos(x:%0.2f,z:%0.2f)", pos.x, pos.z);
-    ImGui::Text("floorPos(x:%0.2f,z:%0.2f)", floorPos_[X][Y].x, floorPos_[X][Y].z);
-
-    for (int i = 0; i < 40; i++) {
-        ImGui::Text("x:%d, y:%d", route_[i].x, route_[i].y);
-    }*/
 }
 
 void Soldier::CreateRoute()

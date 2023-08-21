@@ -66,5 +66,7 @@ private:
 
 	//“G
 	EnemyShip* ENship = nullptr;
+	int num;
+	int ddd;
 };
 
