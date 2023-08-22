@@ -16,7 +16,7 @@
 #include "Player.h"
 #include "SoldierRoute.h"
 #include "SearchRoute.h"
-#include "EnemyShip.h"
+#include "Enemy.h"
 #include "Solder.h"
 
 class GamePlayScene
@@ -71,8 +71,7 @@ private:
 	Solider* solider_[4];
 
 	//“G
-	EnemyShip* ENship = nullptr;
-	int num;
-	int ddd;
+	EnemySoldier* enemy_ = nullptr;
+
 };
 

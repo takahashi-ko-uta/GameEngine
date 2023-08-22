@@ -14,7 +14,7 @@ void EnemyShip::Initialize()
     //‹…‚Ìƒ‚ƒfƒ‹‰Šú‰»
     obj_ = Object3d::Create();
     obj_->SetModel(model_);
-    obj_->SetPosition({ 0.0f,3.0f,0.0f });//z250
+    obj_->SetPosition({ 0.0f,3.0f,0.0f });
     obj_->SetScale({ 1.5f,1.5f,1.5f });
     
 }
@@ -91,26 +91,11 @@ void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
         break;
     }
 
-    //goalPos = floorPos_[goalFloor.x][goalFloor.y];
-    //goalPos = { goalPos.x, 6.0f,goalPos.z };
-
     if (isSelect == true) {
         obj_->SetPosition(startPos);
         isSelect = false;
         isMove = true;
     }
-
-    
-
-    
-
-   
-
-    /*for (int y = 0; y < 11; y++) {
-        for (int x = 0; x < 11; x++) {
-            ImGui::Text("floorPos[%d][%d]:(%.0f, %.0f, %.0f)", y, x, this->floorPos_[y][x].x, this->floorPos_[y][x].y, this->floorPos_[y][x].z);
-        }
-    }*/
 }
 
 void EnemyShip::Move()
@@ -167,6 +152,7 @@ void EnemyShip::Move()
             goalPos.z == obj_->GetPosition().z) {
             //ƒtƒ‰ƒO‚ğÁ‚·
             isMove = false;
+            isGoal = true;
         };
     }
 }

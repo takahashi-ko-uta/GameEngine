@@ -98,6 +98,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyShip.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="GameCamera.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="D3D12Common.h" />
     <ClInclude Include="DirectXCommon.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyShip.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="GameCamera.h" />

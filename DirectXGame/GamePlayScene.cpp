@@ -48,6 +48,9 @@ void GamePlayScene::Initialize()
         solider_[i] = new Solider();
         solider_[i]->Initialize(gameStage_->GetSpawnPos(i), i);
     }
+    
+    enemy_ = new EnemySoldier();
+    enemy_->Initialize();
 
     //プレイヤーの初期化
     //player_ = new Player();
@@ -55,8 +58,7 @@ void GamePlayScene::Initialize()
 
 #pragma endregion
 
-    ENship = new EnemyShip();
-    ENship->Initialize();
+   
 
     //当たり判定
     /*sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
@@ -130,6 +132,8 @@ void GamePlayScene::Update()
         //兵隊
         solider_[i]->Update(startFloor[i], goalFloor[i], floorPos, gameStage_->GetSelectSoldier(),costMap);
     }
+    //敵
+    enemy_->Update(floorPos);
     //プレイヤー更新
     //player_->Update();
     //各々の更新処理
@@ -139,7 +143,7 @@ void GamePlayScene::Update()
 #pragma endregion
 
     
-    ENship->Update(floorPos);
+    
     //当たり判定の更新
    /* sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
     plane.distance = objPlane_->GetPosition().y;*/
@@ -167,7 +171,7 @@ void GamePlayScene::Draw()
 
     objSphere_->Draw();
 
-    ENship->Draw();
+    enemy_->Draw();
 
     Object3d::PostDraw();                           //オブジェクト後処理
 

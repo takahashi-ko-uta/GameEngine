@@ -18,6 +18,11 @@ public:
 	void Move();
 	//描画
 	void Draw();
+
+	//getter
+	XMFLOAT3 GetPosition() { return obj_->GetPosition(); }
+	XMINT2 GetGoalFloor() { return goalFloor; }
+	bool GetIsGoal() { return isGoal; }
 private:
 	Input* input_ = nullptr;
 	Model* model_ = nullptr;
@@ -29,6 +34,7 @@ private:
 	bool isSpawn = true;  //スポーンに必要な値を決める
 	bool isSelect = false;//ゴール位置を決める
 	bool isMove = false;  //着陸まで動く
+	bool isGoal = false;  //ゴールしたか
 	XMINT2 goalFloor;
 	XMFLOAT3 startPos;
 	XMFLOAT3 goalPos;
