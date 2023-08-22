@@ -9,7 +9,8 @@ void GameStage::Initialize()
 	modelGround1_ = Model::LoadFromOBJ("ground");
 	modelGround2_ = Model::LoadFromOBJ("ground2");
     modelSea_ = Model::LoadFromOBJ("sea");
-
+    modelHouse_ = Model::LoadFromOBJ("cube");
+       
 #pragma region 床オブジェクト初期化
     //地面のオブジェクト初期化
     for (int y = 0; y < mapSize; y++) {
@@ -28,11 +29,21 @@ void GameStage::Initialize()
             objFloor_[y][x]->SetScale({ size,size,size });
 
             //3Dオブジェクトの位置を指定
-            if (MapData[y][x] == 1) {
+            if (MapData[y][x] != 0) {
                 objFloor_[y][x]->SetPosition({ ((float)y - mapSize / 2) * size * 2, 0.0f, ((float)x - mapSize / 2) * size * 2 });
             }
             else if (MapData[y][x] == 0) {
                 objFloor_[y][x]->SetPosition({ 0, 0, -50 });
+            }
+
+            if (MapData[y][x] >= 40) {//家
+                
+                //家のオブジェクト
+                int num = MapData[y][x] - 40;//0～2が入る
+                objHouse_[num] = Object3d::Create();
+                objHouse_[num]->SetModel(modelHouse_);
+                objHouse_[num]->SetScale({ 3.0f,3.0f,3.0f });
+                objHouse_[num]->SetPosition({ ((float)y - mapSize / 2) * size * 2, 6.0f, ((float)x - mapSize / 2) * size * 2 });
             }
             
         }
@@ -73,6 +84,10 @@ void GameStage::Update()
             objFloor_[y][x]->Update();
         }
     }
+
+    for (int i = 0; i < 3; i++) {
+        objHouse_[i]->Update();
+    }
     
     objSea_->Update();
 }
@@ -110,7 +125,8 @@ void GameStage::Select()
 
     XMFLOAT3 selectPos = objFloor_[selectFloor.x][selectFloor.y]->GetPosition();
 
-    ImGui::Text("select(X:%d, Y:%d)", selectFloor.x, selectFloor.y);
+    
+    /*ImGui::Text("select(X:%d, Y:%d)", selectFloor.x, selectFloor.y);
     ImGui::Text("selectPos(X:%.0f, Y:%.0f)", selectPos.x, selectPos.z);
 
     ImGui::Text("selectSoldier: %d", selectSoldier);
@@ -121,7 +137,7 @@ void GameStage::Select()
     ImGui::Text("S[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
         startFloor[0].x, startFloor[0].y, startFloor[1].x, startFloor[1].y, startFloor[2].x, startFloor[2].y, startFloor[3].x, startFloor[3].y);
     ImGui::Text("G[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
-        goalFloor[0].x, goalFloor[0].y, goalFloor[1].x, goalFloor[1].y, goalFloor[2].x, goalFloor[2].y, goalFloor[3].x, goalFloor[3].y);
+        goalFloor[0].x, goalFloor[0].y, goalFloor[1].x, goalFloor[1].y, goalFloor[2].x, goalFloor[2].y, goalFloor[3].x, goalFloor[3].y);*/
 }
 
 void GameStage::SetStartGoal()
@@ -186,6 +202,20 @@ void GameStage::ChangeFloorColor()
     }
 }
 
+void GameStage::CreateCostMap(int mapData[11][11])
+{
+    for (int y = 0; y < 11; y++) {
+        for (int x = 0; x < 11; x++) {
+            if (this->MapData[y][x] == 1) {
+                mapData[y][x] = 1;
+            }
+            else {
+                mapData[y][x] = 0;
+            }
+        }
+    }
+}
+
 void GameStage::Draw()
 {
     //ステージの描画
@@ -194,7 +224,10 @@ void GameStage::Draw()
             objFloor_[y][x]->Draw();
         }
     }
-
+    //家の描画
+    for (int i = 0; i < 3; i++) {
+        objHouse_[i]->Draw();
+    }
     //海の描画
     objSea_->Draw();
 }
@@ -210,18 +243,6 @@ const XMFLOAT3 GameStage::GetSpawnPos(int num)
     spawnPos = objFloor_[x][y]->GetPosition();
     
     return spawnPos;
-}
-
-void GameStage::GetMapData(int mapData[11][11], int mapSizeX, int mapSizeY)
-{
-    mapSizeX = this->mapSize;
-    mapSizeY = this->mapSize;
-
-    for (int y = 0; y < 11; y++) {
-        for (int x = 0; x < 11; x++) {
-            mapData[y][x] = MapData[y][x];
-        }
-    }
 }
 
 void GameStage::GetFloorPos(XMFLOAT3 floorPos[11][11])

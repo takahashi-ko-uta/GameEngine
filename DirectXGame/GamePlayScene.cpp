@@ -110,9 +110,10 @@ void GamePlayScene::Update()
 
     //床の座標を取得
     gameStage_->GetFloorPos(floorPos);
-
     gameStage_->SetSoldiersPos(soldiersPos_);
 
+    //コストマップ作成
+    gameStage_->CreateCostMap(costMap);
 #pragma endregion
 
 #pragma region ImGuiテキスト
@@ -127,7 +128,7 @@ void GamePlayScene::Update()
     //各兵隊の更新
     for (int i = 0; i < 4; i++) {
         //兵隊
-        solider_[i]->Update(startFloor[i], goalFloor[i], floorPos, gameStage_->GetSelectSoldier());
+        solider_[i]->Update(startFloor[i], goalFloor[i], floorPos, gameStage_->GetSelectSoldier(),costMap);
     }
     //プレイヤー更新
     //player_->Update();

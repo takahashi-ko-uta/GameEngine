@@ -65,6 +65,7 @@ private:
 	XMINT2 startFloor[4];
 	XMINT2 goalFloor[4];
 	XMFLOAT3 floorPos[11][11];
+	int costMap[11][11];
 
 	//•º‘à
 	Solider* solider_[4];

@@ -28,12 +28,13 @@ bool SearchRoute::IsCellWithinTheRange(int x, int y)
 }
 
 // ノードの作成
-void SearchRoute::CreateMap()
+void SearchRoute::CreateMap(int CostTable[11][11])
 {
 	for (int y = 0; y < MapHeight; y++)
 	{
 		for (int x = 0; x < MapWidth; x++)
 		{
+			this->CostTable_[y][x] = CostTable[y][x];
 			Map[y][x].Position.X = x;
 			Map[y][x].Position.Y = y;
 
@@ -49,7 +50,7 @@ void SearchRoute::CreateMap()
 			for (const Cell& cell : adjacent_cells)
 			{
 				if (IsCellWithinTheRange(cell.X, cell.Y) == true &&
-					CostTable[cell.Y][cell.X] == 1)
+					CostTable_[cell.Y][cell.X] == 1)
 				{
 					Map[y][x].AdjacentNodes.push_back(&Map[cell.Y][cell.X]);
 				}
@@ -190,7 +191,7 @@ void SearchRoute::AStar(Cell start, Cell goal)
 			}
 
 			// ノード間コスト
-			float edge_cost = CostTable[adjacent_node->Position.Y][adjacent_node->Position.X];
+			float edge_cost = CostTable_[adjacent_node->Position.Y][adjacent_node->Position.X];
 			// 取得ノードのトータルコスト
 			float node_cost = search_node->TotalCost;
 			/*
@@ -235,9 +236,6 @@ void SearchRoute::AStar(Cell start, Cell goal)
 			// このノードの探索終了
 			close_list.push_back(search_node);
 		}
-
-		// 昇順ソート
-		//open_list.sort(Less);
 	}
 
 	// 経路復元
@@ -257,7 +255,6 @@ void SearchRoute::AStar(Cell start, Cell goal)
 			{
 				routeSave[num].x = cell.X;
 				routeSave[num].y = cell.Y;
-				//ImGui::Text("x = %d y = %d\n", cell.X, cell.Y);
 				num++;
 			}
 			for (int i = 0; i < 40; i++) {
@@ -277,19 +274,12 @@ void SearchRoute::AStar(Cell start, Cell goal)
 			}
 			else
 			{
-				//ImGui::Text("noRoute");
+				//ルートなし
 				break;
 			}
 		}
 		
 	}
-
-	//ImGui::Text("count = %d\n", count);
-	//ImGui::Text("num = %d\n", num);
-
-	/*for (int i = 0; i < 40; i++) {
-		ImGui::Text("x:%d, y:%d", routeSave[i].x, routeSave[i].y);
-	}*/
 }
 
 void SearchRoute::GetRoute(XMINT2 route[40])

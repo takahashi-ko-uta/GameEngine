@@ -66,7 +66,7 @@ public:
 	// セル範囲チェック関数
 	bool IsCellWithinTheRange(int x, int y);
 	// ノードの作成
-	void CreateMap();
+	void CreateMap(int CostTable[11][11]);
 	// コスト初期化
 	void InitCost(int heuristic_cost, int total_cost);
 	// ヒューリスティックコスト計算(ノードとゴールまでの距離を返している)
@@ -87,21 +87,7 @@ private:
 	const static int Infinity = 100000;
 
 	// コストテーブル
-	int CostTable[MapHeight][MapWidth] =
-	{
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1,
-			1,1,1,1,1,1,1,1,1,1,1
-	};
-
+	int CostTable_[MapHeight][MapWidth];
 	// グラフ
 	Node Map[MapHeight][MapWidth];
 

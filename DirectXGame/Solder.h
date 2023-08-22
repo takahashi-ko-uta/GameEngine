@@ -57,7 +57,7 @@ public:
 	//I—¹
 	void Finalize();
 	//–ˆƒtƒŒ[ƒ€ˆ—
-	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11],int selectSoldier);
+	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11],int selectSoldier, int costMap[11][11]);
 	//•`‰æ
 	void Draw();
 

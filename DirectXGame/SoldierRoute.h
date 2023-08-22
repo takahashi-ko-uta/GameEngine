@@ -16,7 +16,7 @@ public:
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11], int selectSoldier);
+	void Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11], int selectSoldier, int costMap[11][11]);
 	//移動
 	void Move();
 	//ルート作成
@@ -53,5 +53,6 @@ private:
 	XMINT2 soldierFloor_;
 
 	bool isSelect_ = false;//いま選ばれているか
+	int costMap_[11][11];
 };
 

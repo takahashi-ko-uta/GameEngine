@@ -16,12 +16,12 @@ public://メンバ関数
 	void SetStartGoal();
 	void SetSoldiersFloor();//兵隊のいる床を取得
 	void ChangeFloorColor();
+	void CreateCostMap(int mapData[11][11]);
 	//描画
 	void Draw();
 
 	//getter
 	const XMFLOAT3 GetSpawnPos(int num);
-	void GetMapData(int mapData[11][11], int mapSizeX, int mapSizeY);
 	void GetFloorPos(XMFLOAT3 floorPos[11][11]);
 	void GetStartPos(XMINT2 startFloor[4]);
 	void GetGoalPos(XMINT2 goalFloor[4]);
@@ -29,33 +29,35 @@ public://メンバ関数
 
 	//setter
 	void SetSoldiersPos(XMFLOAT3 soldiersPos[4]);
+
+	
 private://メンバ変数
 	Input* input = nullptr;
-	Model* modelGround1_ = nullptr;
-	Model* modelGround2_ = nullptr;
-	Model* modelSea_ = nullptr;
+	
 	//ステージの幅
 	const static int mapSize = 11;//真ん中があるといいので奇数
 
-	int map[3];
-
-	int32_t MapData[mapSize][mapSize] = {
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1
+	int32_t MapData[mapSize][mapSize] = {//1 = 床　2 = 2階　3 = 階段 4 = 家
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1,40, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1,41, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1,42, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 	};
 
-
+	Model* modelGround1_ = nullptr;
+	Model* modelGround2_ = nullptr;
+	Model* modelSea_ = nullptr;
+	Model* modelHouse_ = nullptr;
 	Object3d* objFloor_[mapSize][mapSize] = {};
 	Object3d* objSea_ = nullptr;
+	Object3d* objHouse_[3];//3つ
 	XMFLOAT3 floorPos[11][11];
 
 	XMINT2 selectFloor;
