@@ -139,14 +139,6 @@ void Solider::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][
     for (int i = 0; i < 8; i++) {
         normal[i]->Update(leader->GetPosition());
     }
-    
-    /*for (int i = 0; i < 11; i++) {
-        ImGui::Text("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
-            costMap[i][0], costMap[i][1], costMap[i][2], costMap[i][3], costMap[i][4], costMap[i][5],
-            costMap[i][6], costMap[i][7], costMap[i][8], costMap[i][9], costMap[i][10]);
-    }
-    ImGui::Text("-----------------------------------------------");*/
-
 }
 
 void Solider::Draw()
