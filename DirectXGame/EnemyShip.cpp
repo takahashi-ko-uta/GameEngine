@@ -56,7 +56,6 @@ void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
         isSelect = true;            //ƒS[ƒ‹‚ğŒˆ‚ß‚é
     }
 
-    direction = 3;
     switch (direction) {
     case 0://+x•ûŒü
         obj_->SetRotation({ 0.0f,270.0f,0.0f });        //ƒ‚ƒfƒ‹•ûŒü•ÏX

@@ -33,7 +33,7 @@ private:
 	bool isLanding = false;
 	XMINT2 nowFloor;	//ç°Ç¢ÇÈè∞
 	XMINT2 goalFloor;
-
+	XMFLOAT3 housePos[3];
 };
 
 class EnemySoldier

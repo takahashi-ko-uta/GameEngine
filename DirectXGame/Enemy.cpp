@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "imgui.h"
 
 #pragma region Enemy
 void Enemy::Initialize()
@@ -44,22 +45,27 @@ void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11]
     Landing(goal);
 
     obj_->Update();
+
+    
+    ImGui::Text("isGoal:%d,isLanding:%d", isGoal, isLanding);
+    ImGui::Text("S(%d, %d), G(%d, %d)", nowFloor.x, nowFloor.y, goalFloor.x, goalFloor.y);
 }
 
 void Enemy::SearchHouse(XMINT2 houseFloor[3])
 {
     //ゴールを作成
-    XMFLOAT3 housePos[3];
+    //XMFLOAT3 housePos[3];
     XMFLOAT3 objPos = obj_->GetPosition();
     float distance[3];
-    for (int y = 0; y < 11; y++) {
-        for (int x = 0; x < 11; x++) {
-            for (int i = 0; i < 3; i++) {
+    
+
+    for (int i = 0; i < 3; i++) {
+        for (int y = 0; y < 11; y++) {
+            for (int x = 0; x < 11; x++) {
                 housePos[i] = floorPos_[houseFloor[i].y][houseFloor[i].x];//家の座標を取得
 
                 //現在地と各家まで距離を調べる
                 distance[i] = abs(housePos[i].x - objPos.x) + abs(housePos[i].z - objPos.z);
-
             }
         }
     }
@@ -102,7 +108,15 @@ void Enemy::SearchHouse(XMINT2 houseFloor[3])
         shift.y = 0;
     }
 
-    goalFloor = XMINT2(houseFloor[goalNum].x + shift.x, houseFloor[goalNum].y + shift.y);
+    //goalFloor = XMINT2(houseFloor[goalNum].x + shift.x, houseFloor[goalNum].y + shift.y);
+    
+    for (int i = 0; i < 3; i++) {
+        ImGui::Text("Hfloor(x:%d, y:%d)", houseFloor[i].x, houseFloor[i].y);
+        ImGui::Text("Hpos[0](x: %.0f, y: %.0f, z: %.0f)\n", housePos[i].x, housePos[i].y, housePos[i].z);
+    }
+
+    ImGui::Text("distence(0: %.0f, 1: %.0f, 2: %.0f)", distance[0], distance[1], distance[2]);
+    ImGui::Text("Gnum:%d", goalNum);
 }
 
 void Enemy::OnShip(bool isGoal)
@@ -175,7 +189,6 @@ void Enemy::Landing(XMINT2 goal)
             isLanding = false;
         };
     }
-
 }
 
 void Enemy::Draw()
@@ -207,8 +220,7 @@ void EnemySoldier::Finalize()
 }
 
 void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11])
-{
-    
+{   
 	ship_->Update(floorPos);
     enemy_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, houseFloor);
     soldierRoute_->Update(enemy_->GetNowFloor(), enemy_->GetGoalFloor(), floorPos, 0, costMap);

@@ -15,6 +15,7 @@ public://ƒƒ“ƒoŠÖ”
 	void Select();
 	void SetStartGoal();
 	void SetSoldiersFloor();//•º‘à‚Ì‚¢‚é°‚ğæ“¾
+	void SetHouseFloor();
 	void ChangeFloorColor();
 	void CreateCostMap(int mapData[11][11]);
 	//•`‰æ
@@ -73,5 +74,6 @@ private://ƒƒ“ƒo•Ï”
 	XMINT2 soldiersFloor[4];
 
 	XMINT2 houseFloor_[3];//‰Æ‚Ì°
+	XMINT2 hhh[3];
 };
 

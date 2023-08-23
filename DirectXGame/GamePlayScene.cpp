@@ -135,6 +135,7 @@ void GamePlayScene::Update()
     //敵
     gameStage_->GetHouseFloor(houseFloor_);
     enemy_->Update(floorPos, houseFloor_, costMap);
+    
     //プレイヤー更新
     //player_->Update();
     //各々の更新処理

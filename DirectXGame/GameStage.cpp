@@ -37,19 +37,14 @@ void GameStage::Initialize()
             }
 
             if (MapData[y][x] >= 40) {//家
-                
                 //家のオブジェクト
                 int num = MapData[y][x] - 40;//0～2が入る
                 objHouse_[num] = Object3d::Create();
                 objHouse_[num]->SetModel(modelHouse_);
                 objHouse_[num]->SetScale({ 3.0f,3.0f,3.0f });
                 objHouse_[num]->SetPosition({ ((float)y - mapSize / 2) * size * 2, 6.0f, ((float)x - mapSize / 2) * size * 2 });
-
-                //家の床の位置を保存
-                houseFloor_[num].x = x;
-                houseFloor_[num].y = y;
+                hhh[num] = { x,y };
             }
-            
         }
     }
 #pragma endregion 
@@ -80,7 +75,7 @@ void GameStage::Finalize()
 void GameStage::Update()
 {
     Select();
-
+    SetHouseFloor();
     //各地面オブジェクトの更新
     for (int y = 0; y < mapSize; y++) {
         for (int x = 0; x < mapSize; x++) {
@@ -92,7 +87,7 @@ void GameStage::Update()
     for (int i = 0; i < 3; i++) {
         objHouse_[i]->Update();
     }
-    
+   
     objSea_->Update();
 }
 
@@ -132,16 +127,6 @@ void GameStage::Select()
     
     ImGui::Text("select(X:%d, Y:%d)", selectFloor.x, selectFloor.y);
     ImGui::Text("selectPos(X:%.0f, Y:%.0f)", selectPos.x, selectPos.z);
-
-    /*ImGui::Text("selectSoldier: %d", selectSoldier);
-
-    ImGui::Text("Soldiers[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
-        soldiersFloor[0].x, soldiersFloor[0].y, soldiersFloor[1].x, soldiersFloor[1].y, soldiersFloor[2].x, soldiersFloor[2].y, soldiersFloor[3].x, soldiersFloor[3].y);
-
-    ImGui::Text("S[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
-        startFloor[0].x, startFloor[0].y, startFloor[1].x, startFloor[1].y, startFloor[2].x, startFloor[2].y, startFloor[3].x, startFloor[3].y);
-    ImGui::Text("G[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
-        goalFloor[0].x, goalFloor[0].y, goalFloor[1].x, goalFloor[1].y, goalFloor[2].x, goalFloor[2].y, goalFloor[3].x, goalFloor[3].y);*/
 }
 
 void GameStage::SetStartGoal()
@@ -176,7 +161,21 @@ void GameStage::SetSoldiersFloor()
 
                     soldiersFloor[i] = { y,x };
                 }
+            }
+        }
+    }
+}
 
+void GameStage::SetHouseFloor()
+{
+    for (int y = 0; y < mapSize; y++) {
+        for (int x = 0; x < mapSize; x++) {
+            for (int j = 0; j < 3; j++) {
+                if ((objFloor_[y][x]->GetPosition().x + 5) >= objHouse_[j]->GetPosition().x && (objFloor_[y][x]->GetPosition().x - 5) <= objHouse_[j]->GetPosition().x &&
+                    (objFloor_[y][x]->GetPosition().z + 5) >= objHouse_[j]->GetPosition().z && (objFloor_[y][x]->GetPosition().z - 5) <= objHouse_[j]->GetPosition().z) {
+
+                    houseFloor_[j] = { y,x };
+                }
             }
         }
     }
