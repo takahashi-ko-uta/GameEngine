@@ -26,6 +26,7 @@ public://メンバ関数
 	void GetStartPos(XMINT2 startFloor[4]);
 	void GetGoalPos(XMINT2 goalFloor[4]);
 	int GetSelectSoldier() { return selectSoldier; }
+	void GetHouseFloor(XMINT2 houseFloor[3]);
 
 	//setter
 	void SetSoldiersPos(XMFLOAT3 soldiersPos[4]);
@@ -70,5 +71,7 @@ private://メンバ変数
 	XMFLOAT3 soldiersPos[4];//各兵隊の位置
 
 	XMINT2 soldiersFloor[4];
+
+	XMINT2 houseFloor_[3];//家の床
 };
 

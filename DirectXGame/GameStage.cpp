@@ -44,6 +44,10 @@ void GameStage::Initialize()
                 objHouse_[num]->SetModel(modelHouse_);
                 objHouse_[num]->SetScale({ 3.0f,3.0f,3.0f });
                 objHouse_[num]->SetPosition({ ((float)y - mapSize / 2) * size * 2, 6.0f, ((float)x - mapSize / 2) * size * 2 });
+
+                //‰Æ‚Ì°‚ÌˆÊ’u‚ð•Û‘¶
+                houseFloor_[num].x = x;
+                houseFloor_[num].y = y;
             }
             
         }
@@ -126,10 +130,10 @@ void GameStage::Select()
     XMFLOAT3 selectPos = objFloor_[selectFloor.x][selectFloor.y]->GetPosition();
 
     
-    /*ImGui::Text("select(X:%d, Y:%d)", selectFloor.x, selectFloor.y);
+    ImGui::Text("select(X:%d, Y:%d)", selectFloor.x, selectFloor.y);
     ImGui::Text("selectPos(X:%.0f, Y:%.0f)", selectPos.x, selectPos.z);
 
-    ImGui::Text("selectSoldier: %d", selectSoldier);
+    /*ImGui::Text("selectSoldier: %d", selectSoldier);
 
     ImGui::Text("Soldiers[0](%d,%d),[1](%d,%d),[2](%d,%d),[3](%d,%d)",
         soldiersFloor[0].x, soldiersFloor[0].y, soldiersFloor[1].x, soldiersFloor[1].y, soldiersFloor[2].x, soldiersFloor[2].y, soldiersFloor[3].x, soldiersFloor[3].y);
@@ -265,6 +269,13 @@ void GameStage::GetGoalPos(XMINT2 goalFloor[4])
 {
     for (int i = 0; i < 4; i++) {
         goalFloor[i] = this->goalFloor[i];
+    }
+}
+
+void GameStage::GetHouseFloor(XMINT2 houseFloor[3])
+{
+    for (int i = 0; i < 3; i++) {
+        houseFloor[i] = houseFloor_[i];
     }
 }
 

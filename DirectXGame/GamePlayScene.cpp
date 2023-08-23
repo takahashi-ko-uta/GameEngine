@@ -133,7 +133,8 @@ void GamePlayScene::Update()
         solider_[i]->Update(startFloor[i], goalFloor[i], floorPos, gameStage_->GetSelectSoldier(),costMap);
     }
     //敵
-    enemy_->Update(floorPos);
+    gameStage_->GetHouseFloor(houseFloor_);
+    enemy_->Update(floorPos, houseFloor_, costMap);
     //プレイヤー更新
     //player_->Update();
     //各々の更新処理

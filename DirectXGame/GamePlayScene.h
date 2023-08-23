@@ -72,6 +72,7 @@ private:
 
 	//“G
 	EnemySoldier* enemy_ = nullptr;
+	XMINT2 houseFloor_[3];
 
 };
 
