@@ -10,7 +10,7 @@ public:
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], int costMap[11][11], XMINT2 houseFloor[3], XMFLOAT3 routePos);
+	void Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], int costMap[11][11], XMINT2 houseFloor[3]);
 	void CreateRoute();
 	//一番近い家を見つける
 	void SearchHouse(XMINT2 houseFloor[3]);
@@ -34,7 +34,6 @@ private:
 	SearchRoute* enemyRoute_ = nullptr;
 	XMFLOAT3 floorPos_[11][11];//床の座標
 	XMFLOAT3 shipPos_;
-	XMFLOAT3 routePos_;
 	bool isOnShip = true;
 	bool isLanding = false;
 	bool isMove = false;

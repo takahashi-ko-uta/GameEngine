@@ -20,11 +20,10 @@ void Enemy::Finalize()
 
 }
 
-void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], int costMap[11][11],XMINT2 houseFloor[3], XMFLOAT3 routePos)
+void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], int costMap[11][11],XMINT2 houseFloor[3])
 {
     shipPos_ = pos;//ëDÇÃç¿ïWÇï€ë∂
-    routePos_ = routePos;
-
+    
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 11; x++) {
             this->floorPos_[y][x] = floorPos[y][x];//è∞ÇÃç¿ïWï€ë∂
@@ -55,7 +54,6 @@ void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11]
     ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
     ImGui::Text("isOnShip:%d,isLanding:%d, isMove:%d", isOnShip, isLanding, isMove);
     ImGui::Text("enemyPos(%.0f, %.0f, %.0f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
-    ImGui::Text("routePos(%.0f, %.0f, %.0f)", routePos_.x, routePos_.y, routePos_.z);
     ImGui::Text("S(%d, %d), G(%d, %d)", nowFloor.x, nowFloor.y, goalFloor.x, goalFloor.y);
 }
 
@@ -315,7 +313,7 @@ void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int c
 {   
     
 	ship_->Update(floorPos);
-    enemy_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor, soldierRoute_->GetPosition());
+    enemy_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor);
 
     if (enemy_->GetIsMove() == true) {
         soldierRoute_->Update(enemy_->GetNowFloor(), enemy_->GetGoalFloor(), floorPos, 0, costMap);
