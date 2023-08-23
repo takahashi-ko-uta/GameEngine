@@ -101,9 +101,6 @@ void SoldierRoute::Move()
         isMove_ = false;
     }
     
-
-
-   
     if (isMove_ == true) {
         //目的地に行くまで続ける
         if (floorPos_[X][Y].x != pos.x ||
@@ -139,7 +136,6 @@ void SoldierRoute::CreateRoute()
         searchRoute_->AStar(start_, goal_);
         isMove_ = true;
     }
-    //searchRoute_->AStar(start_, goal_, costMap_);
     //ルートを取得
     searchRoute_->GetRoute(route_);
 }

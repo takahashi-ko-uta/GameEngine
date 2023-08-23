@@ -10,15 +10,16 @@ public:
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], XMFLOAT3 routePos);
+	void Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], int costMap[11][11], XMINT2 houseFloor[3], XMFLOAT3 routePos);
+	void CreateRoute();
 	//一番近い家を見つける
 	void SearchHouse(XMINT2 houseFloor[3]);
 	//船に乗ってるとき
 	void OnShip(bool isGoal);
 	//着陸する
-	void Landing(XMINT2 goal);
+	void Landing(XMINT2 goal, XMINT2 houseFloor[3]);
 	//家の近くまで動く
-	void Move();
+	void Move(XMINT2 houseFloor[3]);
 	//描画
 	void Draw();
 
@@ -30,7 +31,7 @@ public:
 private:
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
-
+	SearchRoute* enemyRoute_ = nullptr;
 	XMFLOAT3 floorPos_[11][11];//床の座標
 	XMFLOAT3 shipPos_;
 	XMFLOAT3 routePos_;
@@ -40,6 +41,11 @@ private:
 	XMINT2 nowFloor;	//今いる床
 	XMINT2 goalFloor;
 	XMFLOAT3 housePos[3];
+	SearchRoute::Cell start_ = SearchRoute::Cell(0, 0);
+	SearchRoute::Cell goal_ = SearchRoute::Cell(0, 0);
+	int costMap_[11][11];
+	XMINT2 route[40];
+	int32_t routeNum_ = 0;
 };
 
 class EnemySoldier
