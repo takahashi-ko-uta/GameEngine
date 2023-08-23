@@ -22,10 +22,7 @@ void SoldierRoute::Initialize(XMFLOAT3 spawnPos, int soldierNum)
     if (soldierNum_ == 3) { obj_->SetColor({ 1,0,1,1 }); }
 
     searchRoute_ = new SearchRoute();
-    /*searchRoute_->CreateMap();*/
     ChangeSpawnFloor();
-    //start_ = SearchRoute::Cell(spawnFloor_.x, spawnFloor_.y);
-    //goal_ = SearchRoute::Cell(spawnFloor_.x, spawnFloor_.y);
 
     start_ = SearchRoute::Cell(0, 0);
     goal_ = SearchRoute::Cell(5, 5);

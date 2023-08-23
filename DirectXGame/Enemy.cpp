@@ -18,9 +18,10 @@ void Enemy::Finalize()
 
 }
 
-void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3])
+void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], XMFLOAT3 routePos)
 {
     shipPos_ = pos;//船の座標を保存
+    routePos_ = routePos;
 
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 11; x++) {
@@ -44,10 +45,15 @@ void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11]
     //船から陸へ上がる
     Landing(goal);
 
+    //近くの家に向かう
+    Move();
+
     obj_->Update();
 
     
-    ImGui::Text("isGoal:%d,isLanding:%d", isGoal, isLanding);
+    ImGui::Text("isOnShip:%d,isLanding:%d, isMove:%d", isOnShip, isLanding, isMove);
+    ImGui::Text("enemyPos(%.0f, %.0f, %.0f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
+    ImGui::Text("routePos(%.0f, %.0f, %.0f)", routePos_.x, routePos_.y, routePos_.z);
     ImGui::Text("S(%d, %d), G(%d, %d)", nowFloor.x, nowFloor.y, goalFloor.x, goalFloor.y);
 }
 
@@ -108,28 +114,22 @@ void Enemy::SearchHouse(XMINT2 houseFloor[3])
         shift.y = 0;
     }
 
-    //goalFloor = XMINT2(houseFloor[goalNum].x + shift.x, houseFloor[goalNum].y + shift.y);
-    
-    for (int i = 0; i < 3; i++) {
-        ImGui::Text("Hfloor(x:%d, y:%d)", houseFloor[i].x, houseFloor[i].y);
-        ImGui::Text("Hpos[0](x: %.0f, y: %.0f, z: %.0f)\n", housePos[i].x, housePos[i].y, housePos[i].z);
-    }
-
-    ImGui::Text("distence(0: %.0f, 1: %.0f, 2: %.0f)", distance[0], distance[1], distance[2]);
-    ImGui::Text("Gnum:%d", goalNum);
+    goalFloor = XMINT2(houseFloor[goalNum].x + shift.x, houseFloor[goalNum].y + shift.y);
 }
 
 void Enemy::OnShip(bool isGoal)
 {
-    if (isGoal == false) {
+    if (isOnShip == true) {
         XMFLOAT3 objPos = obj_->GetPosition();
 
         objPos = { shipPos_.x,3.0f,shipPos_.z };
 
         obj_->SetPosition(objPos);
-    }
-    else{
-        isLanding = true;
+
+        if (isGoal == true) {//船が目的地についたら
+            isOnShip = false;
+            isLanding = true;
+        }
     }
 }
 
@@ -187,6 +187,62 @@ void Enemy::Landing(XMINT2 goal)
             goalPos.z == obj_->GetPosition().z) {
             //フラグを消す
             isLanding = false;
+            isMove = true;
+        };
+    }
+}
+
+void Enemy::Move()
+{
+    XMFLOAT3 move = { 0.0f, 0.0f, 0.0f };
+    XMFLOAT3 pos = obj_->GetPosition();
+    float speed = 0.5f;
+
+    //最初は海に沈んでいるため、座標を上げる
+    if (obj_->GetPosition().y <= routePos_.y) {
+        move.y = speed;
+    }
+    else {
+        move.y = 0.0f;
+    }
+
+    // 移動量
+    if (routePos_.x < obj_->GetPosition().x) {
+        move.x = -speed;
+    }
+    else if (routePos_.x > obj_->GetPosition().x) {
+        move.x = speed;
+    }
+    else {
+        move.x = 0.0f;
+    }
+
+    if (routePos_.z < obj_->GetPosition().z) {
+        move.z = -speed;
+    }
+    else if (routePos_.z > obj_->GetPosition().z) {
+        move.z = speed;
+    }
+    else {
+        move.z = 0.0f;
+    }
+
+    if (isMove == true) {
+        //目的地に行くまで続ける
+        if (routePos_.x != obj_->GetPosition().x ||
+            routePos_.z != obj_->GetPosition().z) {
+
+            //移動
+            pos.x += move.x;
+            pos.y += move.y;
+            pos.z += move.z;
+            obj_->SetPosition(pos);
+        }
+        //目的地に着いたら
+        else if (routePos_.x == obj_->GetPosition().x &&
+            routePos_.z == obj_->GetPosition().z) {
+            //フラグを消す
+            //isMove = true;
         };
     }
 }
@@ -221,9 +277,13 @@ void EnemySoldier::Finalize()
 
 void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11])
 {   
+    
 	ship_->Update(floorPos);
-    enemy_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, houseFloor);
-    soldierRoute_->Update(enemy_->GetNowFloor(), enemy_->GetGoalFloor(), floorPos, 0, costMap);
+    enemy_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, houseFloor, soldierRoute_->GetPosition());
+
+    if (enemy_->GetIsMove() == true) {
+        soldierRoute_->Update(enemy_->GetNowFloor(), enemy_->GetGoalFloor(), floorPos, 0, costMap);
+    }
 }
 
 void EnemySoldier::Draw()
