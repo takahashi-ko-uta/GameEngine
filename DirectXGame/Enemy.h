@@ -34,6 +34,7 @@ private:
 	SearchRoute* enemyRoute_ = nullptr;
 	XMFLOAT3 floorPos_[11][11];//è∞ÇÃç¿ïW
 	XMFLOAT3 shipPos_;
+	bool isChangeMap = true;
 	bool isOnShip = true;
 	bool isLanding = false;
 	bool isMove = false;
@@ -61,5 +62,4 @@ public:
 private:
 	EnemyShip* ship_ = nullptr;
 	Enemy* enemy_ = nullptr;
-	SoldierRoute* soldierRoute_ = nullptr;
 };

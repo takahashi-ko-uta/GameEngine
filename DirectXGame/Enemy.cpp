@@ -59,6 +59,12 @@ void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11]
 
 void Enemy::CreateRoute()
 {
+    //マップが変更されたら作り直す
+    if (isChangeMap == true) {
+        enemyRoute_->CreateMap(costMap_);
+        isChangeMap = false;
+    }
+
     //スタートとゴールを保存
     SearchRoute::Cell oldStart = start_;
     SearchRoute::Cell oldGoal = goal_;
@@ -69,9 +75,7 @@ void Enemy::CreateRoute()
 
     //ゴールが変更されたらrouteを再検索する
     if (goal_.X != oldGoal.X || goal_.Y != oldGoal.Y) {
-        enemyRoute_->CreateMap(costMap_);
         enemyRoute_->AStar(start_, goal_);
-        isMove = true;
     }
 
     //ルートを取得
@@ -275,10 +279,6 @@ void Enemy::Move(XMINT2 houseFloor[3])
             routeNum_++;
         }
     }
-
-    /*for (int i = 0; i < 40; i++) {
-        ImGui::Text("%d, %d", route[i].x, route[i].y);
-    }*/
 }
 
 void Enemy::Draw()
@@ -299,9 +299,6 @@ void EnemySoldier::Initialize()
     enemy_ = new Enemy();
     enemy_->Initialize();
 
-    //兵隊のルートの初期化
-    soldierRoute_ = new SoldierRoute();
-    soldierRoute_->Initialize(XMFLOAT3(0, 0, 0), 0);
 }
 
 void EnemySoldier::Finalize()
@@ -314,10 +311,6 @@ void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int c
     
 	ship_->Update(floorPos);
     enemy_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor);
-
-    if (enemy_->GetIsMove() == true) {
-        soldierRoute_->Update(enemy_->GetNowFloor(), enemy_->GetGoalFloor(), floorPos, 0, costMap);
-    }
 }
 
 void EnemySoldier::Draw()
