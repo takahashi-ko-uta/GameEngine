@@ -189,10 +189,6 @@ void GameStage::ChangeFloorColor()
             if (y == selectFloor.x && x == selectFloor.y) {
                 objFloor_[y][x]->SetColor({ 0.5,0,0,1 });
             }
-            //スタート地点のオブジェクト(床)を緑にする
-            else if (y == startFloor[selectSoldier].x && x == startFloor[selectSoldier].y) {
-                objFloor_[y][x]->SetColor({ 0,0.5,0,1 });
-            }
             //ゴール地点のオブジェクト(床)を青にする
             else if (y == goalFloor[selectSoldier].x && x == goalFloor[selectSoldier].y) {
                 objFloor_[y][x]->SetColor({ 0,0,0.5,1 });

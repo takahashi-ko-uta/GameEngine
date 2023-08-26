@@ -2,7 +2,7 @@
 #include "imgui.h"
 
 #pragma region Enemy
-void Enemy::Initialize()
+void EnemyLeader::Initialize()
 {
     //モデル読み込み
     model_ = Model::LoadFromOBJ("Soldier");
@@ -15,12 +15,12 @@ void Enemy::Initialize()
     enemyRoute_ = new SearchRoute();
 }
 
-void Enemy::Finalize()
+void EnemyLeader::Finalize()
 {
 
 }
 
-void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], int costMap[11][11],XMINT2 houseFloor[3])
+void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], int costMap[11][11],XMINT2 houseFloor[3])
 {
     shipPos_ = pos;//船の座標を保存
     
@@ -57,7 +57,7 @@ void Enemy::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11]
     ImGui::Text("S(%d, %d), G(%d, %d)", nowFloor.x, nowFloor.y, goalFloor.x, goalFloor.y);
 }
 
-void Enemy::CreateRoute()
+void EnemyLeader::CreateRoute()
 {
     //マップが変更されたら作り直す
     if (isChangeMap == true) {
@@ -82,7 +82,7 @@ void Enemy::CreateRoute()
     enemyRoute_->GetRoute(route);
 }
 
-void Enemy::SearchHouse(XMINT2 houseFloor[3])
+void EnemyLeader::SearchHouse(XMINT2 houseFloor[3])
 {
     //ゴールを作成
     XMFLOAT3 objPos = obj_->GetPosition();
@@ -142,7 +142,7 @@ void Enemy::SearchHouse(XMINT2 houseFloor[3])
     //goalFloor = XMINT2(houseFloor[goalNum].x, houseFloor[goalNum].y);
 }
 
-void Enemy::OnShip(bool isGoal)
+void EnemyLeader::OnShip(bool isGoal)
 {
     if (isOnShip == true) {
         XMFLOAT3 objPos = obj_->GetPosition();
@@ -158,7 +158,7 @@ void Enemy::OnShip(bool isGoal)
     }
 }
 
-void Enemy::Landing(XMINT2 goal, XMINT2 houseFloor[3])
+void EnemyLeader::Landing(XMINT2 goal, XMINT2 houseFloor[3])
 {
     XMFLOAT3 goalPos = floorPos_[goal.x][goal.y];
     goalPos = { goalPos.x,6.0f,goalPos.z };//yだけ調整する
@@ -220,7 +220,7 @@ void Enemy::Landing(XMINT2 goal, XMINT2 houseFloor[3])
     }
 }
 
-void Enemy::Move(XMINT2 houseFloor[3])
+void EnemyLeader::Move(XMINT2 houseFloor[3])
 {
     //一番近い家を探す
     SearchHouse(houseFloor);
@@ -281,7 +281,7 @@ void Enemy::Move(XMINT2 houseFloor[3])
     }
 }
 
-void Enemy::Draw()
+void EnemyLeader::Draw()
 {
     obj_->Draw();
 }
@@ -296,8 +296,8 @@ void EnemySoldier::Initialize()
 	ship_->Initialize();
 
     //敵の初期化
-    enemy_ = new Enemy();
-    enemy_->Initialize();
+    leader_ = new EnemyLeader();
+    leader_->Initialize();
 
 }
 
@@ -310,13 +310,13 @@ void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int c
 {   
     
 	ship_->Update(floorPos);
-    enemy_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor);
+    leader_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor);
 }
 
 void EnemySoldier::Draw()
 {
 	ship_->Draw();
-    enemy_->Draw();
+    leader_->Draw();
 }
 
 #pragma endregion

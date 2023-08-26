@@ -2,7 +2,7 @@
 #include "EnemyShip.h"
 #include "SoldierRoute.h"
 
-class Enemy
+class EnemyLeader
 {
 public:
 	//‰Šú‰»
@@ -61,5 +61,5 @@ public:
 	void Draw();
 private:
 	EnemyShip* ship_ = nullptr;
-	Enemy* enemy_ = nullptr;
+	EnemyLeader* leader_ = nullptr;
 };
