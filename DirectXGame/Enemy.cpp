@@ -1,7 +1,69 @@
 #include "Enemy.h"
 #include "imgui.h"
 
-#pragma region Enemy
+#pragma region EnemyNormal
+void EnemyNormal::Initialize(int soldierNum)
+{
+    this->soldierNum_ = soldierNum;
+    //モデル読み込み
+    model_ = Model::LoadFromOBJ("Soldier");
+    //球のモデル初期化
+    obj_ = Object3d::Create();
+    obj_->SetModel(model_);
+    obj_->SetScale({ 0.5f,0.5f,0.5f });
+    obj_->SetColor({ 0,0,0,1 });
+}
+
+void EnemyNormal::Finalize()
+{
+
+}
+
+void EnemyNormal::Update(XMFLOAT3 pos)
+{
+    //リーダーの位置保存
+    leaderPos = pos;
+    XMFLOAT3 objPos = obj_->GetPosition();
+
+    switch (soldierNum_)
+    {
+    case 0://右
+        goalPos = { leaderPos.x + 3.0f,leaderPos.y,leaderPos.z };
+        break;
+    case 1://左
+        goalPos = { leaderPos.x - 3.0f,leaderPos.y,leaderPos.z };
+        break;
+    case 2://下
+        goalPos = { leaderPos.x,leaderPos.y,leaderPos.z - 3.0f };
+        break;
+    case 3://上
+        goalPos = { leaderPos.x,leaderPos.y,leaderPos.z + 3.0f };
+        break;
+    case 4://右上
+        goalPos = { leaderPos.x + 3.0f,leaderPos.y,leaderPos.z + 3.0f };
+        break;
+    case 5://右下
+        goalPos = { leaderPos.x + 3.0f,leaderPos.y,leaderPos.z - 3.0f };
+        break;
+    case 6://左上
+        goalPos = { leaderPos.x - 3.0f,leaderPos.y,leaderPos.z + 3.0f };
+        break;
+    case 7://左下
+        goalPos = { leaderPos.x - 3.0f,leaderPos.y,leaderPos.z - 3.0f };
+        break;
+    }
+
+    obj_->SetPosition(goalPos);
+    obj_->Update();
+}
+
+void EnemyNormal::Draw()
+{
+    obj_->Draw();
+}
+#pragma endregion
+
+#pragma region EnemyLeader
 void EnemyLeader::Initialize()
 {
     //モデル読み込み
@@ -287,7 +349,6 @@ void EnemyLeader::Draw()
 }
 #pragma endregion
 
-
 #pragma region EnemySoldier
 void EnemySoldier::Initialize()
 {
@@ -296,8 +357,15 @@ void EnemySoldier::Initialize()
 	ship_->Initialize();
 
     //敵の初期化
+    //リーダー
     leader_ = new EnemyLeader();
     leader_->Initialize();
+    //その他
+    for (int i = 0; i < 8; i++) {
+        normal_[i] = new EnemyNormal();
+        normal_[i]->Initialize(i);
+    }
+
 
 }
 
@@ -311,12 +379,18 @@ void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int c
     
 	ship_->Update(floorPos);
     leader_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor);
+    for (int i = 0; i < 8; i++) {
+        normal_[i]->Update(leader_->GetPosition());
+    }
 }
 
 void EnemySoldier::Draw()
 {
 	ship_->Draw();
     leader_->Draw();
+    for (int i = 0; i < 8; i++) {
+        normal_[i]->Draw();
+    }
 }
 
 #pragma endregion

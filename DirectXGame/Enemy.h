@@ -2,6 +2,28 @@
 #include "EnemyShip.h"
 #include "SoldierRoute.h"
 
+class EnemyNormal
+{
+public:
+	//初期化
+	void Initialize(int soldierNum);
+	//終了
+	void Finalize();
+	//毎フレーム処理
+	void Update(XMFLOAT3 pos);
+	//描画
+	void Draw();
+
+private:
+	Model* model_ = nullptr;
+	Object3d* obj_ = nullptr;
+
+	int soldierNum_;
+	XMFLOAT3 leaderPos;//指定されている床の座標
+	XMFLOAT3 goalPos;//目的地
+
+};
+
 class EnemyLeader
 {
 public:
@@ -62,4 +84,5 @@ public:
 private:
 	EnemyShip* ship_ = nullptr;
 	EnemyLeader* leader_ = nullptr;
+	EnemyNormal* normal_[8];//最大8人する
 };
