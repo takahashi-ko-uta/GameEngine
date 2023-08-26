@@ -70,6 +70,7 @@ private:
 	int32_t routeNum_ = 0;
 };
 
+//敵のひとかたまり
 class EnemySoldier
 {
 public:
@@ -78,7 +79,7 @@ public:
 	//終了
 	void Finalize();
 	//毎フレーム処理
-	void Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11]);
+	void Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11], bool isMove);
 	//描画
 	void Draw();
 private:
@@ -86,3 +87,27 @@ private:
 	EnemyLeader* leader_ = nullptr;
 	EnemyNormal* normal_[8];//最大8人する
 };
+
+class Enemy
+{
+public:
+	//初期化
+	void Initialize();
+	//終了
+	void Finalize();
+	//毎フレーム処理
+	void Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11]);
+	//スポーン
+	void Spawn();
+	//描画
+	void Draw();
+
+private:
+	EnemySoldier* soldier[5];
+	bool isMove[5];
+	float time;
+	int32_t num;
+	bool isSpawn = true;
+	bool isDelete = false;
+};
+

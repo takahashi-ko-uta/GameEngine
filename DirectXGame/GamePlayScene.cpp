@@ -49,7 +49,7 @@ void GamePlayScene::Initialize()
         solider_[i]->Initialize(gameStage_->GetSpawnPos(i), i);
     }
     
-    enemy_ = new EnemySoldier();
+    enemy_ = new Enemy();
     enemy_->Initialize();
 
     //ƒvƒŒƒCƒ„[‚Ì‰Šú‰»

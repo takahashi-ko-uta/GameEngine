@@ -71,6 +71,7 @@ void EnemyLeader::Initialize()
     //球のモデル初期化
     obj_ = Object3d::Create();
     obj_->SetModel(model_);
+    obj_->SetPosition({ 90,-50,90 });//最初は見えないところへ
     obj_->SetScale({ 0.5f,0.5f,0.5f });
     obj_->SetColor({ 0,0,0,1 });
 
@@ -365,8 +366,6 @@ void EnemySoldier::Initialize()
         normal_[i] = new EnemyNormal();
         normal_[i]->Initialize(i);
     }
-
-
 }
 
 void EnemySoldier::Finalize()
@@ -374,9 +373,10 @@ void EnemySoldier::Finalize()
 
 }
 
-void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11])
+void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11], bool isMove)
 {   
-    
+    ship_->SetIsMove(isMove);
+
 	ship_->Update(floorPos);
     leader_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor);
     for (int i = 0; i < 8; i++) {
@@ -394,3 +394,61 @@ void EnemySoldier::Draw()
 }
 
 #pragma endregion
+
+#pragma region Enemy
+void Enemy::Initialize()
+{
+    for (int i = 0; i < 5; i++) {
+        soldier[i] = new EnemySoldier();
+        soldier[i]->Initialize();
+    }
+    
+}
+
+void Enemy::Finalize()
+{
+
+}
+
+void Enemy::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11])
+{
+    //スポーン
+    Spawn();
+
+    //1ウェーブ終わったら(5隻分の敵を倒したら)船と敵を消す
+
+
+    for (int i = 0; i < 5; i++) {
+        soldier[i]->Update(floorPos, houseFloor, costMap, isMove[i]);
+    }
+
+    ImGui::Text("num:%d", num);
+}
+
+void Enemy::Spawn()
+{
+    float timer = 1000;
+
+    if (isSpawn == true) {
+        time++;
+
+        if (time >= timer) {
+            time = 0;
+            isMove[num] = true;
+            num++;
+            if (num == 5) {
+                num = 0;
+                isSpawn = false;
+            }
+        }
+    }
+}
+
+void Enemy::Draw()
+{
+    for (int i = 0; i < 5; i++) {
+        soldier[i]->Draw();
+    }
+}
+#pragma endregion
+

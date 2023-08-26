@@ -23,6 +23,9 @@ public:
 	XMFLOAT3 GetPosition() { return obj_->GetPosition(); }
 	XMINT2 GetGoalFloor() { return goalFloor; }
 	bool GetIsGoal() { return isGoal; }
+
+	//setter
+	void SetIsMove(bool isMove) { this->isMove = isMove; }
 private:
 	Input* input_ = nullptr;
 	Model* model_ = nullptr;

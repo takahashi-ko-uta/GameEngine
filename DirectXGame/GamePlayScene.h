@@ -71,7 +71,7 @@ private:
 	Solider* solider_[4];
 
 	//“G
-	EnemySoldier* enemy_ = nullptr;
+	Enemy* enemy_ = nullptr;
 	XMINT2 houseFloor_[3];
 
 };
