@@ -25,7 +25,7 @@ public:
 	bool GetIsGoal() { return isGoal; }
 
 	//setter
-	void SetIsMove(bool isMove) { this->isMove = isMove; }
+	void SetIsStart(bool isStart) { this->isStart = isStart; }
 private:
 	Input* input_ = nullptr;
 	Model* model_ = nullptr;
@@ -34,6 +34,7 @@ private:
 	int32_t direction = 0;
 	int32_t floorNum = 0;
 	int num;
+	bool isStart = false;
 	bool isSpawn = true;  //スポーンに必要な値を決める
 	bool isSelect = false;//ゴール位置を決める
 	bool isMove = false;  //着陸まで動く

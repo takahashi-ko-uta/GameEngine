@@ -1,5 +1,8 @@
 #include "Enemy.h"
 #include "imgui.h"
+#include <iostream>     
+#include <ctime>        
+#include <cstdlib> 
 
 #pragma region EnemyNormal
 void EnemyNormal::Initialize(int soldierNum)
@@ -112,12 +115,12 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
     Move(houseFloor);
 
     obj_->Update();
-    ImGui::Text("goal :%d, %d", goal.x, goal.y);
+    /*ImGui::Text("goal :%d, %d", goal.x, goal.y);
     ImGui::Text("start:%d, %d", start_.X, start_.Y);
     ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
     ImGui::Text("isOnShip:%d,isLanding:%d, isMove:%d", isOnShip, isLanding, isMove);
     ImGui::Text("enemyPos(%.0f, %.0f, %.0f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
-    ImGui::Text("S(%d, %d), G(%d, %d)", nowFloor.x, nowFloor.y, goalFloor.x, goalFloor.y);
+    ImGui::Text("S(%d, %d), G(%d, %d)", nowFloor.x, nowFloor.y, goalFloor.x, goalFloor.y);*/
 }
 
 void EnemyLeader::CreateRoute()
@@ -373,10 +376,9 @@ void EnemySoldier::Finalize()
 
 }
 
-void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11], bool isMove)
+void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11])
 {   
-    ship_->SetIsMove(isMove);
-
+    ship_->SetIsStart(isStart_);
 	ship_->Update(floorPos);
     leader_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor);
     for (int i = 0; i < 8; i++) {
@@ -419,23 +421,31 @@ void Enemy::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[
 
 
     for (int i = 0; i < 5; i++) {
-        soldier[i]->Update(floorPos, houseFloor, costMap, isMove[i]);
+        /*soldier[i]->SetIsSpawn(isSpawnShip[i]);*/
+        soldier[i]->Update(floorPos, houseFloor, costMap);
     }
 
     ImGui::Text("num:%d", num);
+    ImGui::Text("enemyNum:%d", enemyNum);   
 }
 
 void Enemy::Spawn()
 {
-    float timer = 1000;
+    float timer = 200;
 
     if (isSpawn == true) {
-        time++;
+        spawnTime++;
 
-        if (time >= timer) {
-            time = 0;
-            isMove[num] = true;
+        if (spawnTime >= timer) {//時間になったら
+            spawnTime = 0;
+            //敵(Normal)の数を決める2～8
+            std::srand(time(nullptr));//乱数生成
+            enemyNum = rand() % 7 + 2;
+            isStartShip[num] = true;//船をスポーンさせる
+            soldier[num]->SetIsStart(isStartShip[num]);
             num++;
+           
+            //船を5隻だしたら
             if (num == 5) {
                 num = 0;
                 isSpawn = false;

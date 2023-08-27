@@ -14,7 +14,7 @@ void EnemyShip::Initialize()
     //球のモデル初期化
     obj_ = Object3d::Create();
     obj_->SetModel(model_);
-    obj_->SetPosition({ 0.0f,3.0f,0.0f });
+    obj_->SetPosition({ 0.0f,-50.0f,0.0f });
     obj_->SetScale({ 1.5f,1.5f,1.5f });
     
 }
@@ -36,13 +36,17 @@ void EnemyShip::Update(XMFLOAT3 floorPos[11][11])
         }
     }
 
-
-    //船のゴールを決める
-    CreateGoal(floorPos);
-    //着陸までの動き
-    Move();
-
+    if (isStart == true) {
+        //船のゴールを決める
+        CreateGoal(floorPos);
+        //着陸までの動き
+        Move();
+    }
+    
     obj_->Update();
+    ImGui::Text("num:%d",num);
+    ImGui::Text("spawn:%d, select:%d, move:%d, goal:%d", isSpawn, isSelect, isMove, isGoal);
+    ImGui::Text("pos(%.0f, %.0f, %.0f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
 }
 
 void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
@@ -54,6 +58,7 @@ void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
         randomPos = rand() % 61 - 30;//スタートの座標
         isSpawn = false;            //フラグを切る
         isSelect = true;            //ゴールを決める
+        num++;
     }
 
     switch (direction) {

@@ -79,13 +79,18 @@ public:
 	//I—¹
 	void Finalize();
 	//–ˆƒtƒŒ[ƒ€ˆ—
-	void Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11], bool isMove);
+	void Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11]);
 	//•`‰æ
 	void Draw();
+
+	//setter
+	void SetIsStart(bool isStart) { this->isStart_ = isStart; }
 private:
 	EnemyShip* ship_ = nullptr;
 	EnemyLeader* leader_ = nullptr;
 	EnemyNormal* normal_[8];//Å‘å8l‚·‚é
+	int32_t enemyNum;//“G(normal)‚Ì”
+	bool isStart_;
 };
 
 class Enemy
@@ -104,10 +109,11 @@ public:
 
 private:
 	EnemySoldier* soldier[5];
-	bool isMove[5];
-	float time;
+	bool isStartShip[5];
+	int32_t spawnTime;
 	int32_t num;
 	bool isSpawn = true;
 	bool isDelete = false;
+	int32_t enemyNum;//“G(normal)‚Ì”
 };
 
