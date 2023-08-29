@@ -115,6 +115,9 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
     Move(houseFloor);
 
     obj_->Update();
+
+    ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
+
     /*ImGui::Text("goal :%d, %d", goal.x, goal.y);
     ImGui::Text("start:%d, %d", start_.X, start_.Y);
     ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
