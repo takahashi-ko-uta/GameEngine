@@ -22,7 +22,8 @@ private:
 	int normalNum_;
 	XMFLOAT3 leaderPos;//指定されている床の座標
 	XMFLOAT3 goalPos;//目的地
-
+	bool isLife = true; //生存フラグ
+	int32_t life = 3;	//体力
 };
 
 
@@ -45,6 +46,9 @@ private:
 	Object3d* obj_ = nullptr;
 
 	XMFLOAT3 floorPos;//指定されている床の座標
+
+	bool isLife = true; //生存フラグ
+	int32_t life = 3;	//体力
 
 };
 

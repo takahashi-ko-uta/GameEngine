@@ -22,6 +22,8 @@ private:
 	XMFLOAT3 leaderPos;//指定されている床の座標
 	XMFLOAT3 goalPos;//目的地
 
+	bool isLife = true; //生存フラグ
+	int32_t life = 3;	//体力
 };
 
 class EnemyLeader
@@ -68,6 +70,9 @@ private:
 	int costMap_[11][11];
 	XMINT2 route[40];
 	int32_t routeNum_ = 0;
+
+	bool isLife = true; //生存フラグ
+	int32_t life = 3;	//体力
 };
 
 //敵のひとかたまり
