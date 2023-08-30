@@ -22,6 +22,11 @@ void Normal::Finalize()
 }
 void Normal::Update(XMFLOAT3 pos)
 {
+    //もし体力が0以下なら生存フラグをfalseへ
+    if (life <= 0) {
+        isLife = false;
+    }
+
     //リーダーの位置保存
     leaderPos = pos;
     XMFLOAT3 objPos = obj_->GetPosition();
@@ -93,6 +98,11 @@ void Leader::Finalize()
 
 void Leader::Update(XMFLOAT3 pos)
 {
+    //もし体力が0以下なら生存フラグをfalseへ
+    if (life <= 0) {
+        isLife = false;
+    }
+
     floorPos = {pos.x,0.0f,pos.z};
     XMFLOAT3 objPos = obj_->GetPosition();
 
@@ -107,7 +117,6 @@ void Leader::Draw()
     obj_->Draw();
 }
 #pragma endregion
-
 
 #pragma region Solider
 void Solider::Initialize(XMFLOAT3 spawnPos, int soldierNum)
@@ -134,6 +143,16 @@ void Solider::Finalize()
 
 void Solider::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][11],int selectSoldier, int costMap[11][11])
 {
+    //兵隊の位置と生存フラグをまとめる
+    //0にリーダー
+    soldiersPos[0] = leader->GetPosition();
+    isSoldiersLife[0] = leader->GetIsLife();
+    //1～8にその他
+    for (int i = 1; i < 9; i++) {
+        soldiersPos[i] = normal[i]->GetPosition();
+        isSoldiersLife[i] = normal[i]->GetIsLife();
+    }
+
     soldierRoute_->Update(startFloor, goalFloor, floorPos,selectSoldier,costMap);
     leader->Update(soldierRoute_->GetPosition());
     for (int i = 0; i < 8; i++) {

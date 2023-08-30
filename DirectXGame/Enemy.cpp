@@ -24,6 +24,11 @@ void EnemyNormal::Finalize()
 
 void EnemyNormal::Update(XMFLOAT3 pos)
 {
+    //もし体力が0以下なら生存フラグをfalseへ
+    if (life <= 0) {
+        isLife = false;
+    }
+
     //リーダーの位置保存
     leaderPos = pos;
     XMFLOAT3 objPos = obj_->GetPosition();
@@ -90,6 +95,11 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
 {
     shipPos_ = pos;//船の座標を保存
     
+    //もし体力が0以下なら生存フラグをfalseへ
+    if (life <= 0) {
+        isLife = false;
+    }
+
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 11; x++) {
             this->floorPos_[y][x] = floorPos[y][x];//床の座標保存
@@ -381,6 +391,16 @@ void EnemySoldier::Finalize()
 
 void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11])
 {   
+    //兵隊の位置と生存フラグをまとめる
+    //0にリーダー
+    enemysPos[0] = leader_->GetPosition();
+    isEnemysLife[0] = leader_->GetIsLife();
+    //1～8にその他
+    for (int i = 1; i < 9; i++) {
+        enemysPos[i] = normal_[i]->GetPosition();
+        isEnemysLife[i] = normal_[i]->GetIsLife();
+    }
+
     ship_->SetIsStart(isStart_);
 	ship_->Update(floorPos);
     leader_->Update(ship_->GetPosition(), ship_->GetGoalFloor(), ship_->GetIsGoal(), floorPos, costMap, houseFloor);

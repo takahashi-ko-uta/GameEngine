@@ -14,6 +14,9 @@ public:
 	//描画
 	void Draw();
 
+	//getter
+	XMFLOAT3 GetPosition() { return obj_->GetPosition(); }
+	bool GetIsLife() { return isLife; }
 private:
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
@@ -52,6 +55,7 @@ public:
 	XMINT2 GetNowFloor() { return nowFloor; }
 	XMINT2 GetGoalFloor() { return goalFloor; }
 	bool GetIsMove() { return isMove; }
+	bool GetIsLife() { return isLife; }
 private:
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
@@ -96,6 +100,9 @@ private:
 	EnemyNormal* normal_[8];//最大8人する
 	int32_t enemyNum;//敵(normal)の数
 	bool isStart_;
+
+	XMFLOAT3 enemysPos[9];//敵全員の位置
+	bool isEnemysLife[9]; //敵全員の生存フラグ
 };
 
 class Enemy
@@ -112,6 +119,9 @@ public:
 	//描画
 	void Draw();
 
+	//getter
+	//敵全員の位置と生存フラグを取得できる
+	void GetEnemysStatus();
 private:
 	EnemySoldier* soldier[5];
 	bool isStartShip[5];

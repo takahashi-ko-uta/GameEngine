@@ -15,6 +15,9 @@ public:
 	//描画
 	void Draw();
 
+	//getter
+	XMFLOAT3 GetPosition() { return obj_->GetPosition(); }
+	bool GetIsLife() { return isLife; }
 private:
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
@@ -41,6 +44,7 @@ public:
 
 	//getter
 	XMFLOAT3 GetPosition() { return obj_->GetPosition(); }
+	bool GetIsLife() { return isLife; }
 private:
 	Model* model_ = nullptr;
 	Object3d* obj_ = nullptr;
@@ -67,8 +71,13 @@ public:
 
 	//getter
 	XMFLOAT3 GetSoldierRoutePos() { return soldierRoute_->GetPosition(); }
+	//兵隊全員の位置と生存フラグを取得できる
+	void GetSoldiersStatus();
 private:
 	SoldierRoute* soldierRoute_ = nullptr;
 	Leader* leader = nullptr;
 	Normal* normal[8];
+
+	XMFLOAT3 soldiersPos[9];//兵隊全員の位置
+	bool isSoldiersLife[9]; //兵隊全員の生存フラグ
 };
