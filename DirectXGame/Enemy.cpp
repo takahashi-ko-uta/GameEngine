@@ -393,12 +393,12 @@ void EnemySoldier::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int c
 {   
     //兵隊の位置と生存フラグをまとめる
     //0にリーダー
-    enemysPos[0] = leader_->GetPosition();
-    isEnemysLife[0] = leader_->GetIsLife();
+    enemysPos_[0] = leader_->GetPosition();
+    isEnemysLife_[0] = leader_->GetIsLife();
     //1～8にその他
-    for (int i = 1; i < 9; i++) {
-        enemysPos[i] = normal_[i]->GetPosition();
-        isEnemysLife[i] = normal_[i]->GetIsLife();
+    for (int i = 0; i < 8; i++) {
+        enemysPos_[i+1] = normal_[i]->GetPosition();
+        isEnemysLife_[i+1] = normal_[i]->GetIsLife();
     }
 
     ship_->SetIsStart(isStart_);
@@ -418,6 +418,13 @@ void EnemySoldier::Draw()
     }
 }
 
+void EnemySoldier::GetEnemysStatus(XMFLOAT3 enemysPos[9], bool isEnemysLife[9])
+{
+    for (int i = 0; i < 9; i++) {
+        enemysPos[i] = this->enemysPos_[i];
+        isEnemysLife[i] = this->isEnemysLife_[i];
+    }
+}
 #pragma endregion
 
 #pragma region Enemy
@@ -437,6 +444,17 @@ void Enemy::Finalize()
 
 void Enemy::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[11][11])
 {
+    //全員の情報をまとめる
+    for (int i = 0; i < 5; i++) {
+        XMFLOAT3 pos[9];
+        bool isLife[9];
+        soldier[i]->GetEnemysStatus(pos, isLife);
+        for (int j = 0; j < 9; j++) {
+            enemysPos_[j + (i * 9)] = pos[i];
+            isEnemysLife_[j + (i * 9)] = isLife[i];
+        }
+    }
+
     //スポーン
     Spawn();
 
@@ -447,6 +465,7 @@ void Enemy::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[
         /*soldier[i]->SetIsSpawn(isSpawnShip[i]);*/
         soldier[i]->Update(floorPos, houseFloor, costMap);
     }
+
 
     ImGui::Text("num:%d", num);
     ImGui::Text("enemyNum:%d", enemyNum);   

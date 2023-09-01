@@ -69,6 +69,8 @@ private:
 
 	//兵隊
 	Solider* solider_[4];
+	XMFLOAT3 soldiersPos_[36];//兵隊全員の位置
+	bool isSoldiersLife_[36]; //兵隊全員の生存フラグ
 
 	//敵
 	Enemy* enemy_ = nullptr;

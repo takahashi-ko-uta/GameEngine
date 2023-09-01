@@ -56,7 +56,6 @@ private:
 
 };
 
-
 class Solider
 {
 public:
@@ -72,12 +71,12 @@ public:
 	//getter
 	XMFLOAT3 GetSoldierRoutePos() { return soldierRoute_->GetPosition(); }
 	//兵隊全員の位置と生存フラグを取得できる
-	void GetSoldiersStatus();
+	void GetSoldiersStatus(XMFLOAT3 soldiersPos[9], bool isSoldiersLife[9]);
 private:
 	SoldierRoute* soldierRoute_ = nullptr;
 	Leader* leader = nullptr;
 	Normal* normal[8];
 
-	XMFLOAT3 soldiersPos[9];//兵隊全員の位置
-	bool isSoldiersLife[9]; //兵隊全員の生存フラグ
+	XMFLOAT3 soldiersPos_[9];//兵隊全員の位置
+	bool isSoldiersLife_[9]; //兵隊全員の生存フラグ
 };

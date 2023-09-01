@@ -145,12 +145,12 @@ void Solider::Update(XMINT2 startFloor, XMINT2 goalFloor, XMFLOAT3 floorPos[11][
 {
     //兵隊の位置と生存フラグをまとめる
     //0にリーダー
-    soldiersPos[0] = leader->GetPosition();
-    isSoldiersLife[0] = leader->GetIsLife();
+    soldiersPos_[0] = leader->GetPosition();
+    isSoldiersLife_[0] = leader->GetIsLife();
     //1～8にその他
-    for (int i = 1; i < 9; i++) {
-        soldiersPos[i] = normal[i]->GetPosition();
-        isSoldiersLife[i] = normal[i]->GetIsLife();
+    for (int i = 0; i < 8; i++) {
+        soldiersPos_[i+1] = normal[i]->GetPosition();
+        isSoldiersLife_[i+1] = normal[i]->GetIsLife();
     }
 
     soldierRoute_->Update(startFloor, goalFloor, floorPos,selectSoldier,costMap);
@@ -168,6 +168,13 @@ void Solider::Draw()
         normal[i]->Draw();
     }
 }
-#pragma endregion
 
+void Solider::GetSoldiersStatus(XMFLOAT3 soldiersPos[9], bool isSoldiersLife[9])
+{
+    for (int i = 0; i < 9; i++) {
+        soldiersPos[i] = this->soldiersPos_[i];
+        isSoldiersLife[i] = this->isSoldiersLife_[i];
+    }
+}
+#pragma endregion
 

@@ -94,6 +94,10 @@ public:
 
 	//setter
 	void SetIsStart(bool isStart) { this->isStart_ = isStart; }
+
+	//getter
+	//敵全員の位置と生存フラグを取得できる
+	void GetEnemysStatus(XMFLOAT3 enemysPos[9], bool isEnemysLife[9]);
 private:
 	EnemyShip* ship_ = nullptr;
 	EnemyLeader* leader_ = nullptr;
@@ -101,8 +105,8 @@ private:
 	int32_t enemyNum;//敵(normal)の数
 	bool isStart_;
 
-	XMFLOAT3 enemysPos[9];//敵全員の位置
-	bool isEnemysLife[9]; //敵全員の生存フラグ
+	XMFLOAT3 enemysPos_[9];//敵全員の位置
+	bool isEnemysLife_[9]; //敵全員の生存フラグ
 };
 
 class Enemy
@@ -121,7 +125,7 @@ public:
 
 	//getter
 	//敵全員の位置と生存フラグを取得できる
-	void GetEnemysStatus();
+	void GetEnemysStatus(XMFLOAT3 enemysPos[45], bool isEnemysLife[45]);
 private:
 	EnemySoldier* soldier[5];
 	bool isStartShip[5];
@@ -130,5 +134,8 @@ private:
 	bool isSpawn = true;
 	bool isDelete = false;
 	int32_t enemyNum;//敵(normal)の数
+
+	XMFLOAT3 enemysPos_[45];//敵全員の位置
+	bool isEnemysLife_[45]; //敵全員の生存フラグ
 };
 

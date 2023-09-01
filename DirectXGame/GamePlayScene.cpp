@@ -96,14 +96,22 @@ void GamePlayScene::Update()
 {
     //カメラの移動
     gameCamera_->Update();
-    //camera_->SetTarget({ 0.0f,0.0f,0.0f });
-    //camera_->SetEye({ 1.0f,250.0f,0.0f });
-    //camera_->SetEye({ 0.0f,5.0f,-80.0f });
-
+    
 #pragma region 兵隊関連
     //兵隊の位置をsoldiersPosにまとめる
     for (int i = 0; i < 4; i++) {
         soldiersPos_[i] = solider_[i]->GetSoldierRoutePos();
+    }
+
+    //全員の情報をまとめる
+    for (int i = 0; i < 4; i++) {
+        XMFLOAT3 pos[9];
+        bool isLife[9];
+        solider_[i]->GetSoldiersStatus(pos, isLife);
+        for (int j = 0; j < 9; j++) {
+            soldiersPos_[j + (i * 9)] = pos[i];
+            isSoldiersLife_[j + (i * 9)] = isLife[i];
+        }
     }
 
     //スタートとゴールを取得する
@@ -122,7 +130,6 @@ void GamePlayScene::Update()
     
 #pragma endregion
     
-
 #pragma region 各アップデート
     gameSprite_->Update();
     //ステージ更新
