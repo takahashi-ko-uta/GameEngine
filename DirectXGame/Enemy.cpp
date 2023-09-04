@@ -115,15 +115,18 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
     Move(houseFloor);
 
     obj_->Update();
+    ImGui::Text("goalNum:%d", goalNum);
+    ImGui::Text("nowF :%d, %d", nowFloor.x, nowFloor.y);
+    ImGui::Text("goalF:%d, %d\n", goalFloor.x, goalFloor.y);
 
-    //ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
-
-    /*ImGui::Text("goal :%d, %d", goal.x, goal.y);
     ImGui::Text("start:%d, %d", start_.X, start_.Y);
     ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
-    ImGui::Text("isOnShip:%d,isLanding:%d, isMove:%d", isOnShip, isLanding, isMove);
-    ImGui::Text("enemyPos(%.0f, %.0f, %.0f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
-    ImGui::Text("S(%d, %d), G(%d, %d)", nowFloor.x, nowFloor.y, goalFloor.x, goalFloor.y);*/
+
+    /*for (int i = 0; i < 5; i++) {
+        ImGui::Text("%d, %d", route[i].x, route[i].y);
+    }*/
+
+    ImGui::Text("-----------------------------------------");
 }
 
 void EnemyLeader::CreateRoute()
@@ -157,7 +160,6 @@ void EnemyLeader::SearchHouse(XMINT2 houseFloor[3])
     XMFLOAT3 objPos = obj_->GetPosition();
     float distance[3];
     
-
     for (int i = 0; i < 3; i++) {
         for (int y = 0; y < 11; y++) {
             for (int x = 0; x < 11; x++) {
@@ -168,8 +170,6 @@ void EnemyLeader::SearchHouse(XMINT2 houseFloor[3])
             }
         }
     }
-
-    int32_t goalNum;
 
     //Še‰Æ‚Ü‚Å‚Ì‹——£‚ð”ä‚×‚Äˆê”Ô¬‚³‚¢‚Ì‚ðƒS[ƒ‹‚É‚·‚é
     if (distance[0] < distance[1] && distance[0] < distance[2]) {
@@ -208,7 +208,6 @@ void EnemyLeader::SearchHouse(XMINT2 houseFloor[3])
     }
 
     goalFloor = XMINT2(houseFloor[goalNum].x + shift.x, houseFloor[goalNum].y + shift.y);
-    //goalFloor = XMINT2(houseFloor[goalNum].x, houseFloor[goalNum].y);
 }
 
 void EnemyLeader::OnShip(bool isGoal)
@@ -336,7 +335,7 @@ void EnemyLeader::Move(XMINT2 houseFloor[3])
         if (floorPos_[X][Y].x != pos.x ||
             floorPos_[X][Y].z != pos.z) {
 
-
+            //ˆÚ“®‚ð”½‰f
             pos.x += move.x;
             pos.z += move.z;
             obj_->SetPosition(pos);

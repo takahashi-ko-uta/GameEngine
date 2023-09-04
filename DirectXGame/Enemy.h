@@ -61,6 +61,7 @@ private:
 	bool isLanding = false;
 	bool isMove = false;
 	XMINT2 nowFloor;	//ç°Ç¢ÇÈè∞
+	int32_t goalNum;
 	XMINT2 goalFloor;
 	XMFLOAT3 housePos[3];
 	SearchRoute::Cell start_ = SearchRoute::Cell(0, 0);

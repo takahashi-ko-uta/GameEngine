@@ -44,9 +44,6 @@ void EnemyShip::Update(XMFLOAT3 floorPos[11][11])
     }
     
     obj_->Update();
-    /*ImGui::Text("num:%d",num);
-    ImGui::Text("spawn:%d, select:%d, move:%d, goal:%d", isSpawn, isSelect, isMove, isGoal);
-    ImGui::Text("pos(%.0f, %.0f, %.0f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);*/
 }
 
 void EnemyShip::CreateGoal(XMFLOAT3 floorPos[11][11])
