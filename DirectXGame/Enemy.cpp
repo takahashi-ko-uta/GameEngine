@@ -116,7 +116,7 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
 
     obj_->Update();
 
-    ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
+    //ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
 
     /*ImGui::Text("goal :%d, %d", goal.x, goal.y);
     ImGui::Text("start:%d, %d", start_.X, start_.Y);
@@ -428,8 +428,8 @@ void Enemy::Update(XMFLOAT3 floorPos[11][11], XMINT2 houseFloor[3], int costMap[
         soldier[i]->Update(floorPos, houseFloor, costMap);
     }
 
-    ImGui::Text("num:%d", num);
-    ImGui::Text("enemyNum:%d", enemyNum);   
+    /*ImGui::Text("num:%d", num);
+    ImGui::Text("enemyNum:%d", enemyNum);   */
 }
 
 void Enemy::Spawn()
