@@ -100,7 +100,7 @@ void GamePlayScene::Update()
 #pragma region 兵隊関連
     //兵隊の位置をsoldiersPosにまとめる
     for (int i = 0; i < 4; i++) {
-        soldiersPos_[i] = solider_[i]->GetSoldierRoutePos();
+        soldierPos_[i] = solider_[i]->GetSoldierRoutePos();
     }
 
     //全員の情報をまとめる
@@ -120,10 +120,14 @@ void GamePlayScene::Update()
 
     //床の座標を取得
     gameStage_->GetFloorPos(floorPos);
-    gameStage_->SetSoldiersPos(soldiersPos_);
+    gameStage_->SetSoldiersPos(soldierPos_);
 
     //コストマップ作成
     gameStage_->CreateCostMap(costMap);
+#pragma endregion
+
+#pragma region 敵関連
+
 #pragma endregion
 
 #pragma region ImGuiテキスト

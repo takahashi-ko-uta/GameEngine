@@ -502,5 +502,22 @@ void Enemy::Draw()
         soldier[i]->Draw();
     }
 }
+
+void Enemy::GetEnemysStatus(XMFLOAT3 enemysPos[45], bool isEnemysLife[45])
+{
+    for (int i = 0; i < 45; i++) {
+        enemysPos[i] = this->enemysPos_[i];
+        isEnemysLife[i] = this->isEnemysLife_[i];
+    }
+}
+
+void Enemy::SetSoldiersStatus(XMFLOAT3 soldiersPos[36], bool isSoldiersLife[36])
+{
+    for (int i = 0; i < 36; i++) {
+        soldiersPos_[i] = soldiersPos[i];
+        isSoldiersLife_[i] = isSoldiersLife[i];
+    }
+}
+
 #pragma endregion
 

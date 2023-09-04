@@ -61,7 +61,7 @@ private:
 	//兵隊(4部隊)
 	//兵隊のルート検索
 	//SoldierRoute* soldierRoute_[4];
-	XMFLOAT3 soldiersPos_[4];//各兵隊の位置
+	XMFLOAT3 soldierPos_[4];//各兵隊の位置
 	XMINT2 startFloor[4];
 	XMINT2 goalFloor[4];
 	XMFLOAT3 floorPos[11][11];
@@ -75,6 +75,5 @@ private:
 	//敵
 	Enemy* enemy_ = nullptr;
 	XMINT2 houseFloor_[3];
-
 };
 

@@ -126,6 +126,10 @@ public:
 	//getter
 	//敵全員の位置と生存フラグを取得できる
 	void GetEnemysStatus(XMFLOAT3 enemysPos[45], bool isEnemysLife[45]);
+
+	//setter
+	void SetSoldiersStatus(XMFLOAT3 soldiersPos[36], bool isSoldiersLife[36]);
+
 private:
 	EnemySoldier* soldier[5];
 	bool isStartShip[5];
@@ -137,5 +141,8 @@ private:
 
 	XMFLOAT3 enemysPos_[45];//敵全員の位置
 	bool isEnemysLife_[45]; //敵全員の生存フラグ
+
+	XMFLOAT3 soldiersPos_[36];//兵隊全員の位置
+	bool isSoldiersLife_[36]; //兵隊全員の生存フラグ
 };
 
