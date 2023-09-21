@@ -35,11 +35,11 @@ public:
 	void Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorPos[11][11], int costMap[11][11], XMINT2 houseFloor[3]);
 	void CreateRoute();
 	//ˆê”Ô‹ß‚¢‰Æ‚ğŒ©‚Â‚¯‚é
-	void SearchHouse(XMINT2 houseFloor[3]);
+	void SearchHouse();
 	//‘D‚Éæ‚Á‚Ä‚é‚Æ‚«
 	void OnShip(bool isGoal);
 	//’…—¤‚·‚é
-	void Landing(XMINT2 goal, XMINT2 houseFloor[3]);
+	void Landing(XMINT2 goal);
 	//‰Æ‚Ì‹ß‚­‚Ü‚Å“®‚­
 	void Move(XMINT2 houseFloor[3]);
 	//2“_ŠÔ‚Ì‹——£‚ğ‹‚ß‚é
@@ -65,6 +65,7 @@ private:
 	XMINT2 nowFloor;	//¡‚¢‚é°
 	int32_t goalNum;
 	XMINT2 goalFloor;
+	XMINT2 houseFloor_[3];
 	XMFLOAT3 housePos[3];
 	SearchRoute::Cell start_ = SearchRoute::Cell(0, 0);
 	SearchRoute::Cell goal_ = SearchRoute::Cell(0, 0);

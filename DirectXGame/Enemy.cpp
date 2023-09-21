@@ -90,6 +90,10 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
 {
     shipPos_ = pos;//船の座標を保存
     
+    for (int i = 0; i < 3; i++) {
+        this->houseFloor_[i] = houseFloor[i];
+    }
+    
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 11; x++) {
             this->floorPos_[y][x] = floorPos[y][x];//床の座標保存
@@ -109,24 +113,10 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
     OnShip(isGoal);
 
     //船から陸へ上がる
-    Landing(goal,houseFloor);
+    Landing(goal);
 
-
-    //近くの家に向かう
-    Move(houseFloor);
 
     obj_->Update();
-    ImGui::Text("goalNum:%d", goalNum);
-    ImGui::Text("nowF :%d, %d", nowFloor.x, nowFloor.y);
-    ImGui::Text("goalF:%d, %d\n", goalFloor.x, goalFloor.y);
-
-
-    ImGui::Text("start:%d, %d", start_.X, start_.Y);
-    ImGui::Text("goal :%d, %d", goal_.X, goal_.Y);
-
-    /*for (int i = 0; i < 5; i++) {
-        ImGui::Text("%d, %d", route[i].x, route[i].y);
-    }*/
 
     ImGui::Text("-----------------------------------------");
 }
@@ -149,7 +139,7 @@ void EnemyLeader::OnShip(bool isGoal)
     }
 }
 
-void EnemyLeader::Landing(XMINT2 goal, XMINT2 houseFloor[3])
+void EnemyLeader::Landing(XMINT2 goal)
 {
     XMFLOAT3 goalPos = floorPos_[goal.x][goal.y];
     goalPos = { goalPos.x,6.0f,goalPos.z };//yだけ調整する
@@ -211,63 +201,9 @@ void EnemyLeader::Landing(XMINT2 goal, XMINT2 houseFloor[3])
     }
 }
 
-void EnemyLeader::SearchHouse(XMINT2 houseFloor[3])
+void EnemyLeader::SearchHouse()
 {
-    XMFLOAT3 objPos = obj_->GetPosition();
-    float distance[3];
-
-    //各家までの距離を調べる
-    for (int i = 0; i < 3; i++) {
-        for (int y = 0; y < 11; y++) {
-            for (int x = 0; x < 11; x++) {
-                housePos[i] = floorPos_[houseFloor[i].y][houseFloor[i].x];//家の座標を取得
-
-                //距離を保存
-                distance[i] = Distance(objPos.x, objPos.z, housePos[i].x, housePos[i].z);
-            }
-        }
-    }
-
-    //各家までの距離を比べて一番小さいのをゴールにする
-    if (distance[0] < distance[1] && distance[0] < distance[2]) {
-        goalNum = 0;
-    }
-    else if (distance[1] < distance[0] && distance[1] < distance[2]) {
-        goalNum = 1;
-    }
-    else {
-        goalNum = 2;
-    }
-
-    //goalFloor = houseFloor[goalNum];
-
-    //家のある床は指定できないため1マスずらす
-    XMINT2 shift;
-    if ((floorPos_[goalFloor.y][goalFloor.x].x) - objPos.x < 0) {
-        shift.x = 1;
-
-    }
-    else if ((floorPos_[goalFloor.y][goalFloor.x].x) - objPos.x > 0) {
-        shift.x = -1;
-    }
-    else {
-        shift.x = 0;
-    }
-
-    if ((floorPos_[goalFloor.y][goalFloor.x].z) - objPos.z < 0) {
-        shift.y = 1;
-    }
-    else if ((floorPos_[goalFloor.y][goalFloor.x].z) - objPos.z > 0) {
-        shift.y = -1;
-    }
-    else {
-        shift.y = 0;
-    }
-
-    goalFloor = { houseFloor[goalNum].x + shift.x, houseFloor[goalNum].y + shift.y };
-    //goalFloor = XMINT2(houseFloor[goalNum].x + 1, houseFloor[goalNum].y + 1);
-    //goalFloor = { goalFloor.x + shift.x, goalFloor.y + shift.y };
-    ImGui::Text("shift:%d, %d\n", shift.x, shift.y);
+    
 }
 
 void EnemyLeader::CreateRoute()
@@ -293,68 +229,6 @@ void EnemyLeader::CreateRoute()
 
     //ルートを取得
     enemyRoute_->GetRoute(route);
-}
-
-
-void EnemyLeader::Move(XMINT2 houseFloor[3])
-{
-    //一番近い家を探す
-    SearchHouse(houseFloor);
-    //ルート作成
-    CreateRoute();
-
-    //移動
-    int32_t X = route[routeNum_].x;
-    int32_t Y = route[routeNum_].y;
-
-    XMFLOAT3 move = { 0.0f, 0.0f, 0.0f };
-    XMFLOAT3 pos = obj_->GetPosition();
-
-    // 移動量
-    if (floorPos_[X][Y].x < pos.x) {
-        move.x = -1.0f;
-    }
-    else if (floorPos_[X][Y].x > pos.x) {
-        move.x = 1.0f;
-    }
-    else {
-        move.x = 0.0f;
-    }
-
-    if (floorPos_[X][Y].z < pos.z) {
-        move.z = -1.0f;
-    }
-    else if (floorPos_[X][Y].z > pos.z) {
-        move.z = 1.0f;
-    }
-    else {
-        move.z = 0.0f;
-    }
-
-    //route_は99だったらゴールについている
-    if (X == 99 && Y == 99) {
-        move = { 0,0,0 };
-        routeNum_ = 0;
-        isMove = false;
-    }
-
-    if (isMove == true) {
-        //目的地に行くまで続ける
-        if (floorPos_[X][Y].x != pos.x ||
-            floorPos_[X][Y].z != pos.z) {
-
-            //移動を反映
-            pos.x += move.x;
-            pos.z += move.z;
-            obj_->SetPosition(pos);
-        }
-        //目的地に着いたら
-        else if (floorPos_[X][Y].x == pos.x &&
-            floorPos_[X][Y].z == pos.z) {
-            //次の目的地をセット
-            routeNum_++;
-        }
-    }
 }
 
 float EnemyLeader::Distance(float p1X, float p1Y, float p2X, float p2Y)
