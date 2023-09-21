@@ -42,6 +42,8 @@ public:
 	void Landing(XMINT2 goal, XMINT2 houseFloor[3]);
 	//‰Æ‚Ì‹ß‚­‚Ü‚Å“®‚­
 	void Move(XMINT2 houseFloor[3]);
+	//2“_ŠÔ‚Ì‹——£‚ğ‹‚ß‚é
+	float Distance(float p1X, float p1Y, float p2X, float p2Y);
 	//•`‰æ
 	void Draw();
 
