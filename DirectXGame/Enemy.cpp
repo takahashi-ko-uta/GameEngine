@@ -117,11 +117,10 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
 
 
     obj_->Update();
-
+    ImGui::Text("start:(%d, %d)", start_.X, start_.Y);
+    ImGui::Text("goal :(%d, %d)", goal_.X, goal_.Y);
     ImGui::Text("-----------------------------------------");
 }
-
-
 
 void EnemyLeader::OnShip(bool isGoal)
 {
@@ -182,8 +181,6 @@ void EnemyLeader::Landing(XMINT2 goal)
             goalPos.z != obj_->GetPosition().z) {
 
             nowFloor = goal;
-            start_ = SearchRoute::Cell(nowFloor.x, nowFloor.y);
-            goal_ = SearchRoute::Cell(nowFloor.x, nowFloor.y);
             //移動
             pos.x += move.x;
             pos.y += move.y;
@@ -194,6 +191,10 @@ void EnemyLeader::Landing(XMINT2 goal)
         else if (goalPos.x == obj_->GetPosition().x &&
             goalPos.z == obj_->GetPosition().z) {
            
+            //一度スタートとゴールを設定
+            start_ = SearchRoute::Cell(nowFloor.x, nowFloor.y);
+            SearchHouse();
+            goal_ = SearchRoute::Cell(goalFloor.x, goalFloor.y);
             //フラグを消す
             isLanding = false;
             isMove = true;
@@ -203,7 +204,33 @@ void EnemyLeader::Landing(XMINT2 goal)
 
 void EnemyLeader::SearchHouse()
 {
+    //ゴール(一番近い家)を探す
+    XMFLOAT3 objPos = obj_->GetPosition();
+    float distance[3];
+
+    //各家までの距離を調べる
+    for (int i = 0; i < 3; i++) {
+        housePos[i] = floorPos_[houseFloor_[i].y][houseFloor_[i].x];//家の座標を取得
+
+        //距離を保存
+        distance[i] = Distance(objPos.x, objPos.z, housePos[i].x, housePos[i].z);
+    }
     
+    if (distance[0] <= distance[1] && distance[0] <= distance[2]) {
+        goalHouseNum = 0;
+    }
+    else if (distance[1] <= distance[0] && distance[1] <= distance[2]) {
+        goalHouseNum = 1;
+    }
+    else if (distance[2] <= distance[0] && distance[2] <= distance[1]) {
+        goalHouseNum = 2;
+    }
+
+    goalFloor = houseFloor_[goalHouseNum];
+
+
+
+    //goalFloor = { 5,4 };
 }
 
 void EnemyLeader::CreateRoute()

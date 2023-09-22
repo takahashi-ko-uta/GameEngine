@@ -63,7 +63,7 @@ private:
 	bool isLanding = false;
 	bool isMove = false;
 	XMINT2 nowFloor;	//ç°Ç¢ÇÈè∞
-	int32_t goalNum;
+	int32_t goalHouseNum;
 	XMINT2 goalFloor;
 	XMINT2 houseFloor_[3];
 	XMFLOAT3 housePos[3];
