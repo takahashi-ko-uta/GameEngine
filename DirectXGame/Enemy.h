@@ -72,6 +72,8 @@ private:
 	int costMap_[11][11];
 	XMINT2 route[40];
 	int32_t routeNum_ = 0;
+
+	int aaaa = 0;
 };
 
 //“G‚Ì‚Ð‚Æ‚©‚½‚Ü‚è

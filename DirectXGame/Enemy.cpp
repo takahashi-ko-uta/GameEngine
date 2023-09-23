@@ -115,10 +115,17 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
     //船から陸へ上がる
     Landing(goal);
 
+    
 
     obj_->Update();
+    ImGui::Text("aaaa:%d", aaaa);
     ImGui::Text("start:(%d, %d)", start_.X, start_.Y);
     ImGui::Text("goal :(%d, %d)", goal_.X, goal_.Y);
+
+    for (int i = 0; i < 10; i++) {
+        ImGui::Text("route[%d]:(%d, %d)", i, route[i].x, route[i].y);
+    }
+
     ImGui::Text("-----------------------------------------");
 }
 
@@ -190,11 +197,8 @@ void EnemyLeader::Landing(XMINT2 goal)
         //目的地に着いたら
         else if (goalPos.x == obj_->GetPosition().x &&
             goalPos.z == obj_->GetPosition().z) {
-           
-            //一度スタートとゴールを設定
-            start_ = SearchRoute::Cell(nowFloor.x, nowFloor.y);
-            SearchHouse();
-            goal_ = SearchRoute::Cell(goalFloor.x, goalFloor.y);
+
+            CreateRoute();
             //フラグを消す
             isLanding = false;
             isMove = true;
@@ -230,11 +234,14 @@ void EnemyLeader::SearchHouse()
 
 
 
-    //goalFloor = { 5,4 };
+    goalFloor = { 5,4 };
 }
 
 void EnemyLeader::CreateRoute()
 {
+    //一番近い家を探す
+    SearchHouse();
+
     //マップが変更されたら作り直す
     if (isChangeMap == true) {
         enemyRoute_->CreateMap(costMap_);
@@ -251,7 +258,10 @@ void EnemyLeader::CreateRoute()
 
     //ゴールが変更されたらrouteを再検索する
     if (goal_.X != oldGoal.X || goal_.Y != oldGoal.Y) {
+        start_ = SearchRoute::Cell(nowFloor.x, nowFloor.y);
+        goal_ = SearchRoute::Cell(goalFloor.x, goalFloor.y);
         enemyRoute_->AStar(start_, goal_);
+        aaaa++;
     }
 
     //ルートを取得
