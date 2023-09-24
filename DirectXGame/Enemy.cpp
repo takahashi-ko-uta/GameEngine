@@ -212,6 +212,7 @@ void EnemyLeader::SearchHouse()
     XMFLOAT3 objPos = obj_->GetPosition();
     float distance[3];
 
+#pragma region 各家までの距離を調べる
     //各家までの距離を調べる
     for (int i = 0; i < 3; i++) {
         housePos[i] = floorPos_[houseFloor_[i].y][houseFloor_[i].x];//家の座標を取得
@@ -219,7 +220,7 @@ void EnemyLeader::SearchHouse()
         //距離を保存
         distance[i] = Distance(objPos.x, objPos.z, housePos[i].x, housePos[i].z);
     }
-    
+
     if (distance[0] <= distance[1] && distance[0] <= distance[2]) {
         goalHouseNum = 0;
     }
@@ -230,11 +231,43 @@ void EnemyLeader::SearchHouse()
         goalHouseNum = 2;
     }
 
-    goalFloor = houseFloor_[goalHouseNum];
+    //goalHouseNum = 0;
+#pragma endregion
+
+#pragma region 家のある床は指定できないため1マスずらす
+    //家のある床は指定できないため1マスずらす
+    XMINT2 shift;
+    if ((floorPos_[goalFloor.y][goalFloor.x].x) - objPos.x < 0) {
+        shift.x = 1;
+
+    }
+    else if ((floorPos_[goalFloor.y][goalFloor.x].x) - objPos.x > 0) {
+        shift.x = -1;
+    }
+    else {
+        shift.x = 0;
+    }
+
+    if ((floorPos_[goalFloor.y][goalFloor.x].z) - objPos.z < 0) {
+        shift.y = 1;
+    }
+    else if ((floorPos_[goalFloor.y][goalFloor.x].z) - objPos.z > 0) {
+        shift.y = -1;
+    }
+    else {
+        shift.y = 0;
+    }
+#pragma endregion
+
+    
+    //ゴールに保存
+    goalFloor = { houseFloor_[goalHouseNum].x + shift.x,houseFloor_[goalHouseNum].y + shift.y };
+
+    //goalFloor = houseFloor_[goalHouseNum];
 
 
 
-    goalFloor = { 5,4 };
+    //goalFloor = { 5,4 };
 }
 
 void EnemyLeader::CreateRoute()
@@ -252,14 +285,15 @@ void EnemyLeader::CreateRoute()
     SearchRoute::Cell oldStart = start_;
     SearchRoute::Cell oldGoal = goal_;
 
+    //SearchHouse();
+
     //スタートとゴールを更新
     start_ = SearchRoute::Cell(nowFloor.x, nowFloor.y);
     goal_ = SearchRoute::Cell(goalFloor.x, goalFloor.y);
 
     //ゴールが変更されたらrouteを再検索する
     if (goal_.X != oldGoal.X || goal_.Y != oldGoal.Y) {
-        start_ = SearchRoute::Cell(nowFloor.x, nowFloor.y);
-        goal_ = SearchRoute::Cell(goalFloor.x, goalFloor.y);
+        
         enemyRoute_->AStar(start_, goal_);
         aaaa++;
     }
