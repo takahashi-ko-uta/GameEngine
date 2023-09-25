@@ -275,12 +275,6 @@ void EnemyLeader::CreateRoute()
     //一番近い家を探す
     SearchHouse();
 
-    //マップが変更されたら作り直す
-    if (isChangeMap == true) {
-        enemyRoute_->CreateMap(costMap_);
-        isChangeMap = false;
-    }
-
     //スタートとゴールを保存
     SearchRoute::Cell oldStart = start_;
     SearchRoute::Cell oldGoal = goal_;
@@ -293,13 +287,16 @@ void EnemyLeader::CreateRoute()
 
     //ゴールが変更されたらrouteを再検索する
     if (goal_.X != oldGoal.X || goal_.Y != oldGoal.Y) {
-        
+
+        //start_ = SearchRoute::Cell(7, 1);
+        //goal_ = SearchRoute::Cell(3, 2);
+        //ルートを生成
+        enemyRoute_->CreateMap(costMap_);
         enemyRoute_->AStar(start_, goal_);
+        //ルートを取得
+        enemyRoute_->GetRoute(route);
         aaaa++;
     }
-
-    //ルートを取得
-    enemyRoute_->GetRoute(route);
 }
 
 float EnemyLeader::Distance(float p1X, float p1Y, float p2X, float p2Y)
