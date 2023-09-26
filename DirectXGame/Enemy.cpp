@@ -115,7 +115,7 @@ void EnemyLeader::Update(XMFLOAT3 pos, XMINT2 goal, bool isGoal, XMFLOAT3 floorP
     //船から陸へ上がる
     Landing(goal);
 
-    
+    Move();
 
     obj_->Update();
     ImGui::Text("aaaa:%d", aaaa);
@@ -203,6 +203,65 @@ void EnemyLeader::Landing(XMINT2 goal)
             isLanding = false;
             isMove = true;
         };
+    }
+}
+
+void EnemyLeader::Move()
+{
+    //ルート作成
+    //CreateRoute();
+
+    //移動
+    int32_t X = route[routeNum_].x;
+    int32_t Y = route[routeNum_].y;
+
+    XMFLOAT3 move = { 0.0f, 0.0f, 0.0f };
+    XMFLOAT3 pos = obj_->GetPosition();
+
+    // 移動量
+    if (floorPos_[X][Y].x < pos.x) {
+        move.x = -1.0f;
+    }
+    else if (floorPos_[X][Y].x > pos.x) {
+        move.x = 1.0f;
+    }
+    else {
+        move.x = 0.0f;
+    }
+
+    if (floorPos_[X][Y].z < pos.z) {
+        move.z = -1.0f;
+    }
+    else if (floorPos_[X][Y].z > pos.z) {
+        move.z = 1.0f;
+    }
+    else {
+        move.z = 0.0f;
+    }
+
+    //route_は99だったらゴールについている
+    if (X == 99 && Y == 99) {
+        move = { 0,0,0 };
+        routeNum_ = 0;
+        isMove = false;
+    }
+
+    if (isMove == true) {
+        //目的地に行くまで続ける
+        if (floorPos_[X][Y].x != pos.x ||
+            floorPos_[X][Y].z != pos.z) {
+
+            //移動を反映
+            pos.x += move.x;
+            pos.z += move.z;
+            obj_->SetPosition(pos);
+        }
+        //目的地に着いたら
+        else if (floorPos_[X][Y].x == pos.x &&
+            floorPos_[X][Y].z == pos.z) {
+            //次の目的地をセット
+            routeNum_++;
+        }
     }
 }
 
