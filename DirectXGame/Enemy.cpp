@@ -275,6 +275,12 @@ void EnemyLeader::CreateRoute()
     //一番近い家を探す
     SearchHouse();
 
+    //マップが変更されたら作り直す
+    if (isChangeMap == true) {
+        enemyRoute_->CreateMap(costMap_);
+        isChangeMap = false;
+    }
+
     //スタートとゴールを保存
     SearchRoute::Cell oldStart = start_;
     SearchRoute::Cell oldGoal = goal_;
